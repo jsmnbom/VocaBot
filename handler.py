@@ -266,7 +266,7 @@ class Handler(object):
                         else:
                             text += _('\nNo lyrics found.\n')
 
-                        text += _('Derived songs:') + ' /dev_{}\n'.format(thing['id'])
+                        text += _('\nDerived songs:') + ' /dev_{}\n'.format(thing['id'])
 
                         if 'originalVersionId' in thing:
                             text += _('Original song:') + ' /info_{}\n'.format(thing['originalVersionId'])
