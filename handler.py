@@ -592,3 +592,5 @@ You can also use my inline version outside of group chats by using {username}"""
                 self.send_message(text=self.content(err='derived')[0])
             else:
                 self.send_message(text=_("Command not recognized. Did you misspell it?"))
+        else:
+            self.send_message(text=_("Command not recognized. Did you misspell it?"))
