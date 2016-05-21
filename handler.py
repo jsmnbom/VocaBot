@@ -590,4 +590,5 @@ You can also use my inline version outside of group chats by using {username}"""
             else:
                 self.send_message(text=_("Command not recognized. Did you misspell it?"))
         else:
-            self.send_message(text=_("Command not recognized. Did you misspell it?"))
+            if self.text.startswith('/'):
+                self.send_message(text=_("Command not recognized. Did you misspell it?"))
