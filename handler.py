@@ -166,12 +166,6 @@ class Handler(object):
             self.voca_lang = db.get_voca_lang(self.id)
         return voca_db.song(*args, lang=self.voca_lang, **kwargs)
 
-    def get_related_songs(self, *args, **kwargs):
-        if self.voca_lang is None:
-            self.voca_lang = db.get_voca_lang(self.id)
-        self.songs = voca_db.related(*args, lang=self.voca_lang, **kwargs)
-        self.total = len(self.songs)
-
     def get_artists(self, *args, **kwargs):
         if self.voca_lang is None:
             self.voca_lang = db.get_voca_lang(self.id)
@@ -181,6 +175,11 @@ class Handler(object):
         if self.voca_lang is None:
             self.voca_lang = db.get_voca_lang(self.id)
         return voca_db.artist(*args, lang=self.voca_lang, **kwargs)
+
+    def get_derived(self, *args, **kwargs):
+        if self.voca_lang is None:
+            self.voca_lang = db.get_voca_lang(self.id)
+        self.songs, self.total = voca_db.derived(*args, lang=self.voca_lang, **kwargs)
 
     def send_message(self, text=None, **kwargs):
         self.bot.sendMessage(chat_id=self.id, text=text, parse_mode=ParseMode.HTML, **kwargs)
@@ -239,7 +238,7 @@ class Handler(object):
                                                                                        num=song['favoritedTimes'])
 
     # noinspection SpellCheckingInspection
-    def content(self, info=False, artist=False, pagination=True):
+    def content(self, info=False, artist=False, pagination=True, err='search'):
         text = ''
         status = 0
         if artist:
@@ -267,7 +266,7 @@ class Handler(object):
                         else:
                             text += _('\nNo lyrics found.\n')
 
-                        text += _('Related songs:') + ' /rel_{}\n'.format(thing['id'])
+                        text += _('Derived songs:') + ' /dev_{}\n'.format(thing['id'])
 
                         if 'originalVersionId' in thing:
                             text += _('Original song:') + ' /info_{}\n'.format(thing['originalVersionId'])
@@ -297,7 +296,10 @@ class Handler(object):
                     else:
                         text += _('End of results.\n\n')
         else:
-            text = _("I couldn't find what you were looking for. Did you misspell it?")
+            if err == 'search':
+                text = _("I couldn't find what you were looking for. Did you misspell it?")
+            elif err == 'derived':
+                text = _("No derived songs found.")
             status = -1
 
         return text, status
@@ -312,7 +314,7 @@ class Handler(object):
         if not info:
             first_button = InlineKeyboardButton(_('More Info'), callback_data='info|{}'.format(song['id']))
         else:
-            first_button = InlineKeyboardButton(_('Related songs'), callback_data='rel|{}'.format(song['id']))
+            first_button = InlineKeyboardButton(_('Derived songs'), callback_data='dev|{}'.format(song['id']))
 
         inline_keyboard = InlineKeyboardMarkup([
             [first_button,
@@ -430,7 +432,7 @@ You can also use my inline version outside of group chats by using {username}"""
                               reply_markup=ForceReply())
 
     def operation_step(self, current):
-        paged_operations = ['search', 'top', 'new', 'artist', 'artist_RatingScore', 'artist_PublishDate']
+        paged_operations = ['search', 'top', 'new', 'artist', 'artist_RatingScore', 'artist_PublishDate', 'derived']
         if current[0] == 'lyrics':
             db.remove_current(self.id)
             song_id = current[1]
@@ -494,6 +496,9 @@ You can also use my inline version outside of group chats by using {username}"""
                     self.get_songs('', artist_id=self.text, max_results=3, offset=self.offset, sort='PublishDate')
                     self.send_message(text=self.content()[0],
                                       reply_markup=ReplyKeyboardHide())
+                elif current[0] == 'derived':
+                    self.get_derived(song_id=self.text, max_results=3, offset=self.offset)
+                    self.send_message(text=self.content(err='derived')[0])
 
             if current[0] == 'search' and not self.text.startswith('/'):
                 self.get_songs(self.text, max_results=3, offset=self.offset)
@@ -577,5 +582,13 @@ You can also use my inline version outside of group chats by using {username}"""
                 else:
                     self.artists = [self.get_artist(search_id, fields='Names')]
                     self.send_message(text=self.content(info=True, artist=True, pagination=False)[0])
+
+            elif self.text.startswith('/dev_'):
+                self.get_derived(song_id=search_id, max_results=3)
+
+                db.update_current(self.id, 'derived',
+                                  base64.b64encode(search_id.encode('utf-8')))
+
+                self.send_message(text=self.content(err='derived')[0])
             else:
                 self.send_message(text=_("Command not recognized. Did you misspell it?"))

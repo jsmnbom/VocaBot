@@ -43,12 +43,6 @@ class VocaDB(object):
         data = self.base('songs/{}'.format(song_id), payload)
         return data
 
-    def related(self, song_id, fields, lang):
-        # Currently we can't sort :(
-        payload = {'fields': fields, 'lang': lang}
-        data = self.base('songs/{}/derived'.format(song_id), payload)
-        return data
-
     def artists(self, query, lang, offset=0, max_results=10, sort='FollowerCount'):
         payload = {'query': query, 'lang': lang, 'start': offset or 0, 'fields': 'MainPicture',
                    'maxResults': max_results, 'sort': sort}
@@ -61,5 +55,18 @@ class VocaDB(object):
         payload = {'fields': fields, 'lang': lang}
         data = self.base('artists/{}'.format(artist_id), payload)
         return data
+
+    def derived(self, song_id, lang, max_results=10, offset=1):
+        payload = {'fields': 'MainPicture', 'lang': lang}
+        data = self.base('songs/{}/derived'.format(song_id), payload)
+        if data:
+            m = offset + max_results - 1
+            if m > len(data):
+                m = offset + ((len(data) - offset) % max_results) - 1
+            d = data[offset - 1:m]
+            return d, len(data)
+        else:
+            return [], 0
+
 
 voca_db = VocaDB()
