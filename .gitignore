@@ -1,5 +1,3 @@
 .idea
 __pycache__
-*.sqlite
 i18n/generate_template.bat
-bot_api_token.py

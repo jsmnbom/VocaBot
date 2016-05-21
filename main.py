@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+import logging.config
 
 from telegram.ext import Updater, InlineQueryHandler, CallbackQueryHandler, RegexHandler
 
 from bot_api_token import TELEGRAM_BOT_API_TOKEN
 from db import db
 from handler import Handler
+from logger import logDict
 
 # noinspection SpellCheckingInspection
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.config.dictConfig(logDict)
 
 
 # noinspection PyUnusedLocal

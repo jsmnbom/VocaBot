@@ -183,7 +183,7 @@ class Handler(object):
         return voca_db.artist(*args, lang=self.voca_lang, **kwargs)
 
     def send_message(self, text=None, **kwargs):
-        self.bot.sendMessage(chat_id=self.id, text=text, **kwargs, parse_mode=ParseMode.HTML)
+        self.bot.sendMessage(chat_id=self.id, text=text, parse_mode=ParseMode.HTML, **kwargs)
 
     def edit_message(self, text, reply_markup):
         try:
