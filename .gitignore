@@ -3,4 +3,5 @@ __pycache__
 i18n/generate_template.bat
 bot_api_token.py
 *.sqlite
+*.sqlite-journal
 *.log
