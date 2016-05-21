@@ -10,7 +10,7 @@ from telegram import (ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMark
                       ChatAction)
 
 from constants import OWNER_ID, pvServices
-from db import db, OPERATION, VOCA_LANG, LANGS
+from db import db, VOCA_LANG, LANGS
 from dl import Downloader
 from inter import underscore as _
 from voca_db import voca_db
@@ -344,9 +344,8 @@ class Handler(object):
         current = db.get_current(self.id)
         if current:
             # The weird list comprehension is just getting key based on value in dict
-            self.send_message(text=_("{} operation cancelled.").format(
-                list(OPERATION.keys())[list(OPERATION.values()).index(current[0])].capitalize()),
-                reply_markup=ReplyKeyboardHide())
+            self.send_message(text=_("Operation cancelled."),
+                              reply_markup=ReplyKeyboardHide())
             db.remove_current(self.id)
         else:
             self.send_message(text=_("I am currently idle."), reply_markup=ReplyKeyboardHide())
@@ -376,14 +375,14 @@ You can also use my inline version outside of group chats by using {username}"""
                           disable_web_page_preview=True)
 
     def cmd_set_voca_lang(self):
-        db.update_current(self.id, OPERATION['set_voca_lang'])
+        db.update_current(self.id, 'set_voca_lang')
         reply_keyboard = ReplyKeyboardMarkup([[KeyboardButton(lang) for lang in VOCA_LANG]],
                                              resize_keyboard=True)
         self.send_message(text=_("What language would you like titles and artist names to be written in?"),
                           reply_markup=reply_keyboard)
 
     def cmd_set_lang(self):
-        db.update_current(self.id, OPERATION['set_lang'])
+        db.update_current(self.id, 'set_lang')
         reply_keyboard = ReplyKeyboardMarkup([[KeyboardButton(lang) for lang in LANGS]],
                                              resize_keyboard=True)
         self.send_message(text=_("What language or personality module would you like?"),
@@ -395,22 +394,22 @@ You can also use my inline version outside of group chats by using {username}"""
         if query != '':
             self.get_songs(query, max_results=3)
 
-            db.update_current(self.id, OPERATION['search'], base64.b64encode(query.encode('utf-8')))
+            db.update_current(self.id, 'search', base64.b64encode(query.encode('utf-8')))
 
             self.send_message(text=self.content()[0])
         else:
-            db.update_current(self.id, OPERATION['search'], '')
+            db.update_current(self.id, 'search', '')
             self.send_message(text=_("What would you like to search for?"),
                               reply_markup=ForceReply())
 
     def cmd_top(self):
         self.get_songs('', max_results=3, offset=0)
-        db.update_current(self.id, OPERATION['top'])
+        db.update_current(self.id, 'top')
         self.send_message(text=self.content()[0])
 
     def cmd_new(self):
         self.get_songs('', max_results=3, offset=0, sort='AdditionDate')
-        db.update_current(self.id, OPERATION['new'])
+        db.update_current(self.id, 'new')
         self.send_message(text=self.content()[0])
 
     def cmd_artist(self):
@@ -419,16 +418,17 @@ You can also use my inline version outside of group chats by using {username}"""
         if query != '':
             self.get_artists(query, max_results=3)
 
-            db.update_current(self.id, OPERATION['artist'], base64.b64encode(query.encode('utf-8')))
+            db.update_current(self.id, 'artist', base64.b64encode(query.encode('utf-8')))
 
             self.send_message(text=self.content(artist=True)[0])
         else:
-            db.update_current(self.id, OPERATION['artist'], '')
+            db.update_current(self.id, 'artist', '')
             self.send_message(text=_("What would you like to search for?"),
                               reply_markup=ForceReply())
 
     def operation_step(self, current):
-        if current[0] == OPERATION['lyrics']:
+        paged_operations = ['search', 'top', 'new', 'artist', 'artist_RatingScore', 'artist_PublishDate']
+        if current[0] == 'lyrics':
             db.remove_current(self.id)
             song_id = current[1]
             song = self.get_song(song_id, fields='Names, Lyrics, Artists')
@@ -440,7 +440,7 @@ You can also use my inline version outside of group chats by using {username}"""
                                                                 artist=song['artistString'],
                                                                 lyrics=lyric['value']),
                                       reply_markup=ReplyKeyboardHide())
-        elif current[0] == OPERATION['set_lang']:
+        elif current[0] == 'set_lang':
             if self.text in LANGS:
                 if self.type == 'private':
                     db.set_lang(self.from_id, self.text)
@@ -453,7 +453,7 @@ You can also use my inline version outside of group chats by using {username}"""
                 db.remove_current(self.id)
             else:
                 self.send_message(text=_("Language not found. Try again."))
-        elif current[0] == OPERATION['set_voca_lang']:
+        elif current[0] == 'set_voca_lang':
             try:
                 if self.type == 'private':
                     db.set_voca_lang(self.from_id, self.text)
@@ -466,9 +466,7 @@ You can also use my inline version outside of group chats by using {username}"""
                 db.remove_current(self.id)
             except ValueError:
                 self.send_message(text=_("Language not found. Try again."))
-        elif (current[0] == OPERATION['search'] or current[0] == OPERATION['top'] or current[0] == OPERATION['new'] or
-                      current[0] == OPERATION['artist'] or current[0] == OPERATION['artist_RatingScore'] or
-                      current[0] == OPERATION['artist_RatingScore']):
+        elif current[0] in paged_operations:
             if self.text.startswith('/page'):
                 search = re.search(r'/page_(\d*)@?', self.text)
                 try:
@@ -477,38 +475,38 @@ You can also use my inline version outside of group chats by using {username}"""
                 except AttributeError:
                     return
 
-                if current[0] == OPERATION['top']:
+                if current[0] == 'top':
                     self.get_songs('', max_results=3, offset=self.offset)
                     self.send_message(text=self.content()[0],
                                       reply_markup=ReplyKeyboardHide())
-                elif current[0] == OPERATION['new']:
+                elif current[0] == 'new':
                     self.get_songs('', max_results=3, offset=self.offset, sort='AdditionDate')
                     self.send_message(text=self.content()[0],
                                       reply_markup=ReplyKeyboardHide())
-                elif current[0] == OPERATION['artist_RatingScore']:
+                elif current[0] == 'artist_RatingScore':
                     self.get_songs('', artist_id=self.text, max_results=3, offset=self.offset, sort='RatingScore')
                     self.send_message(text=self.content()[0],
                                       reply_markup=ReplyKeyboardHide())
-                elif current[0] == OPERATION['artist_PublishDate']:
+                elif current[0] == 'artist_PublishDate':
                     self.get_songs('', artist_id=self.text, max_results=3, offset=self.offset, sort='PublishDate')
                     self.send_message(text=self.content()[0],
                                       reply_markup=ReplyKeyboardHide())
 
-            if current[0] == OPERATION['search'] and not self.text.startswith('/'):
+            if current[0] == 'search' and not self.text.startswith('/'):
                 self.get_songs(self.text, max_results=3, offset=self.offset)
                 (content, status) = self.content()
                 if status != -1:
-                    db.update_current(self.id, OPERATION['search'], base64.b64encode(self.text.encode('utf-8')))
+                    db.update_current(self.id, 'search', base64.b64encode(self.text.encode('utf-8')))
                     self.send_message(text=content, reply_markup=ReplyKeyboardHide())
                 else:
                     if current[1] == '' and not self.text.startswith('/'):
                         self.send_message(text=content, reply_markup=ForceReply())
 
-            elif current[0] == OPERATION['artist'] and not self.text.startswith('/'):
+            elif current[0] == 'artist' and not self.text.startswith('/'):
                 self.get_artists(self.text, max_results=3, offset=self.offset)
                 (content, status) = self.content(artist=True)
                 if status != -1:
-                    db.update_current(self.id, OPERATION['artist'], base64.b64encode(self.text.encode('utf-8')))
+                    db.update_current(self.id, 'artist', base64.b64encode(self.text.encode('utf-8')))
                     self.send_message(text=content, reply_markup=ReplyKeyboardHide())
                 else:
                     if current[1] == '' and not self.text.startswith('/'):
@@ -551,7 +549,7 @@ You can also use my inline version outside of group chats by using {username}"""
                 reply_keyboard = ReplyKeyboardMarkup(
                     [[KeyboardButton(lyric['language']) for lyric in song['lyrics']]],
                     resize_keyboard=True)
-                db.update_current(self.id, OPERATION['lyrics'], song['id'])
+                db.update_current(self.id, 'lyrics', song['id'])
                 self.send_message(text=_("What language would you like the lyrics "
                                          "for {name} by {artist} in?").format(name=song['name'],
                                                                               artist=song['artistString']),
@@ -569,7 +567,7 @@ You can also use my inline version outside of group chats by using {username}"""
                         sort = 'PublishDate'
                     self.get_songs('', artist_id=search_id, max_results=3, sort=sort)
 
-                    db.update_current(self.id, OPERATION['artist_' + sort],
+                    db.update_current(self.id, 'artist_' + sort,
                                       base64.b64encode(search_id.encode('utf-8')))
 
                     self.send_message(text=self.content()[0])

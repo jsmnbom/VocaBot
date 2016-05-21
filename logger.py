@@ -1,3 +1,8 @@
+import logging
+import logging.config
+
+import sys
+
 # noinspection SpellCheckingInspection
 logDict = {'formatters': {'breif': {'format': '%(levelname)s: %(message)s'},
                           'precise': {'format': '%(asctime)s %(levelname)s: %(message)s'}},
@@ -12,3 +17,11 @@ logDict = {'formatters': {'breif': {'format': '%(levelname)s: %(message)s'},
                                  'level': 'DEBUG'}},
            'loggers': {'': {'handlers': ['console', 'file'], 'level': 'DEBUG'}},
            'version': 1}
+
+
+def start():
+    try:
+        if sys.argv[1] == 'deploy':
+            logging.config.dictConfig(logDict)
+    except IndexError:
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

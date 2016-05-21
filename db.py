@@ -6,8 +6,6 @@ from constants import DB_FILE
 
 LANGS = ['en_GB']
 VOCA_LANG = ['Default', 'Japanese', 'Romaji', 'English']
-OPERATION = {'lyrics': 0, 'set_lang': 1, 'search': 2, 'set_voca_lang': 3, 'top': 4, 'new': 5, 'artist': 6,
-             'artist_RatingScore': 7, 'artist_PublishDate': 8}
 
 
 class DbManager(object):
@@ -39,7 +37,7 @@ class DbManager(object):
 
         # Current operation with chat
         self.c.execute("CREATE TABLE current (chat_id INTEGER PRIMARY KEY)")
-        self.c.execute("ALTER TABLE current ADD COLUMN 'current' INTEGER")
+        self.c.execute("ALTER TABLE current ADD COLUMN 'current' STRING")
         self.c.execute("ALTER TABLE current ADD COLUMN 'data' STRING")
         self.conn.commit()
 
