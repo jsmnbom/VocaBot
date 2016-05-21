@@ -321,7 +321,7 @@ class Handler(object):
     def cmd_start(self):
         bot_name = self.bot.first_name + ' ' + self.bot.last_name
         self.send_message(text=_("Hello {user_name}! I'm {bot_name}. "
-                                 "I use VocaDB.net to find all your favourite Vocaloid songs. "
+                                 "I use VocaDB.net to find all your favourite Vocaloid songs and artists. "
                                  "Write /help to see a list of commands.").format(user_name=self.name,
                                                                                   bot_name=bot_name))
 
