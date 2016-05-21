@@ -117,7 +117,7 @@ class Handler(object):
             names = self.additional_names(song)
             if self.edit_message(
                     text=_('{base}\n\n{names}').format(base=self.base_content(song), names=names),
-                    reply_markup=self.inline_keyboard(song, info=True)):
+                    reply_markup=self.inline_keyboard(song)):
                 self.bot.answerCallbackQuery(self.query_id, text="Success!")
         elif self.data[0] == 'lyrics':
             song = self.get_song(self.data[-1], 'Lyrics')
@@ -307,14 +307,11 @@ class Handler(object):
     def artist_base_content(self, artist):
         return _('<b>{artist_name}</b>\n{type}').format(artist_name=artist['name'], type=artist['artistType'])
 
-    def inline_keyboard(self, song, info=False):
+    def inline_keyboard(self, song):
         pv_buttons = [InlineKeyboardButton('{}'.format(service), callback_data='pv|{}|{}'.format(service, song['id']))
                       for service in song['pvServices'].split(', ')]
 
-        if not info:
-            first_button = InlineKeyboardButton(_('More Info'), callback_data='info|{}'.format(song['id']))
-        else:
-            first_button = InlineKeyboardButton(_('Derived songs'), callback_data='dev|{}'.format(song['id']))
+        first_button = InlineKeyboardButton(_('More Info'), callback_data='info|{}'.format(song['id']))
 
         inline_keyboard = InlineKeyboardMarkup([
             [first_button,
