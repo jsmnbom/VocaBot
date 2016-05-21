@@ -269,6 +269,9 @@ class Handler(object):
 
                         text += _('Related songs:') + ' /rel_{}\n'.format(thing['id'])
 
+                        if 'originalVersionId' in thing:
+                            text += _('Original song:') + ' /info_{}\n'.format(thing['originalVersionId'])
+
                         if not thing['pvServices'] == 'Nothing':
                             text += _('\nPromotional videos:\n')
                             for service in pvServices:
