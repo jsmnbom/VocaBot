@@ -16,7 +16,7 @@ ABOUT_TEXT = _("""Created by @bomjacob.
 I use data from VocaDB.net. Click <a href="http://wiki.vocadb.net/wiki/29/license">here</a> for licensing information.
 Dialogue and profile picture by @Awthornecay
 My code is open-source and available at <a href="https://github.com/bomjacob/VocaBot">github</a>.
-Telegram bot privacy mode is enabled so I can only see commands and direct replies.""")
+Telegram bot privacy mode is enabled so, in group chats, I can only see commands and direct replies.""")
 
 # TODO: Explain about the /X_X commands that you get from a results, and how to use them (ie: click 'em)
 HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japanese
