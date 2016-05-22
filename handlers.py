@@ -323,7 +323,7 @@ class MessageHandler(BaseHandler):
                                                              performer=song['artistString'])
                                 dl = Downloader(callback=send_audio_partial)
                                 dl.get_link(pv['url'])
-                                return
+                                return True
                             else:
                                 self.bot.sendChatAction(chat_id=self.id, action=ChatAction.TYPING)
                                 # For returning PVs
@@ -331,7 +331,7 @@ class MessageHandler(BaseHandler):
                                                          "{artists}\n{url}").format(name=song['name'],
                                                                                     artists=song['artistString'],
                                                                                     url=pv['url']))
-                                return
+                                return True
 
     def content(self, info=False, artist=False, pagination=True, err='search'):
         text = ''
