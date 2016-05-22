@@ -3,12 +3,12 @@
 import logging
 import logging.config
 
-from telegram.ext import Updater, InlineQueryHandler, CallbackQueryHandler, RegexHandler
+from telegram.ext import Updater, InlineQueryHandler, CallbackQueryHandler, MessageHandler
 
+import handlers
 import logger
 from bot_api_token import TELEGRAM_BOT_API_TOKEN
 from db import db
-from handler import Handler
 
 logger.start()
 
@@ -18,12 +18,18 @@ def error(bot, update, err):
     logging.warning('Update "%s" caused error "%s"' % (update, err))
 
 
+# noinspection PyUnusedLocal,PyIncorrectDocstring
+def all_msg_filter(update):
+    """We want them all!"""
+    return True
+
+
 def main():
-    dp.addHandler(RegexHandler(r'.*', Handler))
+    dp.addHandler(MessageHandler([all_msg_filter], handlers.MessageHandler))
 
-    dp.addHandler(InlineQueryHandler(Handler))
+    dp.addHandler(InlineQueryHandler(handlers.InlineQueryHandler))
 
-    dp.addHandler(CallbackQueryHandler(Handler))
+    dp.addHandler(CallbackQueryHandler(handlers.CallbackQueryHandler))
 
     dp.addErrorHandler(error)
 
