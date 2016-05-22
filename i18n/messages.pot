@@ -1,22 +1,261 @@
-#: ../handler.py:117
+#: constants.py:11
+msgid ""
+"Hello {user_name}! I'm {bot_name}.\n"
+"I use VocaDB.net to find all your favourite Vocaloid songs and artists.\n"
+"Write /help to see a list of commands."
+msgstr ""
+
+#: constants.py:15
+msgid ""
+"<b>{bot_name} version {version}</b>\n"
+"Created by @bomjacob.\n"
+"Dialogue and profile picture by @Awthornecay.\n"
+"I use data from VocaDB.net. Click <a "
+"href=\"http://wiki.vocadb.net/wiki/29/license\">here</a> for licensing "
+"information.\n"
+"My code is open-source and available at <a "
+"href=\"https://github.com/bomjacob/VocaBot\">github</a>.\n"
+"Telegram bot privacy mode is enabled so, <i>in group chats</i>, I can "
+"only see commands and direct replies."
+msgstr ""
+
+#: constants.py:24
+msgid ""
+"/search - search for a vocaloid song in Romaji, English or Japanese\n"
+"/artist - search for an artist\n"
+"/top - browse the most popular vocaloid songs\n"
+"/new - browse the newest additions to my database\n"
+"/set_lang - set the general language, or change my personality module\n"
+"/set_voca_lang - change what language titles and artists are displayed in"
+"\n"
+"/cancel - cancel current operation\n"
+"/about - display information about my creators and VocaDB\n"
+"/help - display this message\n"
+"\n"
+"You can also use my inline version outside of group chats by using "
+"{username}\n"
+"/help_inline for more info about that."
+msgstr ""
+
+#: constants.py:38
+msgid "Inline Help"
+msgstr ""
+
+#: handlers.py:92
+msgid ""
+"<b>{name}</b>\n"
+"{artist}\n"
+"{type} song with {num} favourites."
+msgstr ""
+
+#: handlers.py:99
+msgid ""
+"<b>{artist_name}</b>\n"
+"{type}"
+msgstr ""
+
+#: handlers.py:104
+msgid "Additional names:\n"
+msgstr ""
+
+#: handlers.py:110
+msgid "No additional names found.\n"
+msgstr ""
+
+#: handlers.py:114
+msgid "Artists:\n"
+msgstr ""
+
+#: handlers.py:123
+msgid "[<code>{roles}</code>] {artist_name}"
+msgstr ""
+
+#: handlers.py:136
+msgid "No artists found.\n"
+msgstr ""
+
+#: handlers.py:178
+msgid ""
+"<b>Lyrics for {name} by {artist}.</b>\n"
+"{lyrics}"
+msgstr ""
+
+#: handlers.py:192 handlers.py:202
+msgid "Language not found. Try again."
+msgstr ""
+
+#: handlers.py:207
+msgid "{type} language set to {lang}"
+msgstr ""
+
+#: handlers.py:208
+msgid "User"
+msgstr ""
+
+#: handlers.py:208
+msgid "Chat"
+msgstr ""
+
+#: handlers.py:274
+msgid "What language would you like the lyrics for {name} by {artist} in?"
+msgstr ""
+
+#: handlers.py:328
+msgid ""
+"<b>{name}</b>\n"
+"{artists}\n"
+"{url}"
+msgstr ""
+
+#: handlers.py:354
+msgid "Popular songs:"
+msgstr ""
+
+#: handlers.py:355
+msgid "Latest songs:"
+msgstr ""
+
+#: handlers.py:359
+msgid ""
+"\n"
+"Lyrics:"
+msgstr ""
+
+#: handlers.py:361
+msgid ""
+"\n"
+"No lyrics found.\n"
+msgstr ""
+
+#: handlers.py:363
+msgid ""
+"\n"
+"Derived songs:"
+msgstr ""
+
+#: handlers.py:366
+msgid "Original song:"
+msgstr ""
+
+#: handlers.py:369
+msgid ""
+"\n"
+"Promotional videos:\n"
+msgstr ""
+
+#: handlers.py:374
+msgid ""
+"\n"
+"No promotional videos found"
+msgstr ""
+
+#: handlers.py:378
+msgid ""
+"\n"
+"Info: "
+msgstr ""
+
+#: handlers.py:380
+msgid ""
+"\n"
+"Info and lyrics:"
+msgstr ""
+
+#: handlers.py:386
+msgid "Page:"
+msgstr ""
+
+#: handlers.py:389
+msgid "Next:"
+msgstr ""
+
+#: handlers.py:391
+msgid ""
+"End of results.\n"
+"\n"
+msgstr ""
+
+#: handlers.py:394
+msgid "I couldn't find what you were looking for. Did you misspell it?"
+msgstr ""
+
+#: handlers.py:396
+msgid "No derived songs found."
+msgstr ""
+
+#: handlers.py:402
+msgid "Command not recognized. Did you misspell it?"
+msgstr ""
+
+#: handlers.py:417
+msgid "NOOOOO!!!"
+msgstr ""
+
+#: handlers.py:426
+msgid "You are not authorised to do that."
+msgstr ""
+
+#: handlers.py:431
+msgid "Operation cancelled."
+msgstr ""
+
+#: handlers.py:434
+msgid "I am currently idle."
+msgstr ""
+
+#: handlers.py:450
+msgid "What language would you like titles and artist names to be written in?"
+msgstr ""
+
+#: handlers.py:457
+msgid "What language or personality module would you like?"
+msgstr ""
+
+#: handlers.py:471 handlers.py:495
+msgid "What would you like to search for?"
+msgstr ""
+
+#: handlers.py:509
+msgid "More Info"
+msgstr ""
+
+#: handlers.py:510
+msgid "Lyrics"
+msgstr ""
+
+#: handlers.py:511
+msgid "Share"
+msgstr ""
+
+#: handlers.py:561
+msgid ""
+"{artist}\n"
+"{song_type} with {num} favourites."
+msgstr ""
+
+#: handlers.py:616
+msgid "Feature not supported."
+msgstr ""
+
+#: handlers.py:622
 msgid ""
 "{base}\n"
 "\n"
 "{names}"
 msgstr ""
 
-#: ../handler.py:123
+#: handlers.py:629
 msgid "No lyrics found."
 msgstr ""
 
-#: ../handler.py:131
+#: handlers.py:637
 msgid ""
 "{base}\n"
 "\n"
 "What language would you like the lyrics in?"
 msgstr ""
 
-#: ../handler.py:138
+#: handlers.py:646
 msgid ""
 "{base}\n"
 "\n"
@@ -24,7 +263,7 @@ msgid ""
 "{lyrics}"
 msgstr ""
 
-#: ../handler.py:147
+#: handlers.py:656
 msgid ""
 "{base}\n"
 "\n"
@@ -32,176 +271,7 @@ msgid ""
 "Link: {url}"
 msgstr ""
 
-#: ../handler.py:152
+#: handlers.py:661
 msgid "Success!"
-msgstr ""
-
-#: ../handler.py:154
-msgid "Feature not supported."
-msgstr ""
-
-#: ../handler.py:183
-msgid "Additional names:\n"
-msgstr ""
-
-#: ../handler.py:188
-msgid "No additional names found.\n"
-msgstr ""
-
-#: ../handler.py:192
-msgid "Artists:\n"
-msgstr ""
-
-#: ../handler.py:204
-msgid "No artists found.\n"
-msgstr ""
-
-#: ../handler.py:208
-msgid ""
-"<b>{name}</b>\n"
-"{artist}\n"
-"{type} song with {num} favourites."
-msgstr ""
-
-#: ../handler.py:226
-msgid ""
-"\n"
-"Lyrics:"
-msgstr ""
-
-#: ../handler.py:228
-msgid ""
-"\n"
-"No lyrics found.\n"
-msgstr ""
-
-#: ../handler.py:231
-msgid ""
-"\n"
-"Promotional videos:\n"
-msgstr ""
-
-#: ../handler.py:236
-msgid ""
-"\n"
-"No promotional videos found"
-msgstr ""
-
-#: ../handler.py:238
-msgid ""
-"\n"
-"Info and lyrics:"
-msgstr ""
-
-#: ../handler.py:244
-msgid "Page:"
-msgstr ""
-
-#: ../handler.py:247
-msgid "Next:"
-msgstr ""
-
-#: ../handler.py:249
-msgid ""
-"End of results.\n"
-"\n"
-msgstr ""
-
-#: ../handler.py:251
-msgid "I couldn't find what you were looking for. Did you misspell it?"
-msgstr ""
-
-#: ../handler.py:261
-msgid "More Info"
-msgstr ""
-
-#: ../handler.py:263
-msgid "Other versions"
-msgstr ""
-
-#: ../handler.py:267
-msgid "Lyrics"
-msgstr ""
-
-#: ../handler.py:274
-msgid ""
-"Hello {user_name}! I'm {bot_name}. I use VocaDB.net to find all your "
-"favourite Vocaloid songs. Write /help to see a list of commands."
-msgstr ""
-
-#: ../handler.py:283
-msgid "NOOOOO!!!"
-msgstr ""
-
-#: ../handler.py:292
-msgid "You are not authorised to do that."
-msgstr ""
-
-#: ../handler.py:298
-msgid "{} operation cancelled."
-msgstr ""
-
-#: ../handler.py:303
-msgid "I am currently idle."
-msgstr ""
-
-#: ../handler.py:306
-msgid ""
-"/search - search for a vocaloid song in Romaji, English or Japanese. For "
-"more information, see /help_search\n"
-"/top - browse the most popular vocaloid songs\n"
-"/new - browse the newest additions to my database\n"
-"/set_lang - set the general language, or change my personality module\n"
-"/set_voca_lang - change what language titles and artists are displayed in"
-"\n"
-"/about - display information about my creators and VocaDB\n"
-"\n"
-"You can also use my inline version outside of group chats by using "
-"{username}"
-msgstr ""
-
-#: ../handler.py:319
-msgid "What language would you like titles and artist names to be written in?"
-msgstr ""
-
-#: ../handler.py:326
-msgid "What language or personality module would you like?"
-msgstr ""
-
-#: ../handler.py:340
-msgid "What would you like to search for?"
-msgstr ""
-
-#: ../handler.py:361
-msgid ""
-"<b>Lyrics for {name} by {artist}.</b>\n"
-"{lyrics}"
-msgstr ""
-
-#: ../handler.py:373 ../handler.py:386
-msgid "{type} language set to {lang}"
-msgstr ""
-
-#: ../handler.py:374 ../handler.py:387
-msgid "User"
-msgstr ""
-
-#: ../handler.py:374 ../handler.py:387
-msgid "Chat"
-msgstr ""
-
-#: ../handler.py:379 ../handler.py:392
-msgid "Language not found. Try again."
-msgstr ""
-
-#: ../handler.py:444
-msgid ""
-"<b>{name}</b>\n"
-"{artists}\n"
-"{url}"
-msgstr ""
-
-#: ../handler.py:461
-msgid "What language would you like the lyrics for {name} by {artist} in?"
 msgstr ""
 
