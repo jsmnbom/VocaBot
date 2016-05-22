@@ -32,5 +32,5 @@ HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japa
 You can also use my inline version outside of group chats by using {username}
 /help_inline for more info about that.""")
 
-
+# TODO: Write proper inline help.
 INLINE_HELP_TEXT = _("""Inline Help""")
