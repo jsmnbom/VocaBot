@@ -18,6 +18,7 @@ Dialogue and profile picture by @Awthornecay
 My code is open-source and available at <a href="https://github.com/bomjacob/VocaBot">github</a>.
 Telegram bot privacy mode is enabled so I can only see commands and direct replies.""")
 
+# TODO: Explain about the /X_X commands that you get from a results, and how to use them (ie: click 'em)
 HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japanese
 /artist - search for an artist
 /top - browse the most popular vocaloid songs

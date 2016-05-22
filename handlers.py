@@ -507,6 +507,7 @@ class InlineBaseHandler(BaseHandler):
         """Process the incoming update."""
 
     def keyboard(self, song, info=False):
+        # TODO: Somehow make buttons the same width if there's 3 on each row.
         info_button = InlineKeyboardButton(_('More Info'), callback_data='info|{}'.format(song['id']))
         lyrics_button = InlineKeyboardButton(_('Lyrics'), callback_data='lyrics|{}'.format(song['id']))
         share_button = InlineKeyboardButton(_('Share'),

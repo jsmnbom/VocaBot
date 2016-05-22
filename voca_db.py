@@ -12,6 +12,7 @@ from utils import escape_bad_html
 class VocaDB(object):
     def __init__(self):
         self.s = requests.Session()
+        # TODO: Better caching, cache is going stale immediately.
         self.s = CacheControl(self.s)
         self.s.headers.update({'user-agent': VOCADB_USER_AGENT})
         self.s.headers.update({'Accept': 'application/json'})
