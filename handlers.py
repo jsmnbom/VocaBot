@@ -443,7 +443,7 @@ class MessageHandler(BaseHandler):
 
     def cmd_about(self):
         # noinspection SpellCheckingInspection
-        self.send_message(ABOUT_TEXT, disable_web_page_preview=True)
+        self.send_message(ABOUT_TEXT.format(bot_name=self.bot.name), disable_web_page_preview=True)
 
     def cmd_set_voca_lang(self):
         db.update_current(self.id, 'set_voca_lang')

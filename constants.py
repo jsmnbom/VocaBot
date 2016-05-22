@@ -1,6 +1,6 @@
 from inter import underscore as _
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 VOCADB_API_ENDPOINT = "http://vocadb.net/api/"
 OWNER_ID = 95205500
 DB_FILE = 'data.sqlite'
@@ -12,11 +12,13 @@ START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
 I use VocaDB.net to find all your favourite Vocaloid songs and artists.
 Write /help to see a list of commands.""")
 
-ABOUT_TEXT = _("""Created by @bomjacob.
+ABOUT_TEXT = _("""<b>{bot_name} version {version}</b>
+Created by @bomjacob.
+Dialogue and profile picture by @Awthornecay.
 I use data from VocaDB.net. Click <a href="http://wiki.vocadb.net/wiki/29/license">here</a> for licensing information.
-Dialogue and profile picture by @Awthornecay
 My code is open-source and available at <a href="https://github.com/bomjacob/VocaBot">github</a>.
-Telegram bot privacy mode is enabled so, in group chats, I can only see commands and direct replies.""")
+Telegram bot privacy mode is enabled so, <i>in group chats</i>, I can only see commands and direct replies.""").format(
+    version=__version__, bot_name='{bot_name}')
 
 # TODO: Explain about the /X_X commands that you get from a results, and how to use them (ie: click 'em)
 HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japanese
