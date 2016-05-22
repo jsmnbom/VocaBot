@@ -3,6 +3,7 @@ import logging
 
 import requests
 from cachecontrol import CacheControl
+from cachecontrol.heuristics import ExpiresAfter
 
 from constants import VOCADB_API_ENDPOINT, VOCADB_USER_AGENT
 from utils import escape_bad_html
@@ -12,8 +13,9 @@ from utils import escape_bad_html
 class VocaDB(object):
     def __init__(self):
         self.s = requests.Session()
-        # TODO: Better caching, cache is going stale immediately.
-        self.s = CacheControl(self.s)
+        # We cache ALL responses for 10 min. so fx. inline lyrics request don't make two calls right after eachother.
+        # This MAY have unforseen consequenses, but hopefully we can deal with those.
+        self.s = CacheControl(self.s, cache_etags=False, heuristic=ExpiresAfter(minutes=10))
         self.s.headers.update({'user-agent': VOCADB_USER_AGENT})
         self.s.headers.update({'Accept': 'application/json'})
         self.opts = {'nameMatchMode': 'Auto', 'preferAccurateMatches': 'true',
