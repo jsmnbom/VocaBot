@@ -5,10 +5,10 @@ import sqlite3
 from constants import DB_FILE
 
 LANGS = ['en_GB']
-VOCA_LANG = ['Default', 'Japanese', 'Romaji', 'English']
+VOCA_LANGS = ['Default', 'Japanese', 'Romaji', 'English']
 
 
-class DbManager(object):
+class DBManager(object):
     def __init__(self):
         self.conn = sqlite3.connect(DB_FILE, check_same_thread=False)
         self.c = self.conn.cursor()
@@ -67,14 +67,14 @@ class DbManager(object):
 
     def set_voca_lang(self, chat_id, lang):
         self.c.execute("INSERT OR REPLACE INTO options (chat_id,voca_lang) VALUES (?,?)",
-                       (chat_id, VOCA_LANG.index(lang)))
+                       (chat_id, VOCA_LANGS.index(lang)))
 
     def get_voca_lang(self, chat_id):
         self.c.execute("SELECT voca_lang FROM options WHERE chat_id=?", (chat_id,))
         try:
-            return VOCA_LANG[int(self.c.fetchone()[0])]
+            return VOCA_LANGS[int(self.c.fetchone()[0])]
         except TypeError:
-            return VOCA_LANG[3]
+            return VOCA_LANGS[3]
 
 
-db = DbManager()
+db = DBManager()

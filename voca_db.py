@@ -4,7 +4,7 @@ import logging
 import requests
 from cachecontrol import CacheControl
 
-from constants import VOCADB_API_ENDPOINT, voca_db_user_agent
+from constants import VOCADB_API_ENDPOINT, VOCADB_USER_AGENT
 from utils import escape_bad_html
 
 
@@ -13,7 +13,7 @@ class VocaDB(object):
     def __init__(self):
         self.s = requests.Session()
         self.s = CacheControl(self.s)
-        self.s.headers.update({'user-agent': voca_db_user_agent})
+        self.s.headers.update({'user-agent': VOCADB_USER_AGENT})
         self.s.headers.update({'Accept': 'application/json'})
         self.opts = {'nameMatchMode': 'Auto', 'preferAccurateMatches': 'true',
                      'getTotalCount': 'true'}
