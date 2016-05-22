@@ -253,8 +253,6 @@ class MessageHandler(BaseHandler):
         elif current[0] == 'derived':
             self.get_derived(song_id=self.text, max_results=3, offset=self.offset)
             self.send_message(text=self.content(err='derived')[0], reply_markup=ReplyKeyboardHide())
-        else:
-            self.send_message(text="I am not currently processing any pages.", reply_markup=ReplyKeyboardHide())
 
     def other(self):
         search = re.search(r'.*/.*_(\d+)', self.text)
