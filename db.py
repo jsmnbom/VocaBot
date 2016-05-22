@@ -4,6 +4,8 @@ import sqlite3
 
 from constants import DB_FILE
 
+logger = logging.getLogger(__name__)
+
 LANGS = ['en_GB']
 VOCA_LANGS = ['Default', 'Japanese', 'Romaji', 'English']
 

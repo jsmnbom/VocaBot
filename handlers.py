@@ -16,6 +16,8 @@ from dl import Downloader
 from inter import underscore as _
 from voca_db import voca_db
 
+logger = logging.getLogger(__name__)
+
 
 def with_voca_lang(method):
     @wraps(method)
@@ -82,7 +84,7 @@ class BaseHandler(object):
 
     def send_audio(self, title, performer, audio):
         # bot.sendMessage(chat_id=chat_id, text="{}\n{}\n{}".format(title, performer, audio))
-        logging.debug(self.bot.sendAudio(audio=audio, chat_id=self.id, title=title, performer=performer))
+        logger.debug(self.bot.sendAudio(audio=audio, chat_id=self.id, title=title, performer=performer))
 
     @staticmethod
     def base_content_song(song):
@@ -147,8 +149,6 @@ class MessageHandler(BaseHandler):
             self.name = update.message.chat.title
         else:
             self.name = update.message.chat.first_name
-
-        logging.debug(self.name)
 
         super().process()
 
@@ -279,7 +279,7 @@ class MessageHandler(BaseHandler):
                                   reply_markup=reply_keyboard)
 
             elif self.text.startswith('/a_'):
-                logging.debug(search_id)
+                logger.debug(search_id)
                 if '_p' in self.text or '_l' in self.text:
                     if '_p' in self.text:
                         sort = 'RatingScore'
@@ -405,7 +405,7 @@ class MessageHandler(BaseHandler):
 
     def cmd_start(self):
         bot_name = self.bot.first_name + ' ' + self.bot.last_name
-        logging.debug(START_TEXT)
+        logger.debug(START_TEXT)
         if self.text == '/start help_inline':
             self.cmd_help_inline()
         else:
@@ -413,11 +413,11 @@ class MessageHandler(BaseHandler):
                               disable_web_page_preview=True)
 
     def cmd_kill(self):
-        logging.debug("Got /kill from %s" % self.update.message.from_user.id)
+        logger.debug("Got /kill from %s" % self.update.message.from_user.id)
         if self.update.message.from_user.id == OWNER_ID:
             # noinspection SpellCheckingInspection
             self.send_message(text=_("NOOOOO!!!"))
-            logging.debug("Sending SIGTERM to self.")
+            logger.debug("Sending SIGTERM to self.")
             import signal
             import os
             import time

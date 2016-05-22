@@ -3,10 +3,12 @@ import re
 
 import youtube_dl
 
+logger = logging.getLogger(__name__)
+
 
 def my_hook(d):
     if d['status'] == 'finished':
-        logging.debug('Done downloading, now converting ...')
+        logger.debug('Done downloading, now converting ...')
 
 
 # noinspection PyMethodMayBeStatic
@@ -31,10 +33,10 @@ class Downloader(object):
         if search:
             url = search.group(1)
             self.callback(audio=url)
-        logging.debug(msg)
+        logger.debug(msg)
 
     def warning(self, msg):
-        logging.warning(msg)
+        logger.warning(msg)
 
     def error(self, msg):
-        logging.error(msg)
+        logger.error(msg)

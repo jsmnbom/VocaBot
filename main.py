@@ -6,16 +6,17 @@ import logging.config
 from telegram.ext import Updater, InlineQueryHandler, CallbackQueryHandler, MessageHandler
 
 import handlers
-import logger
+import logconf
 from bot_api_token import TELEGRAM_BOT_API_TOKEN
 from db import db
 
-logger.start()
+logconf.start()
+logger = logging.getLogger(__name__)
 
 
 # noinspection PyUnusedLocal
 def error(bot, update, err):
-    logging.warning('Update "%s" caused error "%s"' % (update, err))
+    logger.warning('Update "%s" caused error "%s"' % (update, err))
 
 
 # noinspection PyUnusedLocal,PyIncorrectDocstring

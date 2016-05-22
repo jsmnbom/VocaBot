@@ -8,6 +8,8 @@ from cachecontrol.heuristics import ExpiresAfter
 from constants import VOCADB_API_ENDPOINT, VOCADB_USER_AGENT
 from utils import escape_bad_html
 
+logger = logging.getLogger(__name__)
+
 
 # noinspection SpellCheckingInspection
 class VocaDB(object):
@@ -24,12 +26,12 @@ class VocaDB(object):
     def base(self, api, params):
         params.update(self.opts)
         r = self.s.get(VOCADB_API_ENDPOINT + api, params=params)
-        logging.debug(r.text)
+        logger.debug(r.text)
         try:
             # Not using request json recoder since we want to strip stuff that telegram doesn't like
             data = json.loads(escape_bad_html(r.text))
         except ValueError as e:
-            logging.warning('Non-JSON returned from VocaDB API endpoint: %s', e)
+            logger.warning('Non-JSON returned from VocaDB API endpoint: %s', e)
             return None
         return data
 
