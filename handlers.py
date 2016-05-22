@@ -10,7 +10,7 @@ from telegram import (ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMark
                       InputTextMessageContent, ReplyKeyboardHide, ReplyKeyboardMarkup, KeyboardButton, ForceReply,
                       ChatAction)
 
-from constants import OWNER_ID, START_TEXT, HELP_TEXT, ABOUT_TEXT, PV_SERVICES
+from constants import OWNER_ID, START_TEXT, HELP_TEXT, ABOUT_TEXT, PV_SERVICES, INLINE_HELP_TEXT
 from db import db, VOCA_LANGS, LANGS
 from dl import Downloader
 from inter import underscore as _
@@ -406,8 +406,11 @@ class MessageHandler(BaseHandler):
     def cmd_start(self):
         bot_name = self.bot.first_name + ' ' + self.bot.last_name
         logging.debug(START_TEXT)
-        self.send_message(text=START_TEXT.format(user_name=self.name, bot_name=bot_name),
-                          disable_web_page_preview=True)
+        if self.text == '/start help_inline':
+            self.cmd_help_inline()
+        else:
+            self.send_message(text=START_TEXT.format(user_name=self.name, bot_name=bot_name),
+                              disable_web_page_preview=True)
 
     def cmd_kill(self):
         logging.debug("Got /kill from %s" % self.update.message.from_user.id)
@@ -434,6 +437,9 @@ class MessageHandler(BaseHandler):
 
     def cmd_help(self):
         self.send_message(text=HELP_TEXT.format(username=self.bot.name), disable_web_page_preview=True)
+
+    def cmd_help_inline(self):
+        self.send_message(text=INLINE_HELP_TEXT.format(self.bot.name), disable_web_page_preview=True)
 
     def cmd_about(self):
         # noinspection SpellCheckingInspection
@@ -505,7 +511,7 @@ class InlineBaseHandler(BaseHandler):
         lyrics_button = InlineKeyboardButton(_('Lyrics'), callback_data='lyrics|{}'.format(song['id']))
         share_button = InlineKeyboardButton(_('Share'),
                                             switch_inline_query='##{song_id}'.format(username=self.bot.name,
-                                                                                                song_id=song['id']))
+                                                                                     song_id=song['id']))
 
         if info:
             first_row = [lyrics_button, share_button]
@@ -536,6 +542,12 @@ class InlineQueryHandler(InlineBaseHandler):
             self.songs = [self.get_song(song_id=self.query[2:], fields='MainPicture')]
         else:
             self.get_songs(self.query, offset=self.offset, max_results=20)
+
+        if len(self.songs) < 1:
+            self.bot.answerInlineQuery(self.update.inline_query.id, results=[],
+                                       switch_pm_text='Nothing found. Tap for help.',
+                                       switch_pm_parameter='help_inline')
+            return
 
         for song in self.songs:
             try:

@@ -28,4 +28,8 @@ HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japa
 /about - display information about my creators and VocaDB
 /help - display this message
 
-You can also use my inline version outside of group chats by using {username}""")
+You can also use my inline version outside of group chats by using {username}
+/help_inline for more info about that.""")
+
+
+INLINE_HELP_TEXT = _("""Inline Help""")
