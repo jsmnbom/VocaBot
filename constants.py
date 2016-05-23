@@ -20,7 +20,6 @@ My code is open-source and available at <a href="https://github.com/bomjacob/Voc
 Telegram bot privacy mode is enabled so, <i>in group chats</i>, I can only see commands and direct replies.""").format(
     version=__version__, bot_name='{bot_name}')
 
-# TODO: Explain about the /X_X commands that you get from a results, and how to use them (ie: click 'em)
 HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japanese
 /artist - search for an artist
 /top - browse the most popular vocaloid songs

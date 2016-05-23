@@ -312,7 +312,6 @@ class MessageHandler(BaseHandler):
                 song = self.get_song(search_id, fields='PVs')
                 if song:
                     for pv in song['pVs']:
-                        # TODO: Unify weather it sends audio or just a link.
                         if pv['service'] == service:
                             self.bot.sendChatAction(chat_id=self.id, action=ChatAction.TYPING)
                             # For returning PVs
@@ -499,7 +498,7 @@ class InlineBaseHandler(BaseHandler):
         """Process the incoming update."""
 
     def keyboard(self, song, info=False):
-        # TODO: Somehow make buttons the same width if there's 3 on each row.
+        # TODO: Somehow make buttons the same width if there's 3 on each row. (only a problem on desktop .-.)
         info_button = InlineKeyboardButton(_('More Info'), callback_data='info|{}'.format(song['id']))
         lyrics_button = InlineKeyboardButton(_('Lyrics'), callback_data='lyrics|{}'.format(song['id']))
         share_button = InlineKeyboardButton(_('Share'),
