@@ -341,6 +341,9 @@ class MessageHandler(BaseHandler):
                     text += self.names_text(thing)
                     text += '\n'
                     if artist:
+                        if 'baseVoicebank' in thing:
+                            text += _('Base voicebank:') + ' /a_{}\n\n'.format(thing['baseVoicebank']['id'])
+
                         text += _('Popular songs:') + ' /a_{}_p\n'.format(thing['id'])
                         text += _('Latest songs:') + ' /a_{}_l'.format(thing['id'])
                     else:
