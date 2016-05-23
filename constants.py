@@ -31,8 +31,9 @@ HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japa
 /about - display information about my creators and VocaDB
 /help - display this message
 
-You can also use my inline version outside of group chats by using {username}
-/help_inline for more info about that.""")
+You can also use my inline version outside of group chats by using {bot_name}""")
 
-# TODO: Write proper inline help.
-INLINE_HELP_TEXT = _("""Inline Help""")
+INLINE_HELP_TEXT = _("""Hello {user_name}! I'm {bot_name}.
+I use VocaDB.net to find all your favourite Vocaloid songs and artists.
+You can use my inline version by typing {bot_user_name} followed by any vocaloid song query.
+Write /help to see a list of non-inline-commands.""")

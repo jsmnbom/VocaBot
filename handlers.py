@@ -425,10 +425,13 @@ class MessageHandler(BaseHandler):
             self.send_message(text=_("I am currently idle."), reply_markup=ReplyKeyboardHide())
 
     def cmd_help(self):
-        self.send_message(text=HELP_TEXT.format(username=self.bot.name), disable_web_page_preview=True)
+        self.send_message(text=HELP_TEXT.format(bot_name=self.bot.name), disable_web_page_preview=True)
 
     def cmd_help_inline(self):
-        self.send_message(text=INLINE_HELP_TEXT.format(self.bot.name), disable_web_page_preview=True)
+        bot_name = self.bot.first_name + ' ' + self.bot.last_name
+        self.send_message(text=INLINE_HELP_TEXT.format(bot_user_name=self.bot.name,
+                                                       bot_name=bot_name, user_name=self.name),
+                          disable_web_page_preview=True)
 
     def cmd_about(self):
         # noinspection SpellCheckingInspection
