@@ -4,7 +4,7 @@ __version__ = "0.1.1"
 VOCADB_API_ENDPOINT = "http://vocadb.net/api/"
 OWNER_ID = 95205500
 DB_FILE = 'data.sqlite'
-VOCADB_USER_AGENT = 'Telegram-VocaDBBot/{}'.format(__version__)
+VOCADB_USER_AGENT = 'Telegram-{bot_name}/{version}'.format(bot_name='{bot_name}', version=__version__)
 
 PV_SERVICES = ['SoundCloud', 'Youtube', 'NicoNicoDouga', 'Piapro', 'Vimeo', 'Bilibili']
 

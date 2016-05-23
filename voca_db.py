@@ -18,10 +18,12 @@ class VocaDB(object):
         # We cache ALL responses for 10 min. so fx. inline lyrics request don't make two calls right after eachother.
         # This MAY have unforseen consequenses, but hopefully we can deal with those.
         self.s = CacheControl(self.s, cache_etags=False, heuristic=ExpiresAfter(minutes=10))
-        self.s.headers.update({'user-agent': VOCADB_USER_AGENT})
         self.s.headers.update({'Accept': 'application/json'})
         self.opts = {'nameMatchMode': 'Auto', 'preferAccurateMatches': 'true',
                      'getTotalCount': 'true'}
+
+    def set_name(self, name):
+        self.s.headers.update({'user-agent': VOCADB_USER_AGENT.format(bot_name=name)})
 
     def base(self, api, params):
         params.update(self.opts)
@@ -72,6 +74,5 @@ class VocaDB(object):
             return d, len(data)
         else:
             return [], 0
-
 
 voca_db = VocaDB()

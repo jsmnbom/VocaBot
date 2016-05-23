@@ -9,6 +9,7 @@ import handlers
 import logconf
 from bot_api_token import TELEGRAM_BOT_API_TOKEN
 from db import db
+from voca_db import voca_db
 
 logconf.start()
 logger = logging.getLogger(__name__)
@@ -46,5 +47,7 @@ if __name__ == '__main__':
     updater = Updater(token=TELEGRAM_BOT_API_TOKEN, workers=8, job_queue_tick_interval=60)
     dp = updater.dispatcher
     queue = updater.job_queue
+
+    voca_db.set_name(updater.bot.name)
 
     main()
