@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 import logging
 import logging.config
+import os
 
 from telegram.ext import Updater, InlineQueryHandler, CallbackQueryHandler, MessageHandler
 
 import handlers
 import logconf
-from bot_api_token import TELEGRAM_BOT_API_TOKEN
 from db import db
 from voca_db import voca_db
 
@@ -44,7 +44,7 @@ def main():
 
 if __name__ == '__main__':
     # noinspection SpellCheckingInspection
-    updater = Updater(token=TELEGRAM_BOT_API_TOKEN, workers=8, job_queue_tick_interval=60)
+    updater = Updater(token=os.environ.get('VOCABOT_API_KEY'), workers=8, job_queue_tick_interval=60)
     dp = updater.dispatcher
     queue = updater.job_queue
 
