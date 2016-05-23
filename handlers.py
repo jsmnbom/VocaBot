@@ -3,7 +3,7 @@ import base64
 import logging
 import math
 import re
-from functools import partial, wraps
+from functools import wraps
 from uuid import uuid4
 
 from telegram import (ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultArticle,
@@ -12,7 +12,6 @@ from telegram import (ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMark
 
 from constants import OWNER_ID, START_TEXT, HELP_TEXT, ABOUT_TEXT, PV_SERVICES, INLINE_HELP_TEXT
 from db import db, VOCA_LANGS, LANGS
-from dl import Downloader
 from inter import underscore as _
 from voca_db import voca_db
 
@@ -315,21 +314,13 @@ class MessageHandler(BaseHandler):
                     for pv in song['pVs']:
                         # TODO: Unify weather it sends audio or just a link.
                         if pv['service'] == service:
-                            if service == 'SoundCloud':
-                                self.bot.sendChatAction(chat_id=self.id, action=ChatAction.UPLOAD_AUDIO)
-                                send_audio_partial = partial(self.send_audio, title=song['name'],
-                                                             performer=song['artistString'])
-                                dl = Downloader(callback=send_audio_partial)
-                                dl.get_link(pv['url'])
-                                return True
-                            else:
-                                self.bot.sendChatAction(chat_id=self.id, action=ChatAction.TYPING)
-                                # For returning PVs
-                                self.send_message(text=_("<b>{name}</b>\n"
-                                                         "{artists}\n{url}").format(name=song['name'],
-                                                                                    artists=song['artistString'],
-                                                                                    url=pv['url']))
-                                return True
+                            self.bot.sendChatAction(chat_id=self.id, action=ChatAction.TYPING)
+                            # For returning PVs
+                            self.send_message(text=_("<b>{name}</b>\n"
+                                                     "{artists}\n{url}").format(name=song['name'],
+                                                                                artists=song['artistString'],
+                                                                                url=pv['url']))
+                            return True
 
     def content(self, info=False, artist=False, pagination=True, err='search'):
         text = ''
