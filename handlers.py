@@ -540,7 +540,7 @@ class InlineQueryHandler(InlineBaseHandler):
 
         if len(self.songs) < 1:
             self.bot.answerInlineQuery(self.update.inline_query.id, results=[],
-                                       switch_pm_text='Nothing found. Tap for help.',
+                                       switch_pm_text='Nothing found. Click for help.',
                                        switch_pm_parameter='help_inline')
             return
 
@@ -571,7 +571,9 @@ class InlineQueryHandler(InlineBaseHandler):
                                    results=results,
                                    cache_time=30,
                                    is_personal=True,
-                                   next_offset=next_offset)
+                                   next_offset=next_offset,
+                                   switch_pm_text='Click for help.',
+                                   switch_pm_parameter='help_inline')
 
 
 class ChosenInlineResultHandler(BaseHandler):
