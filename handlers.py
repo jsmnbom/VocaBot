@@ -120,7 +120,7 @@ class BaseHandler(object):
     @staticmethod
     def names_text(song):
         if len(song['names']) > 1:
-            names = _('Additional names:\n')
+            names = _('<b>Additional names:</b>\n')
             for name in song['names']:
                 if name['value'] != song['name']:
                     names += name['value'] + '\n'
@@ -130,7 +130,7 @@ class BaseHandler(object):
 
     def artists_text(self, song):
         if len(song['artists']) > 0:
-            artists = _('Artists:\n')
+            artists = _('<b>Artists:</b>\n')
             for artist in song['artists']:
                 roles = []
                 for role in artist['effectiveRoles'].split(', '):
@@ -218,16 +218,16 @@ class BaseHandler(object):
                     if artist:
                         if not self.inline:
                             if 'baseVoicebank' in thing:
-                                text += _('Base voicebank:') + ' /a_{}\n\n'.format(thing['baseVoicebank']['id'])
+                                text += _('<b>Base voicebank:</b>') + ' /a_{}\n\n'.format(thing['baseVoicebank']['id'])
                     else:
                         if not self.inline:
-                            text += _('Derived songs:') + ' /dev_{}\n'.format(thing['id'])
+                            text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(thing['id'])
                             text += '\n'
                             text += self.artists_text(thing)
 
                             if 'originalVersionId' in thing:
                                 text += '\n'
-                                text += _('Original song:') + ' /info_{}\n'.format(thing['originalVersionId'])
+                                text += _('<b>Original song:</b>') + ' /info_{}\n'.format(thing['originalVersionId'])
 
                         if thing['pvServices'] == 'Nothing':
                             text += _('\nNo promotional videos found')
