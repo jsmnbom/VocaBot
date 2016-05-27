@@ -38,7 +38,7 @@ class VocaDB(object):
         return data
 
     def songs(self, query, lang, offset=0, max_results=10, sort='FavoritedTimes', artist_id=''):
-        payload = {'query': query, 'lang': lang, 'start': offset or 0, 'fields': 'MainPicture',
+        payload = {'query': query, 'lang': lang, 'start': offset or 0, 'fields': 'MainPicture, Names, Artists',
                    'maxResults': max_results, 'sort': sort, 'artistId': artist_id}
         data = self.base('songs', payload)
         if data:
@@ -51,7 +51,7 @@ class VocaDB(object):
         return data
 
     def artists(self, query, lang, offset=0, max_results=10, sort='FollowerCount'):
-        payload = {'query': query, 'lang': lang, 'start': offset or 0, 'fields': 'MainPicture',
+        payload = {'query': query, 'lang': lang, 'start': offset or 0, 'fields': 'MainPicture, Names',
                    'maxResults': max_results, 'sort': sort}
         data = self.base('artists', payload)
         if data:
@@ -63,14 +63,14 @@ class VocaDB(object):
         data = self.base('artists/{}'.format(artist_id), payload)
         return data
 
-    def derived(self, song_id, lang, max_results=10, offset=1):
+    def derived(self, song_id, lang, max_results=10, offset=0):
         payload = {'fields': 'MainPicture', 'lang': lang}
         data = self.base('songs/{}/derived'.format(song_id), payload)
         if data:
-            m = offset + max_results - 1
+            m = offset + max_results
             if m > len(data):
-                m = offset + ((len(data) - offset) % max_results) - 1
-            d = data[offset - 1:m]
+                m = offset + ((len(data) - offset) % max_results)
+            d = data[offset:m]
             return d, len(data)
         else:
             return [], 0

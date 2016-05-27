@@ -38,24 +38,24 @@ class DBManager(object):
         self.c.execute("ALTER TABLE options ADD COLUMN 'voca_lang' INTEGER")
 
         # Current operation with chat
-        self.c.execute("CREATE TABLE current (chat_id INTEGER PRIMARY KEY)")
-        self.c.execute("ALTER TABLE current ADD COLUMN 'current' STRING")
-        self.c.execute("ALTER TABLE current ADD COLUMN 'data' STRING")
+        self.c.execute("CREATE TABLE state (chat_id STRING PRIMARY KEY)")
+        self.c.execute("ALTER TABLE state ADD COLUMN 'state' STRING")
+        self.c.execute("ALTER TABLE state ADD COLUMN 'data' STRING")
         self.conn.commit()
 
-    def update_current(self, chat_id, current, data=''):
-        self.c.execute("INSERT OR REPLACE INTO current VALUES (?, ?, ?)", (chat_id, current, data))
+    def update_state(self, chat_id, current, data=''):
+        self.c.execute("INSERT OR REPLACE INTO state VALUES (?, ?, ?)", (chat_id, current, data))
 
-    def get_current(self, chat_id):
-        self.c.execute("SELECT current,data FROM current WHERE chat_id=?", (chat_id,))
+    def get_state(self, chat_id):
+        self.c.execute("SELECT state,data FROM state WHERE chat_id=?", (chat_id,))
         try:
             fetch = self.c.fetchone()
         except TypeError:
             return None
         return fetch
 
-    def remove_current(self, chat_id):
-        self.c.execute("DELETE FROM current WHERE chat_id=?", (chat_id,))
+    def remove_state(self, chat_id):
+        self.c.execute("DELETE FROM state WHERE chat_id=?", (chat_id,))
 
     def set_lang(self, chat_id, lang):
         self.c.execute("INSERT OR REPLACE INTO options (chat_id,lang) VALUES (?,?)", (chat_id, lang))
