@@ -160,22 +160,23 @@ class BaseHandler(object):
         if artist:
             share = (_('Share artist'), '##a#{}')
             if self.inline:
-                keyboard[-1].append(InlineKeyboardButton(text=_('Share popular songs'),
-                                                         switch_inline_query='##ap#{}'.format(thing['id'])))
-                keyboard[-1].append(InlineKeyboardButton(text=_('Share latest songs'),
+                keyboard[-1].append(
+                    InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Share popular songs'),
+                                         switch_inline_query='##ap#{}'.format(thing['id'])))
+                keyboard[-1].append(InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Share latest songs'),
                                                          switch_inline_query='##al#{}'.format(thing['id'])))
             else:
-                keyboard[-1].append(InlineKeyboardButton(text=_('Popular songs'),
+                keyboard[-1].append(InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular songs'),
                                                          callback_data='alist|p|{}'.format(thing['id'])))
-                keyboard[-1].append(InlineKeyboardButton(text=_('Latest songs'),
+                keyboard[-1].append(InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest songs'),
                                                          callback_data='alist|l|{}'.format(thing['id'])))
         else:
             share = (_('Share song'), '##{}')
 
-            keyboard[-1].append(InlineKeyboardButton(text=_('Lyrics'),
+            keyboard[-1].append(InlineKeyboardButton(text=Emoji.SCROLL + _('Lyrics'),
                                                      callback_data='ly|{}'.format(thing['id'])))
             if self.inline:
-                keyboard[-1].append(InlineKeyboardButton(text=_('Artist info'),
+                keyboard[-1].append(InlineKeyboardButton(text=Emoji.MICROPHONE + _('Artist info'),
                                                          callback_data='ainfo|{}'.format(thing['id'])))
 
             if not thing['pvServices'] == 'Nothing':
@@ -183,7 +184,7 @@ class BaseHandler(object):
                 for service in PV_SERVICES:
                     if service in thing['pvServices']:
                         data = 'pv|{}|{}'.format(service, thing['id'])
-                        keyboard[-1].append(InlineKeyboardButton(text=service,
+                        keyboard[-1].append(InlineKeyboardButton(text=Emoji.MOVIE_CAMERA + service,
                                                                  callback_data=data))
 
         keyboard.append([])
@@ -741,7 +742,8 @@ class CallbackQueryHandler(BaseHandler):
             except KeyError:
                 pass
         artist_buttons = partition(artist_buttons)
-        artist_buttons.append([InlineKeyboardButton(text=_('Back'), callback_data='s|{}'.format(self.data[1]))])
+        artist_buttons.append([InlineKeyboardButton(text=Emoji.BACK_WITH_LEFTWARDS_ARROW_ABOVE + _('Back'),
+                                                    callback_data='s|{}'.format(self.data[1]))])
 
         self.edit_message(text=_('{base}{artist_text}\n'
                                  'Choose an artist.').format(base=content[0],
@@ -758,7 +760,7 @@ class CallbackQueryHandler(BaseHandler):
     def artist(self):
         artist = self.get_artist(artist_id=self.data[1], fields='MainPicture, Names')
         content = self.content(things=[artist], artist=True, info=True, pagination=False)
-        content[2].inline_keyboard.append([InlineKeyboardButton(text=_('Back'),
+        content[2].inline_keyboard.append([InlineKeyboardButton(text=Emoji.BACK_WITH_LEFTWARDS_ARROW_ABOVE + _('Back'),
                                                                 callback_data='ainfo|{}'.format(self.data[2]))])
         self.edit_message(text=content[0], reply_markup=content[2])
         self.bot.answerCallbackQuery(self.query_id, text="")
