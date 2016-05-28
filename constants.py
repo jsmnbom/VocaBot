@@ -28,6 +28,7 @@ HELP_TEXT = _("""/search - search for a vocaloid song in Romaji, English or Japa
 /set_voca_lang - change what language titles and artists are displayed in
 /cancel - cancel current operation
 /about - display information about my creators and VocaDB
+/settings - display or change settings
 /help - display this message
 
 You can also use my inline version outside of group chats by using {bot_name}""")
