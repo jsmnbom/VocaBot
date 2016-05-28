@@ -630,7 +630,6 @@ class CallbackQueryHandler(BaseHandler):
             extra = None
             state = db.get_state(str(self.chat_id) + '|' + str(self.msg_id))
             if state:
-                db.remove_state(str(self.chat_id) + '|' + str(self.msg_id))
                 self.text = base64.b64decode(state[1]).decode('utf-8')
             if self.data[3] and self.data[3] != 'None':
                 self.text = self.data[3]
