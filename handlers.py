@@ -390,7 +390,7 @@ class MessageHandler(BaseHandler):
 
             elif self.text.startswith('/dev_'):
                 self.text = search_id
-                msg_id = self.paged('derived')
+                msg_id = self.paged('derived', extra=self.text)
 
                 db.update_state(msg_id, 'derived',
                                 base64.b64encode(search_id.encode('utf-8')))
@@ -632,7 +632,7 @@ class CallbackQueryHandler(BaseHandler):
             if state:
                 db.remove_state(str(self.chat_id) + '|' + str(self.msg_id))
                 self.text = base64.b64decode(state[1]).decode('utf-8')
-            elif self.data[2]:
+            if self.data[3] and self.data[3] != 'None':
                 self.text = self.data[3]
                 extra = self.data[3]
             self.offset = int(self.data[2]) * 3
