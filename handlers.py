@@ -9,7 +9,7 @@ from uuid import uuid4
 from telegram import ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardHide, ForceReply, \
     ReplyKeyboardMarkup, KeyboardButton, InlineQueryResultArticle, InputTextMessageContent
 
-from constants import PV_SERVICES, START_TEXT, HELP_TEXT, INLINE_HELP_TEXT, OWNER_ID, ABOUT_TEXT
+from constants import PV_SERVICES, START_TEXT, HELP_TEXT, INLINE_HELP_TEXT, OWNER_ID, ABOUT_TEXT, SETTINGS_TEXT
 from db import db, VOCA_LANGS, LANGS
 from inter import underscore as _
 from voca_db import voca_db
@@ -238,13 +238,6 @@ class BaseHandler(object):
                             text += _('\nInfo: ') + ' /a_{}'.format(thing['id'])
                         else:
                             text += _('\nInfo and lyrics:') + ' /info_{}'.format(thing['id'])
-
-            if pagination:
-                if self.total > 0:
-                    text += '\n\n'
-                    text += _('Page:') + ' {}/{}\n'.format(math.ceil(self.offset / 3) + 1, math.ceil(self.total / 3))
-                    if not self.offset + 3 < self.total:
-                        text += _('End of results.\n\n')
         else:
             if err == 'search':
                 text = _("I couldn't find what you were looking for. Did you misspell it?")
@@ -273,13 +266,22 @@ class BaseHandler(object):
         elif operation == 'derived':
             self.get_derived(song_id=self.text, max_results=3, offset=self.offset)
 
-        if self.offset + 3 < self.total:
-            keyboard = InlineKeyboardMarkup([[
-                InlineKeyboardButton(_('Next page'),
-                                     callback_data='paged|{}|{}|{}'.format(operation, math.ceil(self.offset / 3) + 1,
-                                                                           extra))]])
-        else:
-            keyboard = None
+        # We might have to use floor and then +1 here.. not sure
+        page = math.ceil(self.offset / 3)
+        base_data = 'paged|{}|{}|{}'.format(operation, '{}', extra)
+        # And then simply floor here.
+        last_page = math.ceil(self.total / 3) - 1
+        keyboard = [InlineKeyboardButton('⪡ 1',
+                                         callback_data=base_data.format(0) if page > 0 else 'paged'),
+                    InlineKeyboardButton('< {}'.format(page if page > 0 else 1),
+                                         callback_data=base_data.format((page - 1)) if page > 0 else 'paged'),
+                    InlineKeyboardButton('•{}•'.format(page + 1),
+                                         callback_data='paged'),
+                    InlineKeyboardButton('{} >'.format(page + 2),
+                                         callback_data=base_data.format(page + 1) if page < last_page else 'paged'),
+                    InlineKeyboardButton('{} ⪢'.format(last_page + 1),
+                                         callback_data=base_data.format(last_page) if page < last_page else 'paged')]
+        keyboard = InlineKeyboardMarkup([keyboard])
 
         if operation == 'artist':
             content = self.content(artist=True)[0]
@@ -496,6 +498,16 @@ class MessageHandler(BaseHandler):
         self.send_message(text=_("What language or personality module would you like?"),
                           reply_markup=reply_keyboard)
 
+    def cmd_settings(self):
+        if self.type == 'private':
+            lang = db.get_lang(self.from_id)
+            voca_lang = db.get_voca_lang(self.from_id)
+        else:
+            lang = db.get_lang(self.id)
+            voca_lang = db.get_voca_lang(self.id)
+        self.send_message(text=SETTINGS_TEXT.format(bot_name=self.bot.name, lang=lang, voca_lang=voca_lang,
+                                                    type=_('User') if self.type == 'private' else _('Chat')))
+
 
 class InlineQueryHandler(BaseHandler):
     def __init__(self, bot, update):
@@ -614,6 +626,9 @@ class CallbackQueryHandler(BaseHandler):
 
     def _process(self):
         if self.data[0] == 'paged':
+            if len(self.data) == 1:
+                self.bot.answerCallbackQuery(self.query_id, text="")
+                return
             extra = None
             state = db.get_state(str(self.chat_id) + '|' + str(self.msg_id))
             if state:
@@ -624,6 +639,7 @@ class CallbackQueryHandler(BaseHandler):
                 extra = self.data[3]
             self.offset = int(self.data[2]) * 3
             self.paged(self.data[1], edit=True, extra=extra)
+            self.bot.answerCallbackQuery(self.query_id, text="")
         elif self.data[0] == 'ly':
             self.lyrics()
         elif self.data[0] == 'ly2':

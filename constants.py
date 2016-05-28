@@ -36,3 +36,13 @@ INLINE_HELP_TEXT = _("""Hello {user_name}! I'm {bot_name}.
 I use VocaDB.net to find all your favourite Vocaloid songs and artists.
 You can use my inline version by typing {bot_user_name} followed by any vocaloid song query.
 Write /help to see a list of non-inline-commands.""")
+
+SETTINGS_TEXT = _("""<b>Settings for {bot_name}</b>
+<i>{type}</i>&#8201;&#8201;interface language: <code>{lang}</code>
+Change: /set_lang
+
+<i>{type}</i>&#8201;&#8201;incaDB language: <code>{voca_lang}</code>
+Change: /set_voca_lang
+
+VocaDB language is the language used for song and artist titles.
+<i>User</i>&#8201;&#8201;language is used for private messages and inline requests whereas <i>chat</i>&#8201;&#8201;language is the language used in the current group chat.""")
