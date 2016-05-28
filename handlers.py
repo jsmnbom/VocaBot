@@ -193,7 +193,7 @@ class BaseHandler(object):
         return InlineKeyboardMarkup(keyboard)
 
     # noinspection PyTypeChecker
-    def content(self, info=False, artist=False, err='search', things=None, pagination=True):
+    def content(self, info=False, artist=False, err='search', things=None):
         text = ''
         status = 0
         if not things:
@@ -548,7 +548,7 @@ class InlineQueryHandler(BaseHandler):
             except KeyError:
                 thumb = ''
 
-            content = self.content(things=[artist], artist=True, info=True, pagination=False)
+            content = self.content(things=[artist], artist=True, info=True)
             # noinspection SpellCheckingInspection
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
@@ -566,7 +566,7 @@ class InlineQueryHandler(BaseHandler):
             except KeyError:
                 thumb = ''
 
-            content = self.content(things=[song], info=True, pagination=False)
+            content = self.content(things=[song], info=True)
             # noinspection SpellCheckingInspection
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
@@ -689,7 +689,7 @@ class CallbackQueryHandler(BaseHandler):
         for lyric in song['lyrics']:
             if lyric['language'] == self.data[1]:
                 if self.inline:
-                    content = self.content(info=True, things=[song], pagination=False)
+                    content = self.content(info=True, things=[song])
                     if self.edit_message(text=_('{base}{lang} lyrics:\n'
                                                 '{lyrics}').format(base=content[0],
                                                                    lang=lyric['language'],
@@ -714,7 +714,7 @@ class CallbackQueryHandler(BaseHandler):
         for pv in song['pVs']:
             if pv['service'] == self.data[1]:
                 if self.inline:
-                    content = self.content(info=True, things=[song], pagination=False)
+                    content = self.content(info=True, things=[song])
                     if self.edit_message(text=_('{base}{service} PV Title:\n{name}\n'
                                                 '{url}').format(base=content[0],
                                                                 service=pv['service'],
@@ -747,7 +747,7 @@ class CallbackQueryHandler(BaseHandler):
 
     def ainfo(self):
         song = self.get_song(self.data[1], fields='Names, Lyrics, Artists')
-        content = self.content(info=True, things=[song], pagination=False)
+        content = self.content(info=True, things=[song])
 
         artist_buttons = []
         for artist in song['artists']:
@@ -769,13 +769,13 @@ class CallbackQueryHandler(BaseHandler):
 
     def song(self):
         song = self.get_song(song_id=self.data[1], fields='MainPicture, Names, Artists')
-        content = self.content(things=[song], info=True, pagination=False)
+        content = self.content(things=[song], info=True)
         self.edit_message(text=content[0], reply_markup=content[2])
         self.bot.answerCallbackQuery(self.query_id, text="")
 
     def artist(self):
         artist = self.get_artist(artist_id=self.data[1], fields='MainPicture, Names')
-        content = self.content(things=[artist], artist=True, info=True, pagination=False)
+        content = self.content(things=[artist], artist=True, info=True)
         content[2].inline_keyboard.append([InlineKeyboardButton(text=Emoji.BACK_WITH_LEFTWARDS_ARROW_ABOVE + _('Back'),
                                                                 callback_data='ainfo|{}'.format(self.data[2]))])
         self.edit_message(text=content[0], reply_markup=content[2])
