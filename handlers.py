@@ -6,8 +6,8 @@ import re
 from functools import wraps
 from uuid import uuid4
 
-from telegram import ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardHide, ForceReply, \
-    ReplyKeyboardMarkup, KeyboardButton, InlineQueryResultArticle, InputTextMessageContent
+from telegram import (ParseMode, Emoji, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardHide, ForceReply,
+                      ReplyKeyboardMarkup, KeyboardButton, InlineQueryResultArticle, InputTextMessageContent)
 
 from constants import PV_SERVICES, START_TEXT, HELP_TEXT, INLINE_HELP_TEXT, OWNER_ID, ABOUT_TEXT, SETTINGS_TEXT
 from db import db, VOCA_LANGS, LANGS
@@ -195,7 +195,6 @@ class BaseHandler(object):
     # noinspection PyTypeChecker
     def content(self, info=False, artist=False, err='search', things=None):
         text = ''
-        status = 0
         if not things:
             if artist:
                 things = self.artists
@@ -243,12 +242,11 @@ class BaseHandler(object):
                 text = _("I couldn't find what you were looking for. Did you misspell it?")
             elif err == 'derived':
                 text = _("No derived songs found.")
-            status = -1
 
         if info:
-            return text, status, self.keyboard(things[0], artist)
+            return text, self.keyboard(things[0], artist)
         else:
-            return text, status, None
+            return text, None
 
     def paged(self, operation, edit=False, extra=None):
         if operation == 'search':
@@ -372,7 +370,7 @@ class MessageHandler(BaseHandler):
             if self.text.startswith('/info_'):
                 self.songs = [self.get_song(search_id, fields='Names, Lyrics, Artists')]
                 content = self.content(info=True)
-                self.send_message(text=content[0], reply_markup=content[2])
+                self.send_message(text=content[0], reply_markup=content[1])
 
             elif self.text.startswith('/ly_'):
                 song = self.get_song(search_id, fields='Names, Lyrics, Artists')
@@ -388,7 +386,7 @@ class MessageHandler(BaseHandler):
             elif self.text.startswith('/a_'):
                 self.artists = [self.get_artist(search_id, fields='Names')]
                 content = self.content(info=True, artist=True)
-                self.send_message(text=content[0], reply_markup=content[2])
+                self.send_message(text=content[0], reply_markup=content[1])
 
             elif self.text.startswith('/dev_'):
                 self.text = search_id
@@ -557,7 +555,7 @@ class InlineQueryHandler(BaseHandler):
                 thumb_url=thumb,
                 input_message_content=InputTextMessageContent(content[0],
                                                               parse_mode=ParseMode.HTML),
-                reply_markup=content[2]
+                reply_markup=content[1]
             ))
 
         for song in self.songs:
@@ -577,7 +575,7 @@ class InlineQueryHandler(BaseHandler):
                 thumb_url=thumb,
                 input_message_content=InputTextMessageContent(content[0],
                                                               parse_mode=ParseMode.HTML),
-                reply_markup=content[2]
+                reply_markup=content[1]
             ))
 
         if len(self.songs) < 20 or self.offset == '':
@@ -694,7 +692,7 @@ class CallbackQueryHandler(BaseHandler):
                                                 '{lyrics}').format(base=content[0],
                                                                    lang=lyric['language'],
                                                                    lyrics=lyric['value']),
-                                         reply_markup=content[2]):
+                                         reply_markup=content[1]):
                         self.bot.answerCallbackQuery(self.query_id, text="Success!")
                     else:
                         self.bot.answerCallbackQuery(self.query_id, text="Failed...")
@@ -720,7 +718,7 @@ class CallbackQueryHandler(BaseHandler):
                                                                 service=pv['service'],
                                                                 name=pv['name'],
                                                                 url=pv['url']),
-                                         reply_markup=content[2]):
+                                         reply_markup=content[1]):
                         self.bot.answerCallbackQuery(self.query_id, text=_("Success!"))
                     else:
                         self.bot.answerCallbackQuery(self.query_id, text="Failed...")
@@ -770,13 +768,13 @@ class CallbackQueryHandler(BaseHandler):
     def song(self):
         song = self.get_song(song_id=self.data[1], fields='MainPicture, Names, Artists')
         content = self.content(things=[song], info=True)
-        self.edit_message(text=content[0], reply_markup=content[2])
+        self.edit_message(text=content[0], reply_markup=content[1])
         self.bot.answerCallbackQuery(self.query_id, text="")
 
     def artist(self):
         artist = self.get_artist(artist_id=self.data[1], fields='MainPicture, Names')
         content = self.content(things=[artist], artist=True, info=True)
-        content[2].inline_keyboard.append([InlineKeyboardButton(text=Emoji.BACK_WITH_LEFTWARDS_ARROW_ABOVE + _('Back'),
+        content[1].inline_keyboard.append([InlineKeyboardButton(text=Emoji.BACK_WITH_LEFTWARDS_ARROW_ABOVE + _('Back'),
                                                                 callback_data='ainfo|{}'.format(self.data[2]))])
-        self.edit_message(text=content[0], reply_markup=content[2])
+        self.edit_message(text=content[0], reply_markup=content[1])
         self.bot.answerCallbackQuery(self.query_id, text="")
