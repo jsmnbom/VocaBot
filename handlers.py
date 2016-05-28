@@ -271,11 +271,11 @@ class BaseHandler(object):
         last_page = math.ceil(self.total / 3) - 1
         keyboard = [InlineKeyboardButton('⪡ 1',
                                          callback_data=base_data.format(0) if page > 0 else 'paged'),
-                    InlineKeyboardButton('< {}'.format(page if page > 0 else 1),
+                    InlineKeyboardButton('< {}'.format(page) if page > 0 else ' ',
                                          callback_data=base_data.format((page - 1)) if page > 0 else 'paged'),
                     InlineKeyboardButton('•{}•'.format(page + 1),
                                          callback_data='paged'),
-                    InlineKeyboardButton('{} >'.format(page + 2),
+                    InlineKeyboardButton('{} >'.format(page + 2) if page < last_page else ' ',
                                          callback_data=base_data.format(page + 1) if page < last_page else 'paged'),
                     InlineKeyboardButton('{} ⪢'.format(last_page + 1),
                                          callback_data=base_data.format(last_page) if page < last_page else 'paged')]
