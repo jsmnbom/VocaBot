@@ -239,9 +239,9 @@ class BaseHandler(object):
                             text += _('\nInfo and lyrics:') + ' /info_{}'.format(thing['id'])
         else:
             if err == 'search':
-                text = _("I couldn't find what you were looking for. Did you misspell it?")
+                return _("I couldn't find what you were looking for. Did you misspell it?"), -1
             elif err == 'derived':
-                text = _("No derived songs found.")
+                return _("No derived songs found."), -1
 
         if info:
             return text, self.keyboard(things[0], artist)
@@ -282,14 +282,17 @@ class BaseHandler(object):
         keyboard = InlineKeyboardMarkup([keyboard])
 
         if operation == 'artist':
-            content = self.content(artist=True)[0]
+            content = self.content(artist=True)
         else:
-            content = self.content(err=operation)[0]
+            content = self.content(err=operation)
+
+        if content[1] == -1:
+            keyboard = None
 
         if edit:
-            msg = self.edit_message(text=content, reply_markup=keyboard)
+            msg = self.edit_message(text=content[0], reply_markup=keyboard)
         else:
-            msg = self.send_message(text=content, reply_markup=keyboard)
+            msg = self.send_message(text=content[0], reply_markup=keyboard)
 
         return str(msg.chat_id) + '|' + str(msg.message_id)
 
