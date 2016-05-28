@@ -1,6 +1,6 @@
 from inter import underscore as _
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 VOCADB_API_ENDPOINT = "http://vocadb.net/api/"
 OWNER_ID = 95205500
 DB_FILE = 'data.sqlite'
