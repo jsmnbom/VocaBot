@@ -80,6 +80,10 @@ class BaseHandler(object):
     def get_derived(self, *args, **kwargs):
         self.songs, self.total = voca_db.derived(*args, lang=self.voca_lang, **kwargs)
 
+    @with_voca_lang
+    def get_related(self, *args, **kwargs):
+        self.songs, self.total = voca_db.related(*args, lang=self.voca_lang, **kwargs)
+
     def send_message(self, text=None, **kwargs):
         return self.bot.sendMessage(chat_id=self.id, text=text, parse_mode=ParseMode.HTML, **kwargs)
 
@@ -202,8 +206,17 @@ class BaseHandler(object):
                 things = self.songs
 
         if len(things) > 0:
-            for thing in things:
+            for i, thing in enumerate(things):
                 text += '\n\n'
+
+                if err == 'related':
+                    if i == 0:
+                        text += _('<i>Matching artist</i>')
+                    elif i == 1:
+                        text += _('<i>Matching likes</i>')
+                    elif i == 2:
+                        text += _('<i>Matching tags</i>')
+                    text += '\n'
 
                 if artist:
                     text += '{} {}'.format(Emoji.MICROPHONE, self.base_content_artist(thing))
@@ -221,6 +234,7 @@ class BaseHandler(object):
                     else:
                         if not self.inline:
                             text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(thing['id'])
+                            text += _('<b>Related songs:</b>') + ' /rel_{}\n'.format(thing['id'])
                             text += '\n'
                             text += self.artists_text(thing)
 
@@ -242,6 +256,8 @@ class BaseHandler(object):
                 return _("I couldn't find what you were looking for. Did you misspell it?"), -1
             elif err == 'derived':
                 return _("No derived songs found."), -1
+            elif err == 'related':
+                return _("No related songs found."), -1
 
         if info:
             return text, self.keyboard(things[0], artist)
@@ -263,6 +279,8 @@ class BaseHandler(object):
             self.get_songs('', artist_id=self.text, max_results=3, offset=self.offset, sort='PublishDate')
         elif operation == 'derived':
             self.get_derived(song_id=self.text, max_results=3, offset=self.offset)
+        elif operation == 'related':
+            self.get_related(song_id=self.text, offset=math.ceil(self.offset / 3))
 
         # We might have to use floor and then +1 here.. not sure
         page = math.ceil(self.offset / 3)
@@ -397,6 +415,12 @@ class MessageHandler(BaseHandler):
 
                 db.update_state(msg_id, 'derived',
                                 base64.b64encode(search_id.encode('utf-8')))
+            elif self.text.startswith('/rel_'):
+                self.text = search_id
+                msg_id = self.paged('related', extra=self.text)
+
+                db.update_state(msg_id, 'related',
+                                base64.b64encode(search_id.encode('utf-8')))
             else:
                 self.unknown_cmd()
         else:
@@ -489,7 +513,8 @@ class MessageHandler(BaseHandler):
         db.update_state(self.id, 'set_voca_lang')
         reply_keyboard = ReplyKeyboardMarkup([[KeyboardButton(lang) for lang in VOCA_LANGS]],
                                              resize_keyboard=True)
-        self.send_message(text=_("What language would you like titles and artist names to be written in?"),
+        self.send_message(text=_("What language would you like titles and artist names to be written in?\n"
+                                 "<code>Default</code> refers to the language the artist indented."),
                           reply_markup=reply_keyboard)
 
     def cmd_set_lang(self):

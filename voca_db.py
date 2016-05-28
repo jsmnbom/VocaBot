@@ -75,4 +75,18 @@ class VocaDB(object):
         else:
             return [], 0
 
+    def related(self, song_id, lang, offset=0):
+        payload = {'fields': 'MainPicture', 'lang': lang}
+        data = self.base('songs/{}/related'.format(song_id), payload)
+        if data:
+            r = []
+            smallest = 100
+            for match_type in ['artistMatches', 'likeMatches', 'tagMatches']:
+                r.append(data[match_type][offset])
+                smallest = len(data[match_type]) if len(data[match_type]) < smallest else smallest
+            return r, smallest * 3
+        else:
+            return [], 0
+
+
 voca_db = VocaDB()
