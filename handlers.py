@@ -89,7 +89,6 @@ class BaseHandler(object):
 
     def edit_message(self, text, reply_markup=None):
         try:
-
             if self.inline:
                 return self.bot.editMessageText(inline_message_id=self.inline_id,
                                                 text=text,
@@ -692,21 +691,17 @@ class CallbackQueryHandler(BaseHandler):
                             for lyrics in song['lyrics']]
 
             if self.inline:
-                if self.edit_message(
-                        text=_('{base}\n\nWhat language would you like the lyrics in?').format(
-                            base=self.base_content_song(song)),
-                        reply_markup=InlineKeyboardMarkup([lang_buttons])):
-                    self.bot.answerCallbackQuery(self.query_id, text="")
-                else:
-                    self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                self.edit_message(
+                    text=_('{base}\n\nWhat language would you like the lyrics in?').format(
+                        base=self.base_content_song(song)),
+                    reply_markup=InlineKeyboardMarkup([lang_buttons]))
+                self.bot.answerCallbackQuery(self.query_id, text="")
             else:
-                if self.send_message(text=_('What language would you like the lyrics '
-                                            'for {song} by {artist} in?').format(song=song['name'],
-                                                                                 artist=song['artistString']),
-                                     reply_markup=InlineKeyboardMarkup([lang_buttons])):
-                    self.bot.answerCallbackQuery(self.query_id, text="")
-                else:
-                    self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                self.send_message(text=_('What language would you like the lyrics '
+                                         'for {song} by {artist} in?').format(song=song['name'],
+                                                                              artist=song['artistString']),
+                                  reply_markup=InlineKeyboardMarkup([lang_buttons]))
+                self.bot.answerCallbackQuery(self.query_id, text="")
 
     def lyrics2(self):
         song = self.get_song(self.data[2], 'Names, Lyrics, Artists')
@@ -714,23 +709,19 @@ class CallbackQueryHandler(BaseHandler):
             if lyric['language'] == self.data[1]:
                 if self.inline:
                     content = self.content(info=True, things=[song])
-                    if self.edit_message(text=_('{base}{lang} lyrics:\n'
+                    self.edit_message(text=_('{base}{lang} lyrics:\n'
                                                 '{lyrics}').format(base=content[0],
                                                                    lang=lyric['language'],
                                                                    lyrics=lyric['value']),
-                                         reply_markup=content[1]):
-                        self.bot.answerCallbackQuery(self.query_id, text="Success!")
-                    else:
-                        self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                                      reply_markup=content[1])
+                    self.bot.answerCallbackQuery(self.query_id, text="")
                 else:
-                    if self.edit_message(text=_('<b>{lang} lyrics for {song} by {artist}:</b>\n'
+                    self.edit_message(text=_('<b>{lang} lyrics for {song} by {artist}:</b>\n'
                                                 '{lyrics}').format(song=song['name'],
                                                                    artist=song['artistString'],
                                                                    lang=lyric['language'],
-                                                                   lyrics=lyric['value'])):
-                        self.bot.answerCallbackQuery(self.query_id, text="Success!")
-                    else:
-                        self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                                                                   lyrics=lyric['value']))
+                    self.bot.answerCallbackQuery(self.query_id, text="")
 
     def pv(self):
         # TODO: If there's several from the same service... do something... about it...
@@ -739,25 +730,21 @@ class CallbackQueryHandler(BaseHandler):
             if pv['service'] == self.data[1]:
                 if self.inline:
                     content = self.content(info=True, things=[song])
-                    if self.edit_message(text=_('{base}{service} PV Title:\n{name}\n'
+                    self.edit_message(text=_('{base}{service} PV Title:\n{name}\n'
                                                 '{url}').format(base=content[0],
                                                                 service=pv['service'],
                                                                 name=pv['name'],
                                                                 url=pv['url']),
-                                         reply_markup=content[1]):
-                        self.bot.answerCallbackQuery(self.query_id, text=_("Success!"))
-                    else:
-                        self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                                      reply_markup=content[1])
+                    self.bot.answerCallbackQuery(self.query_id, text="")
                 else:
-                    if self.send_message(text=_('<b>{service} PV for {song} by {artist}</b>\nPV Title:\n{name}\n'
+                    self.send_message(text=_('<b>{service} PV for {song} by {artist}</b>\nPV Title:\n{name}\n'
                                                 '{url}').format(song=song['name'],
                                                                 artist=song['artistString'],
                                                                 service=pv['service'],
                                                                 name=pv['name'],
-                                                                url=pv['url'])):
-                        self.bot.answerCallbackQuery(self.query_id, text="Success!")
-                    else:
-                        self.bot.answerCallbackQuery(self.query_id, text="Failed...")
+                                                                url=pv['url']))
+                    self.bot.answerCallbackQuery(self.query_id, text="")
                 return  # We only want the first match
 
     def alist(self):
