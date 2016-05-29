@@ -235,12 +235,11 @@ class BaseHandler(object):
                         if not self.inline:
                             text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(thing['id'])
                             text += _('<b>Related songs:</b>') + ' /rel_{}\n'.format(thing['id'])
-                            text += '\n'
-                            text += self.artists_text(thing)
-
                             if 'originalVersionId' in thing:
                                 text += '\n'
                                 text += _('<b>Original song:</b>') + ' /info_{}\n'.format(thing['originalVersionId'])
+                            text += '\n'
+                            text += self.artists_text(thing)
 
                         if thing['pvServices'] == 'Nothing':
                             text += _('\nNo promotional videos found')
