@@ -1,0 +1,6 @@
+{
+  "name": "Vocabot",
+  "tagline": "Vocaloid Bot for the Telegram Messenger",
+  "body": "# VocaBot\r\nVocaloid Bot for the Telegram Messenger\r\n\r\nUses data from [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)). Click [here](http://wiki.vocadb.net/wiki/29/license) for licensing information.\r\n\r\n##How to use\r\n###Easy method\r\nUse from telegram via [@VocaDBBot](https://telegram.me/VocaDBBot) (temporary name).\r\n\r\n###Set up yourself\r\nYou can also run the bot yourself by following these steps:\r\n\r\n1. Install python 3, clone repository and install requirements via pip\r\n2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT-TOKEN` environment variable. If you want botan tracking (optional) put your token `VOCABOT-BOTAN-TOKEN`\r\n3. Run `$ python3 main.py`\r\n\r\n#Thanks to\r\n* [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)) and all the amazing editors on there\r\n* [@Cawthorned](https://github.com/Cawthorned) for translations/personality modules (not currently implemented)\r\n* and let's not forget [https://github.com/python-telegram-bot/python-telegram-bot](python-telegram-bot)\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
