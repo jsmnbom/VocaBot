@@ -1,0 +1,20 @@
+# VocaBot
+Vocaloid Bot for the Telegram Messenger
+
+Uses data from [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)). Click [here](http://wiki.vocadb.net/wiki/29/license) for licensing information.
+
+##How to use
+###Easy method
+Use from telegram via [@VocaDBBot](https://telegram.me/VocaDBBot) (temporary name).
+
+###Set up yourself
+You can also run the bot yourself by following these steps:
+
+1. Install python 3, clone repository and install requirements via pip
+2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT-TOKEN` environment variable. If you want botan tracking (optional) put your token `VOCABOT-BOTAN-TOKEN`
+3. Run `$ python3 main.py`
+
+#Thanks to
+* [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)) and all the amazing editors on there
+* [@Cawthorned](https://github.com/Cawthorned) for translations/personality modules (not currently implemented)
+* and let's not forget [https://github.com/python-telegram-bot/python-telegram-bot](python-telegram-bot)
