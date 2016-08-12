@@ -1,3 +1,4 @@
+<img src="https://github.com/bomjacob/VocaBot/blob/gh-pages/images/vocabot.png" height="200px" />
 # VocaBot
 Vocaloid Bot for the Telegram Messenger
 
