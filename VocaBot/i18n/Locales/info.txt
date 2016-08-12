@@ -1,0 +1,2 @@
+Translations go here.
+This file exists so that the folder gets committed to git.
