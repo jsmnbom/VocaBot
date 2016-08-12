@@ -140,7 +140,7 @@ def add_update_handlers(dp):
 
 
 def main():
-    token = os.getenv('VOCABOT-TOKEN')
+    token = os.getenv('VOCABOT_TOKEN')
     if not token:
         logging.critical('NO TOKEN FOUND!')
         sys.exit()
@@ -166,7 +166,7 @@ def main():
 
 
 if __name__ == '__main__':
-    debug = os.getenv('VOCABOT-DEBUG', False)
+    debug = os.getenv('VOCABOT_DEBUG', False)
     init_log()
 
     main()

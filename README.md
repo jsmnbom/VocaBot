@@ -1,4 +1,5 @@
 <img src="https://github.com/bomjacob/VocaBot/blob/gh-pages/images/vocabot.png" height="200px" />
+
 # VocaBot
 Vocaloid Bot for the Telegram Messenger
 
@@ -12,7 +13,7 @@ Use from telegram via [@VocaDBBot](https://telegram.me/VocaDBBot) (temporary nam
 You can also run the bot yourself by following these steps:
 
 1. Install python 3, clone repository and install requirements via pip
-2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT-TOKEN` environment variable. If you want botan tracking (optional) put your token `VOCABOT-BOTAN-TOKEN`
+2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT_TOKEN` environment variable. If you want botan tracking (optional) put your token `VOCABOT_BOTAN_TOKEN`
 3. Run `$ python3 main.py`
 
 #Thanks to

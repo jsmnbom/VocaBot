@@ -110,7 +110,7 @@ def edit_message_text(bot, update, *args, send_if_possible=False, text='', **kwa
             bot.edit_message_text(inline_message_id=update.callback_query.inline_message_id, *args, text=text, **kwargs)
 
 
-botan = os.getenv('VOCABOT-BOTAN-TOKEN', False)
+botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
 if botan:
     _botan_track = Botan(botan)
 
