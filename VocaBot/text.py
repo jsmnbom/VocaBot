@@ -5,6 +5,7 @@ from telegram import ParseMode
 from VocaBot.constants import __version__, OWNER_IDS
 from VocaBot.i18n import _
 from VocaBot.settings import translate
+from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
 I use VocaDB.net to find all your favourite Vocaloid songs and artists.
@@ -52,6 +53,7 @@ Write /help to see a list of non-inline-commands.""")
 
 
 @translate
+@botan_track
 def start(bot, update, args):
     if len(args) == 1 and args[0] == 'help_inline':
         bot.send_message(chat_id=update.message.chat.id,
@@ -67,23 +69,27 @@ def start(bot, update, args):
 
 
 @translate
+@botan_track
 def about(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
                      parse_mode=ParseMode.HTML)
 
 
 @translate
+@botan_track
 def privacy(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=PRIVACY_TEXT.format(bot_name=bot.name, version=__version__),
                      parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
+@botan_track
 def send_help(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=HELP_TEXT.format(bot_name=bot.name))
 
 
 @translate
+@botan_track
 def inline(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
                      disable_web_page_preview=True, parse_mode=ParseMode.HTML)

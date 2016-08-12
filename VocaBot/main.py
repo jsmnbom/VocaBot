@@ -169,6 +169,4 @@ if __name__ == '__main__':
     debug = os.getenv('VOCABOT-DEBUG', False)
     init_log()
 
-    botan = os.getenv('VOCABOT-BOTAN-TOKEN', False)
-
     main()

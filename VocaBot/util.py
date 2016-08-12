@@ -1,6 +1,9 @@
+import os
 import re
+from functools import wraps
 
 from telegram.constants import MAX_MESSAGE_LENGTH
+from telegram.contrib.botan import Botan
 
 from VocaBot.i18n import _
 
@@ -105,3 +108,18 @@ def edit_message_text(bot, update, *args, send_if_possible=False, text='', **kwa
                                       show_alert=True)
         else:
             bot.edit_message_text(inline_message_id=update.callback_query.inline_message_id, *args, text=text, **kwargs)
+
+
+botan = os.getenv('VOCABOT-BOTAN-TOKEN', False)
+if botan:
+    _botan_track = Botan(botan)
+
+
+def botan_track(f):
+    @wraps(f)
+    def wrapper(bot, update, *args, **kwargs):
+        if update.message and botan:
+            _botan_track.track(update.message)
+        return f(bot, update, *args, **kwargs)
+
+    return wrapper

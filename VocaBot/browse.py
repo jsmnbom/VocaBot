@@ -11,6 +11,7 @@ from VocaBot.constants import BrowseState
 from VocaBot.contentparser import content_parser
 from VocaBot.vocadb import voca_db
 from settings import with_voca_lang, translate
+from util import botan_track
 
 ongoing = {}
 replies = {}
@@ -113,6 +114,7 @@ def page_wrapper(f):
 @page_wrapper
 @translate
 @with_voca_lang
+@botan_track
 def search(bot, update, args, lang, songs=False, artists=False, albums=False, state=None):
     query = args if type(args) == str else ' '.join(args)
     if songs and artists and albums:
@@ -175,6 +177,7 @@ def search_album(bot, update, args):
 @page_wrapper
 @translate
 @with_voca_lang
+@botan_track
 def top(bot, update, lang):
     return voca_db.songs('', lang), None
 
@@ -182,6 +185,7 @@ def top(bot, update, lang):
 @page_wrapper
 @translate
 @with_voca_lang
+@botan_track
 def new(bot, update, lang):
     return voca_db.songs('', lang, sort='AdditionDate'), None
 
