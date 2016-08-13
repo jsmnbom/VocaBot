@@ -46,7 +46,8 @@ def insert_or_update(lang_type, bot, update):
 
     msg_type = _('User') if update.callback_query.message.chat.type == 'private' else _('Chat')
     text = _("<i>{type}</i>&#8201;&#8201;{lang_type} language changed from <code>{old}</code> to "
-             "<code>{new}</code>.").format(type=msg_type, lang_type=lang_type, old=old, new=new)
+             "<code>{new}</code>. Please wait up to 5 minutes for all changes to take effect.")
+    text = text.format(type=msg_type, lang_type=lang_type, old=old, new=new)
     bot.edit_message_text(chat_id=update.callback_query.message.chat.id,
                           message_id=update.callback_query.message.message_id,
                           text=text,
