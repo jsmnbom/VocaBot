@@ -1,7 +1,9 @@
 <img src="https://github.com/bomjacob/VocaBot/blob/gh-pages/images/vocabot.png" height="200px" />
 
 # VocaBot
-Vocaloid Bot for the Telegram Messenger
+Vocaloid Bot for the Telegram Messenger.
+
+Search for songs, artists and even albums, all inside the telegram client. Can also display lyrics and PVs (videos).
 
 Uses data from [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)). Click [here](http://wiki.vocadb.net/wiki/29/license) for licensing information.
 
