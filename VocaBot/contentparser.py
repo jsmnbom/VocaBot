@@ -1,9 +1,11 @@
+import math
 from collections import defaultdict
 
 from telegram import Emoji
 
 from constants import Context, VOCADB_BASE_URL
 from i18n import _
+
 
 # I'm not exactly proud of this module's code.. but it does the job.
 
@@ -52,7 +54,7 @@ def vocadb_url(entry, song=False, artist=False, album=False):
                                           id=entry['id'])
 
 
-def content_parser(entries, info=False, inline=False, context=None, bot_name=''):
+def content_parser(entries, info=False, inline=False, context=None, bot_name='', counts=None):
     text = ''
 
     if entries and len(entries) > 0:
@@ -155,6 +157,12 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='')
 
             except OSError:
                 pass
+
+        if counts:
+            text += _("\n\nFound {found_num} total. "
+                      "Viewing page {cur_page}/{max_page}").format(found_num=counts[1],
+                                                                   cur_page=math.ceil((counts[0] + 3) / 3),
+                                                                   max_page=math.ceil(counts[1] / 3))
 
     else:
         if context == Context.search:

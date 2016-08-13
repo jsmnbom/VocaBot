@@ -30,7 +30,7 @@ def next_page(bot, update, groups):
 
     bot.edit_message_text(chat_id=update.callback_query.message.chat.id,
                           message_id=update.callback_query.message.message_id,
-                          text=content_parser(page_data, context=context),
+                          text=content_parser(page_data, context=context, counts=counts),
                           reply_markup=keyboard(key, counts),
                           parse_mode=ParseMode.HTML)
     bot.answer_callback_query(callback_query_id=update.callback_query.id)
@@ -54,13 +54,13 @@ def send_page_one(bot, update, key, page, state):
     if message_id in replies:
         sent_message = bot.edit_message_text(chat_id=(update.message or update.callback_query.message).chat.id,
                                              message_id=replies[message_id][1],
-                                             text=content_parser(page_data, context=context),
+                                             text=content_parser(page_data, context=context, counts=counts),
                                              reply_markup=keyboard(key, counts),
                                              parse_mode=ParseMode.HTML)
 
     else:
         sent_message = bot.send_message(chat_id=(update.message or update.callback_query.message).chat.id,
-                                        text=content_parser(page_data, context=context),
+                                        text=content_parser(page_data, context=context, counts=counts),
                                         reply_markup=keyboard(key, counts),
                                         parse_mode=ParseMode.HTML)
 
