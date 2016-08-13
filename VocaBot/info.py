@@ -127,7 +127,7 @@ def lyrics(bot, update, groups, lang):
             bot.answer_callback_query(callback_query_id=update.callback_query.id)
         else:
             for lyric in data['lyrics']:
-                if lyric['id'] == int(groups[2]):
+                if lyric['id'] == int(groups[1]):
                     text = ''
                     if inline:
                         text = content_parser(data, info=True, inline=True, bot_name=bot.name)
