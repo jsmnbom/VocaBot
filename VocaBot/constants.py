@@ -7,7 +7,7 @@ VOCADB_BASE_URL = 'https://vocadb.net/'
 OWNER_IDS = (95205500,)
 DB_FILE = Path('../data.json')
 VOCADB_USER_AGENT = 'Telegram-{bot_name}/{version}'.format(bot_name='{bot_name}', version=__version__)
-LOCALE_FOLDER = 'i18n/locales'
+LOCALE_FOLDER = 'Locales'
 LOCALE_NAME = 'VocaBot'
 
 # noinspection SpellCheckingInspection
