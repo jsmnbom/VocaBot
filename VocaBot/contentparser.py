@@ -93,7 +93,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='')
                                                                                     artist=entry['artistString'],
                                                                                     type=entry['songType'])
                         if 'favoritedTimes' in entry:
-                            text += _(' with {num} favourites').format(num=entry['favoritedTimes'])
+                            text += ' ' + _('with {num} favourites').format(num=entry['favoritedTimes'])
 
                     else:
                         text += _('<code>{track_number})</code> <b>{name}</b>\n{artist}').format(
