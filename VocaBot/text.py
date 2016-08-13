@@ -8,7 +8,7 @@ from settings import translate
 from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
-I use VocaDB.net to find all your favourite Vocaloid songs and artists.
+I use VocaDB.net to find all your favourite Vocaloid songs, artists and albums.
 """)
 
 START_TEXT = _("""Write /help to see a list of commands.""")
