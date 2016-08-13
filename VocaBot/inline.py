@@ -2,13 +2,14 @@ import uuid
 from functools import wraps
 from uuid import uuid4
 
-from VocaBot.contentparser import content_parser
-from VocaBot.info import song_keyboard, artist_keyboard, album_keyboard
-from VocaBot.settings import with_voca_lang, translate
-from VocaBot.i18n import _
-from VocaBot.vocadb import voca_db
 from telegram import InlineQueryResultArticle, Emoji, InputTextMessageContent, ParseMode
 from telegram.ext.dispatcher import run_async
+
+from contentparser import content_parser
+from i18n import _
+from info import song_keyboard, artist_keyboard, album_keyboard
+from settings import with_voca_lang, translate
+from vocadb import voca_db
 
 ongoing = {}
 MAX_INLINE_RESULTS = 10

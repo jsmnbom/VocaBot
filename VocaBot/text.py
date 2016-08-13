@@ -2,9 +2,9 @@ import logging
 
 from telegram import ParseMode
 
-from VocaBot.constants import __version__, OWNER_IDS
-from VocaBot.i18n import _
-from VocaBot.settings import translate
+from constants import __version__, OWNER_IDS
+from i18n import _
+from settings import translate
 from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.

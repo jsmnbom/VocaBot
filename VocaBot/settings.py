@@ -1,12 +1,12 @@
 from functools import wraps
 
-from tinydb import TinyDB, Query
-
-from VocaBot.constants import DB_FILE, SettingState
-from VocaBot.i18n import _
-from VocaBot.util import id_from_update
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ConversationHandler
+from tinydb import TinyDB, Query
+
+from constants import DB_FILE, SettingState
+from i18n import _
+from util import id_from_update
 
 SETTINGS_TEXT = _("""<b>Settings for {bot_name}</b>
 <i>{type}</i>&#8201;&#8201;interface language: <code>{lang}</code>

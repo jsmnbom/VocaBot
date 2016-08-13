@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flufl.i18n import registry
 
-from VocaBot.constants import LOCALE_NAME, LOCALE_FOLDER
+from constants import LOCALE_NAME, LOCALE_FOLDER
 
 
 class Strategy(object):

@@ -7,11 +7,11 @@ from telegram.ext import ConversationHandler
 from telegram.ext.dispatcher import run_async
 
 import info
-from VocaBot.constants import BrowseState
-from VocaBot.contentparser import content_parser
-from VocaBot.vocadb import voca_db
+from constants import BrowseState
+from contentparser import content_parser
 from settings import with_voca_lang, translate
 from util import botan_track
+from vocadb import voca_db
 
 ongoing = {}
 replies = {}

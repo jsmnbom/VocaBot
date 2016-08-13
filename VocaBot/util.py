@@ -5,7 +5,7 @@ from functools import wraps
 from telegram.constants import MAX_MESSAGE_LENGTH
 from telegram.contrib.botan import Botan
 
-from VocaBot.i18n import _
+from i18n import _
 
 
 def cancel_callback_query(bot, update):

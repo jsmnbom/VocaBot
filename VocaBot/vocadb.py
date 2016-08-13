@@ -5,8 +5,8 @@ import requests
 from cachecontrol import CacheControl
 from cachecontrol.heuristics import ExpiresAfter
 
-from VocaBot.constants import VOCADB_API_ENDPOINT, VOCADB_USER_AGENT, Context
-from VocaBot.i18n import _
+from constants import VOCADB_API_ENDPOINT, VOCADB_USER_AGENT, Context
+from i18n import _
 
 logger = logging.getLogger(__name__)
 

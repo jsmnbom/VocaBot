@@ -5,14 +5,14 @@ import sys
 from telegram.ext import (Updater, ConversationHandler, CommandHandler, RegexHandler, CallbackQueryHandler,
                           MessageHandler, Filters, InlineQueryHandler)
 
-import VocaBot.browse as browse
-import VocaBot.info as info
-import VocaBot.inline as inline
-import VocaBot.settings as settings
-import VocaBot.text as text
-from VocaBot.constants import SettingState, BrowseState
-from VocaBot.util import cancel_callback_query
-from VocaBot.vocadb import voca_db
+import browse
+import info
+import inline
+import settings
+import text
+from constants import SettingState, BrowseState
+from util import cancel_callback_query
+from vocadb import voca_db
 
 logger = logging.getLogger(__name__)
 

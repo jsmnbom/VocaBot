@@ -2,8 +2,8 @@ from collections import defaultdict
 
 from telegram import Emoji
 
-from VocaBot.constants import Context, VOCADB_BASE_URL
-from VocaBot.i18n import _
+from constants import Context, VOCADB_BASE_URL
+from i18n import _
 
 # I'm not exactly proud of this module's code.. but it does the job.
 

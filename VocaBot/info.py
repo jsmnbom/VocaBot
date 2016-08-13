@@ -1,11 +1,12 @@
-from VocaBot.constants import PV_SERVICES
-from VocaBot.contentparser import content_parser, album_tracks, vocadb_url
-from VocaBot.i18n import _
-from VocaBot.settings import with_voca_lang, translate
-from VocaBot.util import edit_message_text
-from VocaBot.vocadb import voca_db
 from telegram import ParseMode, InlineKeyboardButton, Emoji, InlineKeyboardMarkup
 from telegram.ext.dispatcher import run_async
+
+from constants import PV_SERVICES
+from contentparser import content_parser, album_tracks, vocadb_url
+from i18n import _
+from settings import with_voca_lang, translate
+from util import edit_message_text
+from vocadb import voca_db
 
 
 # noinspection PyTypeChecker
