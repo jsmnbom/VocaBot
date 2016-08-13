@@ -77,15 +77,15 @@ def keyboard(key, counts):
     last_page = math.ceil((counts[1]) / 3)
 
     data = 'page|{}|{}'.format(key, '{}')
-    buttons = [InlineKeyboardButton('<< 1',
+    buttons = [InlineKeyboardButton('First',
                                     callback_data=data.format(1) if cur_page > 1 else 'page'),
-               InlineKeyboardButton('< {}'.format(cur_page - 1) if cur_page > 1 else ' ',
+               InlineKeyboardButton('Previous'.format(cur_page - 1) if cur_page > 1 else ' ',
                                     callback_data=data.format((cur_page - 1)) if cur_page > 1 else 'page'),
                InlineKeyboardButton('•{}•'.format(cur_page),
                                     callback_data='page'),
-               InlineKeyboardButton('{} >'.format(cur_page + 1) if cur_page < last_page else ' ',
+               InlineKeyboardButton('Next'.format(cur_page + 1) if cur_page < last_page else ' ',
                                     callback_data=data.format(cur_page + 1) if cur_page < last_page else 'page'),
-               InlineKeyboardButton('{} >>'.format(last_page),
+               InlineKeyboardButton('Last'.format(last_page),
                                     callback_data=data.format(last_page) if cur_page < last_page else 'page')]
     return InlineKeyboardMarkup([buttons])
 
