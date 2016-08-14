@@ -120,7 +120,7 @@ class VocaDB(object):
         payload = {'fields': 'MainPicture', 'lang': lang}
 
         def page(i):
-            offset = i * max_results
+            offset = (i - 1) * max_results
             data = self.base('songs/{}/derived'.format(song_id), payload)
             if data:
                 m = offset + max_results
