@@ -5,6 +5,7 @@ from telegram import Emoji
 
 from constants import Context, VOCADB_BASE_URL
 from i18n import _
+from vocadb import voca_db
 
 
 # I'm not exactly proud of this module's code.. but it does the job.
@@ -90,10 +91,10 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 
                 if song:
                     if track_number is None:
-                        text += _('{emoji} <b>{name}</b>\n{artist}\n{type}').format(emoji=Emoji.MUSICAL_NOTE,
-                                                                                    name=entry['name'],
-                                                                                    artist=entry['artistString'],
-                                                                                    type=entry['songType'])
+                        text += _('{emoji} <b>{name}</b>\n'
+                                  '{artist}\n{type}').format(emoji=Emoji.MUSICAL_NOTE, name=entry['name'],
+                                                             artist=entry['artistString'],
+                                                             type=voca_db.trans(entry['songType'], song=True))
                         if 'favoritedTimes' in entry:
                             text += ' ' + _('with {num} favourites').format(num=entry['favoritedTimes'])
 
@@ -104,14 +105,14 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                             artist=entry['artistString'])
 
                 if artist:
-                    text += _('{emoji} <b>{name}</b>\n{type}').format(emoji=Emoji.MICROPHONE,
-                                                                      name=entry['name'],
-                                                                      type=entry['artistType'])
+                    text += _('{emoji} <b>{name}</b>\n'
+                              '{type}').format(emoji=Emoji.MICROPHONE, name=entry['name'],
+                                               type=voca_db.trans(entry['artistType'], artist=True))
                 if album:
-                    text += _('{emoji} <b>{name}</b>\n{artist}\n{type}').format(emoji=Emoji.OPTICAL_DISC,
-                                                                                name=entry['name'],
-                                                                                artist=entry['artistString'],
-                                                                                type=entry['discType'])
+                    text += _('{emoji} <b>{name}</b>\n'
+                              '{artist}\n{type}').format(emoji=Emoji.OPTICAL_DISC, name=entry['name'],
+                                                         artist=entry['artistString'],
+                                                         type=voca_db.trans(entry['discType'], album=True))
 
                 if info:
                     text += '\n\n'
@@ -204,6 +205,6 @@ def album_tracks(album, inline, bot_name):
         text += content_parser(tracks, inline=inline)
 
     if inline and bot_name:
-        text += _('\n\nFor more features use non-inline mode: {bot_name}').format(bot_name=bot_name)
+        text += '\n\n' + _('For more features use non-inline mode: {bot_name}').format(bot_name=bot_name)
 
     return text

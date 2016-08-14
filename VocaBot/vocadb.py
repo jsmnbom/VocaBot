@@ -47,8 +47,6 @@ class VocaDB(object):
         except ValueError as e:
             logger.warning('Non-JSON returned from VocaDB API endpoint: %s', e)
             return None
-        if process:
-            data = self.translate_types(data)
         return data
 
     def entries(self, query, lang, max_results=3, sort='Name'):
@@ -160,20 +158,18 @@ class VocaDB(object):
         data = self.base('resources/{}'.format(culture_code), payload, process=False)
         return data
 
-    def translate_types(self, data):
+    def trans(self, s, song=False, artist=False, album=False):
         if _.code not in self._resources:
             self._resources[_.code] = self.resources(_.code, ['songTypeNames', 'artistTypeNames', 'discTypeNames'])
-        return self.recursive_translator(data)
-
-    def recursive_translator(self, d):
-        for find_key in ['songType', 'artistType', 'discType']:
-            if find_key in d:
-                d[find_key] = self._resources[_.code][find_key + 'Names'][d[find_key]]
-        for key, value in d.items():
-            if isinstance(value, list):
-                for i, item in enumerate(value):
-                    d[key][i] = self.recursive_translator(item)
-        return d
+        try:
+            if song:
+                return self._resources[_.code]['songTypeNames'][s]
+            if artist:
+                return self._resources[_.code]['artistTypeNames'][s]
+            if album:
+                return self._resources[_.code]['albumTypeNames'][s]
+        except KeyError:
+            return s
 
 
 voca_db = VocaDB()
