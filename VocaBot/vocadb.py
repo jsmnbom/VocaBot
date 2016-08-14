@@ -147,7 +147,7 @@ class VocaDB(object):
                 for match_type in ['artistMatches', 'likeMatches', 'tagMatches']:
                     if not data[match_type]:
                         break
-                    r.append(data[match_type][i * 3])
+                    r.append(data[match_type][i - 1])
                     smallest = len(data[match_type]) if len(data[match_type]) < smallest else smallest
                 else:
                     return r, ((i - 1) * 3, smallest * 3), Context.related
