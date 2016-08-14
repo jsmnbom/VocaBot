@@ -73,6 +73,10 @@ def send_page_one(bot, update, key, page, state):
 
 
 def keyboard(key, counts):
+    # We don't want a keyboard if there's no results
+    if counts[0] == 0:
+        return None
+
     cur_page = counts[0] // 3 + 1
     last_page = math.ceil((counts[1]) / 3)
 
