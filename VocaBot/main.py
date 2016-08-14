@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 # TODO: Use bot.send_chat_action?
 # TODO: Handle what stuff should run_async and what should not better
 # TODO: Maybe add a timeout to api and telegram requests too?
+# TODO: Better tracking than what botan can do (google analytics events?)
 
 # noinspection SpellCheckingInspection
 def init_log():
