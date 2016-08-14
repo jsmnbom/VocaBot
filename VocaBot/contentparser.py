@@ -166,7 +166,8 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 
     else:
         if context == Context.search:
-            text += _("I couldn't find what you were looking for. Did you misspell it?")
+            text += _("I couldn't find what you were looking for. Did you perhaps misspell it? "
+                      "(tip: you can edit your message.)")
         elif context == Context.derived:
             text += _('No derived songs found.')
         elif context == Context.related:
