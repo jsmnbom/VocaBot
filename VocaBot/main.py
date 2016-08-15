@@ -38,6 +38,7 @@ def error(bot, update, err):
 
 def cancel(bot, update):
     # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
+    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
     return ConversationHandler.END
 
 
