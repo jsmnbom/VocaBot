@@ -6,6 +6,7 @@ from telegram import ParseMode
 from constants import __version__, OWNER_IDS
 from i18n import _
 from settings import translate
+from telegram.ext import ConversationHandler
 from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
@@ -122,3 +123,10 @@ def unknown(bot, update):
             if match.groups()[0] or match.groups()[2]:
                 bot.send_message(chat_id=update.message.chat.id,
                                  text=_("Unknown command. Try again or type /help to see list of commands."))
+
+
+@translate
+def cancel(bot, update):
+    # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
+    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
+    return ConversationHandler.END

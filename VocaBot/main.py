@@ -11,7 +11,8 @@ import inline
 import settings
 import text
 from constants import BrowseState
-from util import cancel_callback_query, cancel
+from util import cancel_callback_query
+from text import cancel
 from vocadb import voca_db
 
 logger = logging.getLogger(__name__)
@@ -99,6 +100,7 @@ def add_update_handlers(dp):
     artist_search_handler = InlineQueryHandler(inline.artist_search, pattern=r'^\!(?:ar?) ?(.*)$', pass_groups=True)
     inline_leftover_handler = InlineQueryHandler(inline.delegate)  # All who didn't match above regex
 
+    cancel_handler = CommandHandler('cancel', text.cancel)
     unknown_command_handler = RegexHandler(r'^/(.*)$', text.unknown)
 
     # Add handlers to dispatcher
@@ -130,6 +132,7 @@ def add_update_handlers(dp):
     dp.add_handler(artist_search_handler)
     dp.add_handler(inline_leftover_handler)
 
+    dp.add_handler(cancel_handler)
     dp.add_handler(unknown_command_handler)
 
     return dp
