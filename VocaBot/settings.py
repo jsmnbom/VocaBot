@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from functools import wraps
 
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
@@ -23,13 +24,17 @@ VocaDB language is the language used for song and artist titles.
 db = TinyDB(str(DB_FILE))
 User = Query()
 
-INTERFACE_LANGUAGES = {'en_us': 'English'}
-VOCADB_LANGUAGES = {'Default': _('Default'), 'Japanese': _('Japanese'), 'Romaji': _('Romaji'), 'English': _('English')}
-ON_OFF = {'True': _('Enabled'), 'False': _('Disabled')}
+INTERFACE_LANGUAGES = OrderedDict((('en_us', 'English'),))
+VOCADB_LANGUAGES = OrderedDict((('Default', _('Default')),
+                                ('Japanese', _('Japanese')),
+                                ('Romaji', _('Romaji')),
+                                ('English', _('English'))))
+ON_OFF = OrderedDict((('True', _('Enabled')),
+                      ('False', _('Disabled'))))
 
 settings_state = 42
 default_settings = {}
-settings = {}
+settings = OrderedDict()
 
 
 def chunks(l, n):
