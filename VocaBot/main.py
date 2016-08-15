@@ -10,7 +10,7 @@ import info
 import inline
 import settings
 import text
-from constants import SettingState, BrowseState
+from constants import BrowseState
 from util import cancel_callback_query
 from vocadb import voca_db
 

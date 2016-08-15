@@ -28,9 +28,7 @@ VOCADB_LANGUAGES = {'Default': _('Default'), 'Japanese': _('Japanese'), 'Romaji'
 ON_OFF = {'True': _('Enabled'), 'False': _('Disabled')}
 
 settings_state = 42
-
 default_settings = {}
-
 settings = {}
 
 
