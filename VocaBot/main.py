@@ -105,6 +105,8 @@ def add_update_handlers(dp):
     artist_search_handler = InlineQueryHandler(inline.artist_search, pattern=r'^\!(?:ar?) ?(.*)$', pass_groups=True)
     inline_leftover_handler = InlineQueryHandler(inline.delegate)  # All who didn't match above regex
 
+    unknown_command_handler = RegexHandler(r'^/(.*)$', text.unknown)
+
     # Add handlers to dispatcher
     dp.add_handler(browse_handler)
     dp.add_handler(browse_page_handler)
@@ -133,6 +135,8 @@ def add_update_handlers(dp):
     dp.add_handler(album_search_handler)  # Has to be before artist since the 'r' in 'ar' is optional there
     dp.add_handler(artist_search_handler)
     dp.add_handler(inline_leftover_handler)
+
+    dp.add_handler(unknown_command_handler)
 
     return dp
 

@@ -1,4 +1,5 @@
 import logging
+import re
 
 from telegram import ParseMode
 
@@ -107,3 +108,18 @@ def kill(bot, update):
         os.kill(os.getpid(), signal.SIGTERM)
     else:
         bot.send_message(chat_id=update.message.chat.id, text=_("I can't let you do that, dave."))
+
+
+@translate
+def unknown(bot, update):
+    if update.message.chat.type == 'private':
+        bot.send_message(chat_id=update.message.chat.id,
+                         text=_("Unknown command. Try again or type /help to see list of commands."))
+    else:
+        # TODO: Use MessageEntities instead?
+        match = re.match(r'^/(?:((?:\S*?){bot_name})|((?:\S*)@(?:\S*))|(\S*))'.format(bot_name=bot.name),
+                         update.message.text)
+        if match:
+            if match.groups()[0] or match.groups()[2]:
+                bot.send_message(chat_id=update.message.chat.id,
+                                 text=_("Unknown command. Try again or type /help to see list of commands."))
