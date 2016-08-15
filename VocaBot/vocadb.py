@@ -62,9 +62,12 @@ class VocaDB(object):
 
         return page
 
-    def songs(self, query, lang, max_results=3, sort='FavoritedTimes', artist_id=''):
+    def songs(self, query, lang, max_results=3, sort='FavoritedTimes', artist_id='', originals_only = False):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names, Artists', 'sort': sort,
                    'maxResults': max_results, 'artistId': artist_id, 'preferAccurateMatches': 'true'}
+
+        if originals_only:
+            payload.update({'songTypes': 'Original'})
 
         def page(i):
             payload.update({'start': (i - 1) * max_results})

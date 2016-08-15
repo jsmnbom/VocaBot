@@ -9,7 +9,7 @@ from telegram.ext.dispatcher import run_async
 import info
 from constants import BrowseState
 from contentparser import content_parser
-from settings import with_voca_lang, translate
+from settings import with_voca_lang, translate, get_setting
 from util import botan_track
 from vocadb import voca_db
 
@@ -124,7 +124,8 @@ def search(bot, update, args, lang, songs=False, artists=False, albums=False, st
     if songs and artists and albums:
         entries = voca_db.entries(query, lang)
     elif songs:
-        entries = voca_db.songs(query, lang)
+        originals_only = get_setting('originals', bot, update)
+        entries = voca_db.songs(query, lang, originals_only=originals_only)
     elif artists:
         entries = voca_db.artists(query, lang)
     elif albums:

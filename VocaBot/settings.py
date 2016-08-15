@@ -105,8 +105,8 @@ def start(bot, update):
     return settings_state
 
 
-@translate
 def change_setting(name):
+    @translate
     def changer(bot, update):
         user = get_user(bot, update)
         iden = id_from_update(update)

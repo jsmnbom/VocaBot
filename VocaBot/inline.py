@@ -8,7 +8,7 @@ from telegram.ext.dispatcher import run_async
 from contentparser import content_parser
 from i18n import _
 from info import song_keyboard, artist_keyboard, album_keyboard
-from settings import with_voca_lang, translate
+from settings import with_voca_lang, translate, get_setting
 from vocadb import voca_db
 
 ongoing = {}
@@ -142,7 +142,8 @@ def search(bot, update, lang):
 @with_voca_lang
 def song_search(bot, update, groups, lang):
     switch_pm = (_('Searching only songs'), 'help_inline')
-    return voca_db.songs(groups[0], lang, max_results=MAX_INLINE_RESULTS), switch_pm
+    originals_only = get_setting('originals', bot, update)
+    return voca_db.songs(groups[0], lang, max_results=MAX_INLINE_RESULTS, originals_only=originals_only), switch_pm
 
 
 @run_async
