@@ -96,7 +96,10 @@ def start(bot, update):
     replace = {}
     for name, setting in settings.items():
         # noinspection PyTypeChecker
-        replace[name] = setting['trans'][user[name]]
+        try:
+            replace[name] = setting['trans'][user[name]]
+        except KeyError:
+            replace[name] = _('Corrupted data...')
     replace.update({'bot_name': bot.name,
                     'type': _('User') if update.message.chat.type == 'private' else _('Chat')})
     text = SETTINGS_TEXT.format(**replace)
