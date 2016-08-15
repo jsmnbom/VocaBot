@@ -5,6 +5,7 @@ from telegram import Emoji
 
 from constants import Context, VOCADB_BASE_URL
 from i18n import _
+from util import non_phone
 from vocadb import voca_db
 
 
@@ -161,9 +162,9 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 
         if counts:
             text += _("\n\nFound {found_num} total. "
-                      "Viewing page {cur_page}/{max_page}").format(found_num=counts[1],
-                                                                   cur_page=math.ceil((counts[0] + 3) / 3),
-                                                                   max_page=math.ceil(counts[1] / 3))
+                      "Viewing page {cur_page}/{max_page}").format(found_num=non_phone(counts[1]),
+                                                                   cur_page=non_phone(math.ceil((counts[0] + 3) / 3)),
+                                                                   max_page=non_phone(math.ceil(counts[1] / 3)))
 
     else:
         if context == Context.search:

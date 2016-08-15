@@ -110,6 +110,13 @@ def edit_message_text(bot, update, *args, send_if_possible=False, text='', **kwa
             bot.edit_message_text(inline_message_id=update.callback_query.inline_message_id, *args, text=text, **kwargs)
 
 
+def non_phone(number):
+    """Makes a number into a string that telegram (on android) will not interpret as a phone number.
+    Might break on RTL text!"""
+    number = str(number)
+    return '\u200E'.join(number)
+
+
 botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
 if botan:
     _botan_track = Botan(botan)
