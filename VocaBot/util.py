@@ -4,8 +4,10 @@ from functools import wraps
 
 from telegram.constants import MAX_MESSAGE_LENGTH
 from telegram.contrib.botan import Botan
+from telegram.ext import ConversationHandler
 
 from i18n import _
+from settings import translate
 
 
 def cancel_callback_query(bot, update):
@@ -115,6 +117,13 @@ def non_phone(number):
     Might break on RTL text!"""
     number = str(number)
     return '\u200E'.join(number)
+
+
+@translate
+def cancel(bot, update):
+    # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
+    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
+    return ConversationHandler.END
 
 
 botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)

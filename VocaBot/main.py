@@ -11,7 +11,7 @@ import inline
 import settings
 import text
 from constants import BrowseState
-from util import cancel_callback_query
+from util import cancel_callback_query, cancel
 from vocadb import voca_db
 
 logger = logging.getLogger(__name__)
@@ -34,12 +34,6 @@ def init_log():
 # noinspection PyUnusedLocal
 def error(bot, update, err):
     logger.warning('Update "%s" caused error "%s"' % (update, err))
-
-
-def cancel(bot, update):
-    # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
-    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
-    return ConversationHandler.END
 
 
 def add_update_handlers(dp):
