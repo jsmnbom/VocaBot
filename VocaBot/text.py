@@ -116,7 +116,6 @@ def unknown(bot, update):
         bot.send_message(chat_id=update.message.chat.id,
                          text=_("Unknown command. Try again or type /help to see list of commands."))
     else:
-        # TODO: Use MessageEntities instead?
         match = re.match(r'^/(?:((?:\S*?){bot_name})|((?:\S*)@(?:\S*))|(\S*))'.format(bot_name=bot.name),
                          update.message.text)
         if match:
