@@ -121,7 +121,10 @@ def change_setting(name):
             bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
             return name
 
-        old = settings[name]['trans'][user[name]]
+        try:
+            old = settings[name]['trans'][user[name]]
+        except KeyError:
+            old = _('Corrupted data...')
         db.update({name: update.callback_query.data}, User.id == iden)
         new = settings[name]['trans'][update.callback_query.data]
 
