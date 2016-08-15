@@ -6,7 +6,8 @@ from telegram import ParseMode
 from constants import __version__, OWNER_IDS
 from i18n import _
 from settings import translate
-from util import botan_track
+from telegram.ext import ConversationHandler
+from util import track_message
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
 I use VocaDB.net to find all your favourite Vocaloid songs, artists and albums.
@@ -54,7 +55,7 @@ Write /help to see a list of non-inline-commands.""")
 
 
 @translate
-@botan_track
+@track_message
 def start(bot, update, args):
     if len(args) == 1 and args[0] == 'help_inline':
         bot.send_message(chat_id=update.message.chat.id,
@@ -70,27 +71,27 @@ def start(bot, update, args):
 
 
 @translate
-@botan_track
+@track_message
 def about(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
                      parse_mode=ParseMode.HTML)
 
 
 @translate
-@botan_track
+@track_message
 def privacy(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=PRIVACY_TEXT.format(bot_name=bot.name, version=__version__),
                      parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
-@botan_track
+@track_message
 def send_help(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=HELP_TEXT.format(bot_name=bot.name))
 
 
 @translate
-@botan_track
+@track_message
 def inline(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
                      disable_web_page_preview=True, parse_mode=ParseMode.HTML)
@@ -122,3 +123,10 @@ def unknown(bot, update):
             if match.groups()[0] or match.groups()[2]:
                 bot.send_message(chat_id=update.message.chat.id,
                                  text=_("Unknown command. Try again or type /help to see list of commands."))
+
+
+@translate
+def cancel(bot, update):
+    # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
+    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
+    return ConversationHandler.END

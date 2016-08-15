@@ -2,12 +2,9 @@ import os
 import re
 from functools import wraps
 
-from telegram.constants import MAX_MESSAGE_LENGTH
-from telegram.contrib.botan import Botan
-from telegram.ext import ConversationHandler
-
 from i18n import _
-from settings import translate
+from telegram.constants import MAX_MESSAGE_LENGTH
+from telegram.contrib.ga import GoogleAnalytics
 
 
 def cancel_callback_query(bot, update):
@@ -119,23 +116,23 @@ def non_phone(number):
     return '\u200E'.join(number)
 
 
-@translate
-def cancel(bot, update):
-    # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
-    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
-    return ConversationHandler.END
+_ga = os.getenv('VOCABOT_GA_ID', False)
+if _ga:
+    ga = GoogleAnalytics(_ga)
 
 
-botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
-if botan:
-    _botan_track = Botan(botan)
-
-
-def botan_track(f):
+def track_message(f, command=''):
     @wraps(f)
     def wrapper(bot, update, *args, **kwargs):
-        if update.message and botan:
-            _botan_track.track(update.message)
+        text = (update.message or update.edited_message).text
+        if command:
+            if text.startswith('/'):
+                value = text.split(' ')[1:]
+            else:
+                value = text
+            ga.track(id_from_update(update), 'Event', ec='Command', ea='Send', el=command, ev=value)
+        else:
+            ga.track(id_from_update(update), 'Event', ec='Message', ea='Send', el='Text', ev=text)
         return f(bot, update, *args, **kwargs)
 
     return wrapper

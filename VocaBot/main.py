@@ -11,7 +11,8 @@ import inline
 import settings
 import text
 from constants import BrowseState
-from util import cancel_callback_query, cancel
+from util import cancel_callback_query
+from text import cancel
 from vocadb import voca_db
 
 logger = logging.getLogger(__name__)
