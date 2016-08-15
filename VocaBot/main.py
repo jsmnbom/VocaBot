@@ -73,11 +73,7 @@ def add_update_handlers(dp):
         entry_points=[
             CommandHandler('settings', settings.start)
         ],
-        states={
-            SettingState.settings: [CallbackQueryHandler(settings.change)],
-            SettingState.interface: [CallbackQueryHandler(settings.interface)],
-            SettingState.voca: [CallbackQueryHandler(settings.voca)]
-        },
+        states=settings.get_states(),
         fallbacks=[CommandHandler('cancel', cancel)],
         allow_reentry=True
     )
