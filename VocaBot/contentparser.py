@@ -142,7 +142,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                         if 'releaseDate' in entry:
                             if not entry['releaseDate']['isEmpty']:
                                 # i18n? .-.
-                                text += _('Release date: {date}').format(date=entry['releaseDate']['formatted'])
+                                text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
 
                     if inline and bot_name:
                         text += _('For more features use non-inline mode: {bot_name}').format(bot_name=bot_name)
