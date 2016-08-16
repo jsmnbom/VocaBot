@@ -31,7 +31,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
         if 'songType' in entry:
             description = _('{artist}\n{type} song').format(artist=entry['artistString'], type=entry['songType'])
             if 'favoritedTimes' in entry:
-                description += _(' with {favorites} favourites').format(favorites=entry['favoritedTimes'])
+                description += ' ' + _('with {favorites} favourites').format(favorites=entry['favoritedTimes'])
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
                 title=Emoji.MUSICAL_NOTE + ' ' + entry['name'],
