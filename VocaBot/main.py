@@ -46,6 +46,7 @@ def add_update_handlers(dp):
             CommandHandler('search', browse.search_all, pass_args=True, allow_edited=True),
             CommandHandler('new', browse.new),
             CommandHandler('top', browse.top),
+            CommandHandler('trending', browse.trending),
             RegexHandler(r'^/(dev)_(\d+)(@.+)?$', browse.derived, pass_groups=True),
             RegexHandler(r'^/(rel)_(\d+)(@.+)?$', browse.related, pass_groups=True),
             CallbackQueryHandler(browse.artist, pattern=r'^(arlist)\|(.*)\|(.*)$', pass_groups=True)

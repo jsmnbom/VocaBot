@@ -219,6 +219,13 @@ def related(bot, update, groups, lang):
     return voca_db.related(groups[1], lang), None
 
 
+@page_wrapper
+@translate
+@with_voca_lang
+def trending(bot, update, lang):
+    return voca_db.top_rated_songs(lang), None
+
+
 def edited(bot, update, update_queue):
     if update.edited_message:
         message_id = update.edited_message.message_id

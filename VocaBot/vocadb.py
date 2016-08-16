@@ -62,7 +62,7 @@ class VocaDB(object):
 
         return page
 
-    def songs(self, query, lang, max_results=3, sort='FavoritedTimes', artist_id='', originals_only = False):
+    def songs(self, query, lang, max_results=3, sort='FavoritedTimes', artist_id='', originals_only=False):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names, Artists', 'sort': sort,
                    'maxResults': max_results, 'artistId': artist_id, 'preferAccurateMatches': 'true'}
 
@@ -153,6 +153,25 @@ class VocaDB(object):
                 else:
                     return r, ((i - 1) * 3, smallest * 3), Context.related
             return [], (0, 0), Context.related
+
+        return page
+
+    def top_rated_songs(self, lang, max_results=3, hours=48):
+        # Get max 10 pages
+        payload = {'durationHours': hours, 'languagePreference': lang, 'fields': 'MainPicture, Names, Artists',
+                   'maxResults': 10 * max_results, 'filterBy': 'PublishDate'}
+
+        def page(i):
+            offset = (i - 1) * max_results
+            data = self.base('songs/top-rated', payload)
+            if data:
+                m = offset + max_results
+                if m > len(data):
+                    m = offset + ((len(data) - offset) % max_results)
+                d = data[offset:m]
+                return d, ((i - 1) * max_results, len(data)), Context.search
+            else:
+                return [], (0, 0), Context.search
 
         return page
 
