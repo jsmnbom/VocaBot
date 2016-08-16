@@ -34,6 +34,7 @@ HELP_TEXT = _("""/search - search for a vocaloid song, artist or album
 /album - search for an album
 /top - browse the most popular vocaloid songs
 /new - browse the newest song additions
+/trending - browse trending songs
 /cancel - cancel current operation
 /about - display information about my creators and VocaDB
 /privacy - display privacy notices
