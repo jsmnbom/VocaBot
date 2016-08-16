@@ -40,17 +40,21 @@ def next_page(bot, update, groups):
 
 def send_page_one(bot, update, key, page, state):
     page_data, counts, context = page(1)
+    update.message = (update.message or update.callback_query.message)
     if counts[1] == 1 and len(page_data) == 1:
         entry = page_data[0]
-        if 'songType' in entry:
-            info.song(bot, update, [entry['id']])
-        if 'artistType' in entry:
-            info.artist(bot, update, [entry['id']])
-        if 'discType' in entry:
-            info.album(bot, update, [entry['id']])
-        return None
+        if 'songType' in entry or 'artistType' in entry or 'discType' in entry:
+            if update.callback_query:
+                bot.answer_callback_query(callback_query_id=update.callback_query.id)
+            if 'songType' in entry:
+                info.song(bot, update, [entry['id']])
+            elif 'artistType' in entry:
+                info.artist(bot, update, [entry['id']])
+            elif 'discType' in entry:
+                info.album(bot, update, [entry['id']])
+            return None
 
-    message_id = (update.message or update.callback_query.message).message_id
+    message_id = update.message.message_id
     if message_id in replies:
         sent_message = bot.edit_message_text(chat_id=(update.message or update.callback_query.message).chat.id,
                                              message_id=replies[message_id][1],
