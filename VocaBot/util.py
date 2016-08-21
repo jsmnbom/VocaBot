@@ -129,3 +129,13 @@ def botan_track(f):
         return f(bot, update, *args, **kwargs)
 
     return wrapper
+
+
+# Used for bot callbacks to init the class they're in first and then call the method
+def init_first(f):
+    @wraps(f)
+    def wrapper(cls, bot, update, *args, **kwargs):
+        self = cls(bot, update)
+        return f(self, *args, **kwargs)
+
+    return classmethod(wrapper)
