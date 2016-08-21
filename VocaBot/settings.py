@@ -19,7 +19,7 @@ SETTINGS_TEXT = _("""<b>Settings for {bot_name}</b>
 (If enabled will only return original songs when searching using <code>!s</code> (inline) or <code>/song</code>)
 
 VocaDB language is the language used for song and artist titles.
-<i>User</i>&#8201;&#8201;language is used for private messages and inline requests whereas <i>chat</i>&#8201;&#8201;language is the language used in the current group chat.""")
+<i>User</i>&#8201;&#8201;settings are used for private messages and inline requests whereas <i>chat</i>&#8201;&#8201;settings are used in the current group chat.""")
 
 db = TinyDB(str(DB_FILE))
 User = Query()
