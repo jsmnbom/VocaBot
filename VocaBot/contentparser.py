@@ -160,7 +160,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                         text += _('\nInfo:') + ' ' + link
 
                 if inline:
-                    text += '<a href="q.qq{}">\xAD</a>'.format(link)
+                    text += '<a href="q.qq{}">\u2060</a>'.format(link)
 
             except OSError:
                 pass
