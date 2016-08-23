@@ -90,6 +90,8 @@ def add_update_handlers(dp):
     lyrics_handler = CallbackQueryHandler(info.lyrics, pattern=r'^(?:ly)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     pv_handler = CallbackQueryHandler(info.pv, pattern=r'^(?:pv)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     album_list_handler = CallbackQueryHandler(info.album_list, pattern=r'^(?:allist)\|(.*)$', pass_groups=True)
+    forwarded_handler = MessageHandler([Filters.text], info.forwarded, pass_update_queue=True)
+
     # Remove the spinning loading icon from buttons
     cancel_callback_query_handler = CallbackQueryHandler(cancel_callback_query)
 
@@ -123,6 +125,8 @@ def add_update_handlers(dp):
     dp.add_handler(lyrics_handler)
     dp.add_handler(pv_handler)
     dp.add_handler(album_list_handler)
+    dp.add_handler(forwarded_handler)
+
     dp.add_handler(cancel_callback_query_handler)
 
     dp.add_handler(song_direct_handler)

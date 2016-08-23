@@ -115,6 +115,14 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                                                          artist=entry['artistString'],
                                                          type=voca_db.trans(entry['discType'], album=True))
 
+                link = ''
+                if song:
+                    link = '/info_{}'.format(entry['id'])
+                elif artist:
+                    link = '/ar_{}'.format(entry['id'])
+                elif album:
+                    link = '/al_{}'.format(entry['id'])
+
                 if info:
                     text += '\n\n'
                     text += names_text(entry)
@@ -145,17 +153,14 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                                 text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
 
                     if inline and bot_name:
-                        text += _('For more features use non-inline mode: {bot_name}').format(bot_name=bot_name)
+                        text += _('For more features forward to or share with {bot_name}').format(bot_name=bot_name)
 
                 else:
                     if not inline:
-                        text += _('\nInfo:')
-                        if song:
-                            text += ' /info_{}'.format(entry['id'])
-                        if artist:
-                            text += ' /ar_{}'.format(entry['id'])
-                        if album:
-                            text += ' /al_{}'.format(entry['id'])
+                        text += _('\nInfo:') + ' ' + link
+
+                if inline:
+                    text += '<a href="q.qq{}">\xA0</a>'.format(link)
 
             except OSError:
                 pass

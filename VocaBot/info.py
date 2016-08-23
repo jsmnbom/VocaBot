@@ -1,3 +1,4 @@
+import re
 from telegram import ParseMode, InlineKeyboardButton, Emoji, InlineKeyboardMarkup
 from telegram.ext.dispatcher import run_async
 
@@ -194,3 +195,11 @@ def album_list(bot, update, groups, lang):
                       reply_markup=album_keyboard(data, inline=True) if inline else None,
                       parse_mode=ParseMode.HTML)
     bot.answer_callback_query(callback_query_id=update.callback_query.id)
+
+
+def forwarded(bot, update, update_queue):
+    for entity in update.message.entities:
+        if entity.type == 'text_link':
+            if entity.url.startswith('http://q.qq'):
+                update.message.text = entity.url[11:]
+                update_queue.put(update)
