@@ -104,7 +104,7 @@ def add_update_handlers(dp):
     inline_leftover_handler = InlineQueryHandler(inline.delegate)  # All who didn't match above regex
 
     cancel_handler = CommandHandler('cancel', text.cancel)
-    unknown_command_handler = RegexHandler(r'^/(.*)$', text.unknown)
+    unknown_command_handler = MessageHandler([Filters.command], text.unknown)
 
     # Add handlers to dispatcher
     dp.add_handler(browse_handler)
