@@ -67,9 +67,9 @@ def answer(bot, update, entries, offset='', switch_pm=None):
 
     bot.answerInlineQuery(update.inline_query.id,
                           results=results,
-                          cache_time=5 * 60,
+                          cache_time=INLINE_CACHE_TIME,
                           is_personal=True,
-                          next_offset=INLINE_CACHE_TIME,
+                          next_offset=offset,
                           switch_pm_text=switch_pm[0],
                           switch_pm_parameter=switch_pm[1])
 
