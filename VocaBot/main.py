@@ -23,6 +23,9 @@ logger = logging.getLogger(__name__)
 # TODO: Handle what stuff should run_async and what should not better
 # TODO: Maybe add a timeout to api and telegram requests too?
 # TODO: Better tracking than what botan can do (google analytics events?)
+# TODO: More album integrations
+# TODO: User login and ratings
+
 
 # noinspection SpellCheckingInspection
 def init_log():
