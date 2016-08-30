@@ -83,14 +83,12 @@ def delegate_handler(f):
     return wrapper
 
 
+@delegate_handler
 def delegate(bot, update):
-    if not update.inline_query.offset == '':
-        next_page(bot, update)
+    if update.inline_query.query == '':
+        top(bot, update)
     else:
-        if update.inline_query.query == '':
-            top(bot, update)
-        else:
-            search(bot, update)
+        search(bot, update)
 
 
 @run_async
