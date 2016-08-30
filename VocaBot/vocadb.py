@@ -104,6 +104,24 @@ class VocaDB(object):
 
         return page
 
+    def albums_by_song(self, song_id, lang, max_results=3):
+        payload = {'fields': 'Albums', 'lang': lang}
+
+        def page(i):
+            offset = (i - 1) * max_results
+            data = self.base('songs/{}'.format(song_id), payload)
+            data = data['albums']
+            if data:
+                m = offset + max_results
+                if m > len(data):
+                    m = offset + ((len(data) - offset) % max_results)
+                d = data[offset:m]
+                return d, ((i - 1) * max_results, len(data)), Context.derived
+            else:
+                return [], (0, 0), Context.derived
+
+        return page
+
     def song(self, song_id, fields, lang):
         payload = {'fields': fields, 'lang': lang}
         data = self.base('songs/{}'.format(song_id), payload)

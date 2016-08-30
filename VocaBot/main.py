@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 # TODO: Handle what stuff should run_async and what should not better
 # TODO: Maybe add a timeout to api and telegram requests too?
 # TODO: Better tracking than what botan can do (google analytics events?)
-# TODO: More album integrations
+# TODO: More album integrations 1/2
 # TODO: User login and ratings
 
 
@@ -56,6 +56,7 @@ def add_update_handlers(dp):
             CommandHandler('trending', browse.trending),
             RegexHandler(r'^/(dev)_(\d+)(@.+)?$', browse.derived, pass_groups=True),
             RegexHandler(r'^/(rel)_(\d+)(@.+)?$', browse.related, pass_groups=True),
+            RegexHandler(r'^/(albys)_(\d+)(@.+)?$', browse.albums_by_song, pass_groups=True),
             CallbackQueryHandler(browse.artist, pattern=r'^(arlist)\|(.*)\|(.*)$', pass_groups=True)
         ],
         states={

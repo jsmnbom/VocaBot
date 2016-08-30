@@ -131,6 +131,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                         if not inline:
                             text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(entry['id'])
                             text += _('<b>Related songs:</b>') + ' /rel_{}\n'.format(entry['id'])
+                            text += _('<b>Featured on albums:</b>') + ' /albys_{}\n'.format(entry['id'])
                             if 'originalVersionId' in entry:
                                 text += '\n'
                                 text += _('<b>Original song:</b>') + ' /info_{}\n'.format(entry['originalVersionId'])
