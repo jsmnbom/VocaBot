@@ -11,8 +11,8 @@ import inline
 import settings
 import text
 from constants import BrowseState
-from util import cancel_callback_query
 from text import cancel
+from util import cancel_callback_query
 from vocadb import voca_db
 
 logger = logging.getLogger(__name__)
@@ -38,6 +38,10 @@ def init_log():
 # noinspection PyUnusedLocal
 def error(bot, update, err):
     logger.warning('Update "%s" caused error "%s"' % (update, err))
+
+
+def forwarded_filter(message):
+    return any(entity.type == 'text_link' and entity.url.startswith('http://q.qq') for entity in message.entities)
 
 
 def add_update_handlers(dp):
@@ -93,7 +97,7 @@ def add_update_handlers(dp):
     lyrics_handler = CallbackQueryHandler(info.lyrics, pattern=r'^(?:ly)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     pv_handler = CallbackQueryHandler(info.pv, pattern=r'^(?:pv)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     album_list_handler = CallbackQueryHandler(info.album_list, pattern=r'^(?:allist)\|(.*)$', pass_groups=True)
-    forwarded_handler = MessageHandler([Filters.text], info.forwarded, pass_update_queue=True)
+    forwarded_handler = MessageHandler([forwarded_filter], info.forwarded, pass_update_queue=True)
 
     # Remove the spinning loading icon from buttons
     cancel_callback_query_handler = CallbackQueryHandler(cancel_callback_query)
@@ -110,6 +114,8 @@ def add_update_handlers(dp):
     unknown_command_handler = MessageHandler([Filters.command], text.unknown)
 
     # Add handlers to dispatcher
+    dp.add_handler(forwarded_handler) # Temp fix
+
     dp.add_handler(browse_handler)
     dp.add_handler(browse_page_handler)
     dp.add_handler(settings_handler)
@@ -128,7 +134,6 @@ def add_update_handlers(dp):
     dp.add_handler(lyrics_handler)
     dp.add_handler(pv_handler)
     dp.add_handler(album_list_handler)
-    dp.add_handler(forwarded_handler)
 
     dp.add_handler(cancel_callback_query_handler)
 
