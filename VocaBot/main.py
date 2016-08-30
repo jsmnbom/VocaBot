@@ -44,6 +44,10 @@ def forwarded_filter(message):
     return any(entity.type == 'text_link' and entity.url.startswith('http://q.qq') for entity in message.entities)
 
 
+def link_filter(message):
+    return any(entity.type == 'url' for entity in message.entities)
+
+
 def add_update_handlers(dp):
     browse_handler = ConversationHandler(
         entry_points=[
@@ -94,6 +98,7 @@ def add_update_handlers(dp):
     song_handler = RegexHandler(r'^/(?:info|s)_(\d+)(@.+)?$', info.song, pass_groups=True)
     artist_handler = RegexHandler(r'^/(?:ar)_(\d+)(@.+)?$', info.artist, pass_groups=True)
     album_handler = RegexHandler(r'^/(?:al)_(\d+)(@.+)?$', info.album, pass_groups=True)
+    song_by_pv_handler = MessageHandler([link_filter], info.song_by_pv)
 
     lyrics_handler = CallbackQueryHandler(info.lyrics, pattern=r'^(?:ly)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     pv_handler = CallbackQueryHandler(info.pv, pattern=r'^(?:pv)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
@@ -116,6 +121,7 @@ def add_update_handlers(dp):
 
     # Add handlers to dispatcher
     dp.add_handler(forwarded_handler)  # Has to be here otherwise BrowseState.page handler will eat it
+    dp.add_handler(song_by_pv_handler)  # Same deal here
 
     dp.add_handler(browse_handler)
     dp.add_handler(browse_page_handler)

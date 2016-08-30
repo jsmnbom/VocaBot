@@ -137,6 +137,11 @@ class VocaDB(object):
         data = self.base('albums/{}'.format(artist_id), payload)
         return data
 
+    def song_by_pv(self, service, pv_id, fields, lang):
+        payload = {'pvService': service, 'pvId': pv_id, 'fields': fields, 'lang': lang}
+        data = self.base('songs/byPv', payload, process=False)
+        return data
+
     def derived(self, song_id, lang, max_results=3):
         payload = {'fields': 'MainPicture', 'lang': lang}
 

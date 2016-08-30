@@ -1,4 +1,3 @@
-import re
 from telegram import ParseMode, InlineKeyboardButton, Emoji, InlineKeyboardMarkup
 from telegram.ext.dispatcher import run_async
 
@@ -6,7 +5,7 @@ from constants import PV_SERVICES
 from contentparser import content_parser, album_tracks, vocadb_url
 from i18n import _
 from settings import with_voca_lang, translate
-from util import edit_message_text
+from util import edit_message_text, pv_parser
 from vocadb import voca_db
 
 
@@ -195,6 +194,20 @@ def album_list(bot, update, groups, lang):
                       reply_markup=album_keyboard(data, inline=True) if inline else None,
                       parse_mode=ParseMode.HTML)
     bot.answer_callback_query(callback_query_id=update.callback_query.id)
+
+
+@run_async
+@translate
+@with_voca_lang
+def song_by_pv(bot, update, lang):
+    for entity in update.message.entities:
+        if entity.type == 'url':
+            pv = pv_parser(update.message.text)
+            if pv:
+                data = voca_db.song_by_pv(pv[0], pv[1],  'MainPicture, Names, Lyrics, Artists, PVs', lang=lang)
+                bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
+                                 reply_markup=song_keyboard(data), parse_mode=ParseMode.HTML,
+                                 disable_web_page_preview=True)
 
 
 def forwarded(bot, update, update_queue):

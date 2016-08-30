@@ -2,9 +2,35 @@ import os
 import re
 from functools import wraps
 
-from i18n import _
 from telegram.constants import MAX_MESSAGE_LENGTH
 from telegram.contrib.botan import Botan
+
+from i18n import _
+
+# Adapted from https://github.com/VocaDB/vocadb/blob/master/VocaDbModel/Service/VideoServices/VideoService.cs#L7
+PV_PATTERNS = {
+    'Youtube': [
+        r'youtu\.be/(?:(?:(\S+)\?)|(\S+))',
+        r'youtube\.com/watch\S*v=(\S{11})'
+    ],
+    'NicoNicoDouga': [
+        r'nicovideo\.jp/watch/([a-z]{2}\d{4,10})',
+        r'nicovideo\.jp/watch/(\d{6,12})',
+        r'nico\.ms/([a-z]{2}\d{4,10})',
+        r'nico\.ms/(\d{6,12})'
+    ],
+    'SoundCloud': [
+        r'soundcloud\.com/(\S+)'
+    ],
+    'Vimeo': [
+        r'vimeo\.com/(\d+)'
+    ],
+    'Piapro': [
+        r'piapro\.jp/t/([\w\-]+)',
+        r'piapro\.jp/content/([\w\-]+)'
+    ]
+}
+PV_PATTERNS = {k: [re.compile(s) for s in v] for k, v in PV_PATTERNS.items()}
 
 
 def cancel_callback_query(bot, update):
@@ -113,6 +139,14 @@ def non_phone(number):
     """Makes a number into a string that telegram (on android) will not interpret as a phone number."""
     number = str(number)
     return '\u2060'.join(number)
+
+
+def pv_parser(url):
+    for service, regexs in PV_PATTERNS.items():
+        for pattern in regexs:
+            match = pattern.search(url)
+            if match:
+                return service, ''.join(match.groups(''))
 
 
 botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
