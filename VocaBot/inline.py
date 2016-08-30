@@ -65,11 +65,22 @@ def answer(bot, update, entries, offset='', switch_pm=None):
 
     bot.answerInlineQuery(update.inline_query.id,
                           results=results,
-                          cache_time=5*60,
+                          cache_time=5 * 60,
                           is_personal=True,
                           next_offset=offset,
                           switch_pm_text=switch_pm[0],
                           switch_pm_parameter=switch_pm[1])
+
+
+def delegate_handler(f):
+    @wraps(f)
+    def wrapper(bot, update, *args, **kwargs):
+        if not update.inline_query.offset == '':
+            next_page(bot, update, *args, **kwargs)
+        else:
+            return f(bot, update, *args, **kwargs)
+
+    return wrapper
 
 
 def delegate(bot, update):
@@ -121,6 +132,7 @@ def page_wrapper(f):
 
 @run_async
 @page_wrapper
+@delegate_handler
 @translate
 @with_voca_lang
 def top(bot, update, lang):
@@ -129,6 +141,7 @@ def top(bot, update, lang):
 
 @run_async
 @page_wrapper
+@delegate_handler
 @translate
 @with_voca_lang
 def search(bot, update, lang):
@@ -138,6 +151,7 @@ def search(bot, update, lang):
 
 @run_async
 @page_wrapper
+@delegate_handler
 @translate
 @with_voca_lang
 def song_search(bot, update, groups, lang):
@@ -148,6 +162,7 @@ def song_search(bot, update, groups, lang):
 
 @run_async
 @page_wrapper
+@delegate_handler
 @translate
 @with_voca_lang
 def artist_search(bot, update, groups, lang):
@@ -157,6 +172,7 @@ def artist_search(bot, update, groups, lang):
 
 @run_async
 @page_wrapper
+@delegate_handler
 @translate
 @with_voca_lang
 def album_search(bot, update, groups, lang):
@@ -167,7 +183,7 @@ def album_search(bot, update, groups, lang):
 @run_async
 @translate
 @with_voca_lang
-def next_page(bot, update, lang):
+def next_page(bot, update, lang, *args, **kwargs):
     key, next_i = update.inline_query.offset.split('|')
     next_i = int(next_i)
     from_id = update.inline_query.from_user.id
