@@ -64,7 +64,7 @@ class VocaDB(object):
 
     def songs(self, query, lang, max_results=3, sort='FavoritedTimes', artist_id='', originals_only=False):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names, Artists', 'sort': sort,
-                   'maxResults': max_results, 'artistId': artist_id, 'preferAccurateMatches': 'true'}
+                   'maxResults': max_results, 'artistId': artist_id}
 
         if originals_only:
             payload.update({'songTypes': 'Original'})
@@ -80,7 +80,7 @@ class VocaDB(object):
 
     def artists(self, query, lang, max_results=3, sort='FollowerCount'):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names', 'sort': sort,
-                   'maxResults': max_results, 'preferAccurateMatches': 'true'}
+                   'maxResults': max_results}
 
         def page(i):
             payload.update({'start': (i - 1) * max_results})
@@ -93,7 +93,7 @@ class VocaDB(object):
 
     def albums(self, query, lang, max_results=3, sort='NameThenReleaseDate'):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names', 'sort': sort,
-                   'maxResults': max_results, 'preferAccurateMatches': 'true'}
+                   'maxResults': max_results}
 
         def page(i):
             payload.update({'start': (i - 1) * max_results})
