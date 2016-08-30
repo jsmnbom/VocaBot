@@ -18,4 +18,4 @@ SettingState = Enum('SettingState', 'settings interface voca')
 # noinspection PyArgumentList
 BrowseState = Enum('BrowseState', 'input input_song input_artist input_album page')
 # noinspection PyArgumentList
-Context = Enum('ContentErrors', 'search derived related')
+Context = Enum('ContentErrors', 'search derived related albums_by_song')

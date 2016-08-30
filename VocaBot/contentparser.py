@@ -180,6 +180,8 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
             text += _('No derived songs found.')
         elif context == Context.related:
             text += _('No related songs found.')
+        elif context == Context.albums_by_song:
+            text += _('Not featured on any albums.')
         else:
             text += _('Not found.')
 
