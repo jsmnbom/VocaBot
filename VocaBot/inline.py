@@ -1,3 +1,4 @@
+import os
 import uuid
 from functools import wraps
 from uuid import uuid4
@@ -13,6 +14,7 @@ from vocadb import voca_db
 
 ongoing = {}
 MAX_INLINE_RESULTS = 10
+INLINE_CACHE_TIME = int(os.getenv('VOCABOT_INLINE_CACHE_TIME_OVERWRITE', 5 * 60))
 
 
 def answer(bot, update, entries, offset='', switch_pm=None):
@@ -67,7 +69,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
                           results=results,
                           cache_time=5 * 60,
                           is_personal=True,
-                          next_offset=offset,
+                          next_offset=INLINE_CACHE_TIME,
                           switch_pm_text=switch_pm[0],
                           switch_pm_parameter=switch_pm[1])
 
