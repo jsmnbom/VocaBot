@@ -114,7 +114,7 @@ def add_update_handlers(dp):
     unknown_command_handler = MessageHandler([Filters.command], text.unknown)
 
     # Add handlers to dispatcher
-    dp.add_handler(forwarded_handler) # Temp fix
+    dp.add_handler(forwarded_handler)  # Has to be here otherwise BrowseState.page handler will eat it
 
     dp.add_handler(browse_handler)
     dp.add_handler(browse_page_handler)
