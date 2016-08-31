@@ -21,4 +21,4 @@ You can also run the bot yourself by following these steps:
 #Thanks to
 * [VocaDB.net](http://vocadb.net) ([VocaDB/vocadb](https://github.com/VocaDB/vocadb)) and all the amazing editors on there
 * [@Cawthorned](https://github.com/Cawthorned) for translations/personality modules (not currently implemented) and profile picture
-* and let's not forget [https://github.com/python-telegram-bot/python-telegram-bot](python-telegram-bot)
+* and let's not forget [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
