@@ -116,7 +116,7 @@ class VocaDB(object):
                 if m > len(data):
                     m = offset + ((len(data) - offset) % max_results)
                 d = data[offset:m]
-                return d, ((i - 1) * max_results, len(data)), Context.albums_by_songs
+                return d, ((i - 1) * max_results, len(data)), Context.albums_by_song
             else:
                 return [], (0, 0), Context.albums_by_song
 
