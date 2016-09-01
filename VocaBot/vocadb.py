@@ -91,9 +91,9 @@ class VocaDB(object):
 
         return page
 
-    def albums(self, query, lang, max_results=3, sort='NameThenReleaseDate'):
+    def albums(self, query, lang, max_results=3, sort='NameThenReleaseDate', artist_id=''):
         payload = {'query': query, 'lang': lang, 'fields': 'MainPicture, Names', 'sort': sort,
-                   'maxResults': max_results}
+                   'maxResults': max_results, 'artistId': artist_id}
 
         def page(i):
             payload.update({'start': (i - 1) * max_results})

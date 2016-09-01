@@ -45,11 +45,18 @@ def artist_keyboard(data, inline=False):
         return
     keyboard = []
     if not inline:
-        keyboard.append([])
-        keyboard[-1].append(InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular songs'),
-                                                 callback_data='arlist|p|{}'.format(data['id'])))
-        keyboard[-1].append(InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest songs'),
-                                                 callback_data='arlist|l|{}'.format(data['id'])))
+        keyboard.append([
+            InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular songs'),
+                                 callback_data='arlist|ps|{}'.format(data['id'])),
+            InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest songs'),
+                                 callback_data='arlist|ls|{}'.format(data['id']))
+        ])
+        keyboard.append([
+            InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular albums'),
+                                 callback_data='arlist|pa|{}'.format(data['id'])),
+            InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest albums'),
+                                 callback_data='arlist|la|{}'.format(data['id']))
+        ])
 
     keyboard.append([
         InlineKeyboardButton(text=_('Share artist'), switch_inline_query='!ar#{}'.format(data['id'])),
@@ -204,7 +211,7 @@ def song_by_pv(bot, update, lang):
         if entity.type == 'url':
             pv = pv_parser(update.message.text)
             if pv:
-                data = voca_db.song_by_pv(pv[0], pv[1],  'MainPicture, Names, Lyrics, Artists, PVs', lang=lang)
+                data = voca_db.song_by_pv(pv[0], pv[1], 'MainPicture, Names, Lyrics, Artists, PVs', lang=lang)
                 bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
                                  reply_markup=song_keyboard(data), parse_mode=ParseMode.HTML,
                                  disable_web_page_preview=True)

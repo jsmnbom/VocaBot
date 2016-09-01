@@ -203,10 +203,14 @@ def new(bot, update, lang):
 @translate
 @with_voca_lang
 def artist(bot, update, groups, lang):
-    if groups[1] == 'p':
+    if groups[1] == 'ps':
         return voca_db.songs('', lang, artist_id=groups[2]), None
-    else:
+    elif groups[1] == 'ls':
         return voca_db.songs('', lang, artist_id=groups[2], sort='AdditionDate'), None
+    elif groups[1] == 'pa':
+        return voca_db.albums('', lang, artist_id=groups[2], sort='RatingAverage'), None
+    elif groups[1] == 'la':
+        return voca_db.albums('', lang, artist_id=groups[2], sort='ReleaseDate'), None
 
 
 @page_wrapper
