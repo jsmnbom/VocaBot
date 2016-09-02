@@ -194,7 +194,7 @@ def album_list(bot, update, groups, lang):
     if inline:
         text = content_parser(data, info=True, inline=True, bot_name=bot.name)
     text += '\n\n'
-    text += album_tracks(data, inline=inline, bot_name=bot.name)
+    text += album_tracks(data, inline=inline)
 
     edit_message_text(bot, update, send_if_possible=True,
                       text=text,

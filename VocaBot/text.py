@@ -1,12 +1,13 @@
 import logging
 import re
+from urllib.parse import unquote
 
 from telegram import ParseMode
+from telegram.ext import ConversationHandler
 
 from constants import __version__, OWNER_IDS
 from i18n import _
 from settings import translate
-from telegram.ext import ConversationHandler
 from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
@@ -57,18 +58,25 @@ Write /help to see a list of non-inline-commands.""")
 
 @translate
 @botan_track
-def start(bot, update, args):
+def start(bot, update, args, update_queue):
     if len(args) == 1 and args[0] == 'help_inline':
         bot.send_message(chat_id=update.message.chat.id,
                          text=BASE_START_TEXT.format(user_name=update.message.from_user.first_name,
                                                      bot_name=bot.name) + INLINE_HELP_TEXT.format(bot_name=bot.name),
                          disable_web_page_preview=True,
                          parse_mode=ParseMode.HTML)
-    else:
-        bot.send_message(chat_id=update.message.chat.id,
-                         text=BASE_START_TEXT.format(user_name=update.message.from_user.first_name,
-                                                     bot_name=bot.name) + START_TEXT,
-                         disable_web_page_preview=True)
+        return
+    elif len(args) > 0:
+        # Webogram doesn't urldecode/unquote
+        args = unquote(' '.join(args)).split(' ')
+        if len(args) == 2 and args[0] == 'cmd':
+            update.message.text = args[1]
+            update_queue.put(update)
+            return
+    bot.send_message(chat_id=update.message.chat.id,
+                     text=BASE_START_TEXT.format(user_name=update.message.from_user.first_name,
+                                                 bot_name=bot.name) + START_TEXT,
+                     disable_web_page_preview=True)
 
 
 @translate

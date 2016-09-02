@@ -87,7 +87,7 @@ def add_update_handlers(dp):
         allow_reentry=True
     )
 
-    start_handler = CommandHandler('start', text.start, pass_args=True)
+    start_handler = CommandHandler('start', text.start, pass_args=True, pass_update_queue=True)
     help_handler = CommandHandler('help', text.send_help)
     inline_handler = CommandHandler('inline', text.inline)
     about_handler = CommandHandler('about', text.about)

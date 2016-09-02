@@ -29,7 +29,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
         except KeyError:
             thumb = ''
 
-        content = content_parser(entry, info=True, inline=True, bot_name=bot.name)
+        content = content_parser(entry, info=True, inline=True, bot_name=bot.username)
         if 'songType' in entry:
             description = _('{artist}\n{type} song').format(artist=entry['artistString'], type=entry['songType'])
             if 'favoritedTimes' in entry:

@@ -154,7 +154,8 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                                 text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
 
                     if inline and bot_name:
-                        text += _('For more features forward to or share with {bot_name}').format(bot_name=bot_name)
+                        text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
+                                  'Click for more features.</a>').format(bot_name=bot_name, link=link)
 
                 else:
                     if not inline:
@@ -188,7 +189,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
     return text
 
 
-def album_tracks(album, inline, bot_name):
+def album_tracks(album, inline):
     text = _('<b>Tracks')
     if not inline:
         text += _(' on {album_name} by {album_artist}</b>\n').format(album_name=album['name'],
@@ -212,8 +213,4 @@ def album_tracks(album, inline, bot_name):
                 #     text += ' ' + disc['name']
             text += ':</i>\n'
         text += content_parser(tracks, inline=inline)
-
-    if inline and bot_name:
-        text += '\n\n' + _('For more features use non-inline mode: {bot_name}').format(bot_name=bot_name)
-
     return text
