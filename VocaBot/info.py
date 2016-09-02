@@ -218,8 +218,9 @@ def song_by_pv(bot, update, lang):
 
 
 def forwarded(bot, update, update_queue):
-    for entity in update.message.entities:
+    for i, entity in enumerate(update.message.entities[:]):
         if entity.type == 'text_link':
             if entity.url.startswith('http://q.qq'):
                 update.message.text = entity.url[11:]
+                del update.message.entities[i]
                 update_queue.put(update)
