@@ -2,8 +2,7 @@ from collections import OrderedDict
 from functools import wraps
 
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import CallbackQueryHandler
-from telegram.ext import ConversationHandler
+from telegram.ext import Job
 from tinydb import TinyDB, Query
 
 from constants import DB_FILE
@@ -32,7 +31,6 @@ VOCADB_LANGUAGES = OrderedDict((('Default', _('Default')),
 ON_OFF = OrderedDict((('True', _('Enabled')),
                       ('False', _('Disabled'))))
 
-settings_state = 42
 default_settings = {}
 settings = OrderedDict()
 
@@ -88,11 +86,12 @@ def translate(f):
 
 
 @translate
-def start(bot, update):
+def start(bot, update, edit=False, chat_id=None, message_id=None):
     global settings
     user = get_user(bot, update)
     # noinspection PyTypeChecker
-    buttons = [InlineKeyboardButton(setting['button_text'], callback_data=name) for name, setting in settings.items()]
+    buttons = [InlineKeyboardButton(setting['button_text'], callback_data='set|{}'.format(name)) for
+               name, setting in settings.items()]
     replace = {}
     for name, setting in settings.items():
         # noinspection PyTypeChecker
@@ -103,69 +102,77 @@ def start(bot, update):
     replace.update({'bot_name': bot.name,
                     'type': _('User') if update.message.chat.type == 'private' else _('Chat')})
     text = SETTINGS_TEXT.format(**replace)
-    bot.send_message(chat_id=update.message.chat.id,
-                     text=text,
-                     reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
-                     parse_mode=ParseMode.HTML)
-
-    return settings_state
-
-
-def change_setting(name):
-    @translate
-    def changer(bot, update):
-        user = get_user(bot, update)
-        iden = id_from_update(update)
-
-        if update.callback_query.data not in settings[name]['trans']:
-            bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
-            return name
-
-        try:
-            old = settings[name]['trans'][user[name]]
-        except KeyError:
-            old = _('Corrupted data...')
-        db.update({name: update.callback_query.data}, User.id == iden)
-        new = settings[name]['trans'][update.callback_query.data]
-
-        msg_type = _('User') if update.callback_query.message.chat.type == 'private' else _('Chat')
-        text = _("<i>{type}</i>&#8201;&#8201;{nice_name} changed from <code>{old}</code> to "
-                 "<code>{new}</code>. Please wait up to 5 minutes for all changes to take effect.")
-        text = text.format(type=msg_type, nice_name=settings[name]['nice_name'], old=old, new=new)
-        bot.edit_message_text(chat_id=update.callback_query.message.chat.id,
-                              message_id=update.callback_query.message.message_id,
+    if edit:
+        bot.edit_message_text(chat_id=chat_id,
+                              message_id=message_id,
                               text=text,
+                              reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
                               parse_mode=ParseMode.HTML)
-
-        return ConversationHandler.END
-
-    return changer
+    else:
+        bot.send_message(chat_id=update.message.chat.id,
+                         text=text,
+                         reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
+                         parse_mode=ParseMode.HTML)
 
 
 @translate
-def send_changer(bot, update):
+def change_setting(bot, update, setting, data, job_queue):
     user = get_user(bot, update)
-    if update.callback_query.data in user:
+    iden = id_from_update(update)
+
+    if data not in settings[setting]['trans']:
+        bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
+        return setting
+
+    try:
+        old = settings[setting]['trans'][user[setting]]
+    except KeyError:
+        old = _('Corrupted data...')
+    db.update({setting: data}, User.id == iden)
+    new = settings[setting]['trans'][data]
+
+    msg_type = _('User') if update.callback_query.message.chat.type == 'private' else _('Chat')
+    text = _("<i>{type}</i>&#8201;&#8201;{nice_name} changed from <code>{old}</code> to "
+             "<code>{new}</code>. Please wait up to 5 minutes for all changes to take effect.")
+    text = text.format(type=msg_type, nice_name=settings[setting]['nice_name'], old=old, new=new)
+    message = bot.edit_message_text(chat_id=update.callback_query.message.chat.id,
+                                    message_id=update.callback_query.message.message_id,
+                                    text=text,
+                                    parse_mode=ParseMode.HTML)
+
+    def callback(b, j):
+        update.message = update.callback_query.message
+        update.message.chat, update.message.from_user = update.message.from_user, update.message.chat
+        start(bot, update, edit=True, chat_id=message.chat_id, message_id=message.message_id)
+
+    job = Job(callback=callback, interval=5, repeat=False)
+    job_queue.put(job)
+
+
+@translate
+def send_changer(bot, update, setting):
+    user = get_user(bot, update)
+    if setting in user:
         global settings
-        keyboard = [InlineKeyboardButton(button_text, callback_data=button_id) for button_id, button_text in
-                    settings[update.callback_query.data]['trans'].items()]
+        keyboard = [InlineKeyboardButton(button_text, callback_data='set|{}|{}'.format(setting, button_id)) for
+                    button_id, button_text in settings[setting]['trans'].items()]
         keyboard = InlineKeyboardMarkup([keyboard])
         bot.edit_message_text(chat_id=update.callback_query.message.chat.id,
                               message_id=update.callback_query.message.message_id,
-                              text=settings[update.callback_query.data]['msg'],
+                              text=settings[setting]['msg'],
                               reply_markup=keyboard,
                               parse_mode=ParseMode.HTML)
-
-        return update.callback_query.data
     else:
         bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
 
 
-def get_states():
-    global settings
-    states = {name: [CallbackQueryHandler(change_setting(name))] for name, setting in settings.items()}
-    states[settings_state] = [CallbackQueryHandler(send_changer)]
-    return states
+def delegate(bot, update, groups, job_queue):
+    if groups[1]:
+        change_setting(bot, update, groups[0], groups[1], job_queue)
+    elif groups[0]:
+        send_changer(bot, update, groups[0])
+    else:
+        start(bot, update)
 
 
 add_setting('interface', _('interface language'),

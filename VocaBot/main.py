@@ -78,21 +78,13 @@ def add_update_handlers(dp):
     # Was inside BrowseState.page state, but we always want paging buttons to work.. even in semi old messages
     browse_page_handler = CallbackQueryHandler(browse.next_page, pattern=r'^(page)\|(.+)\|(.+)$', pass_groups=True)
 
-    settings_handler = ConversationHandler(
-        entry_points=[
-            CommandHandler('settings', settings.start)
-        ],
-        states=settings.get_states(),
-        fallbacks=[CommandHandler('cancel', cancel)],
-        allow_reentry=True
-    )
-
     start_handler = CommandHandler('start', text.start, pass_args=True, pass_update_queue=True)
     help_handler = CommandHandler('help', text.send_help)
     inline_handler = CommandHandler('inline', text.inline)
     about_handler = CommandHandler('about', text.about)
     privacy_handler = CommandHandler('privacy', text.privacy)
     kill_handler = CommandHandler('kill', text.kill)
+    settings_handler = CommandHandler('settings', settings.start)
 
     # TODO: Handle edited_message in these too? (would be nice for eg. /artist pinocchio)
     song_handler = RegexHandler(r'^/(?:info|s)_(\d+)(@.+)?$', info.song, pass_groups=True)
@@ -104,6 +96,8 @@ def add_update_handlers(dp):
     pv_handler = CallbackQueryHandler(info.pv, pattern=r'^(?:pv)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     album_list_handler = CallbackQueryHandler(info.album_list, pattern=r'^(?:allist)\|(.*)$', pass_groups=True)
     forwarded_handler = MessageHandler([forwarded_filter], info.forwarded, pass_update_queue=True)
+    set_handler = CallbackQueryHandler(settings.delegate, pattern='^(?:set)\|([^\|]*)\|?([^\|]*)?$',
+                                       pass_groups=True, pass_job_queue=True)
 
     # Remove the spinning loading icon from buttons
     cancel_callback_query_handler = CallbackQueryHandler(cancel_callback_query)
@@ -125,7 +119,6 @@ def add_update_handlers(dp):
 
     dp.add_handler(browse_handler)
     dp.add_handler(browse_page_handler)
-    dp.add_handler(settings_handler)
 
     dp.add_handler(start_handler)
     dp.add_handler(help_handler)
@@ -133,6 +126,7 @@ def add_update_handlers(dp):
     dp.add_handler(about_handler)
     dp.add_handler(privacy_handler)
     dp.add_handler(kill_handler)
+    dp.add_handler(settings_handler)
 
     dp.add_handler(song_handler)
     dp.add_handler(artist_handler)
@@ -141,6 +135,7 @@ def add_update_handlers(dp):
     dp.add_handler(lyrics_handler)
     dp.add_handler(pv_handler)
     dp.add_handler(album_list_handler)
+    dp.add_handler(set_handler)
 
     dp.add_handler(cancel_callback_query_handler)
 

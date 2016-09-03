@@ -63,7 +63,7 @@ def extract_user_and_chat(update):
 def id_from_update(update):
     user, chat = extract_user_and_chat(update)
     if update.message or update.edited_message:
-        if chat.type == 'private':
+        if chat.type == 'private' or chat.type == '':
             return user.id
         else:
             return chat.id
