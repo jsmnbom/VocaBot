@@ -137,7 +137,7 @@ def lyrics(bot, update, groups, lang):
                 if lyric['id'] == int(groups[1]):
                     text = ''
                     if inline:
-                        text = content_parser(data, info=True, inline=True, bot_name=bot.name)
+                        text = content_parser(data, info=True, inline=True, bot_name=bot.username)
                     text += '\n\n' + Emoji.SCROLL + _('<b>{lang} lyrics for {song} by {artist}</b>\n'
                                                       '{lyrics}').format(song=data['name'],
                                                                          artist=data['artistString'],
@@ -165,7 +165,7 @@ def pv(bot, update, groups, lang):
         if pv_info['service'] == groups[1]:
             text = ''
             if inline:
-                text = content_parser(data, info=True, inline=True, bot_name=bot.name)
+                text = content_parser(data, info=True, inline=True, bot_name=bot.username)
             text += '\n\n' + Emoji.MOVIE_CAMERA
             text += _('<b>{service} PV for {song} by {artist}</b>\n'
                       'PV Title:\n{name}\n{url}').format(song=data['name'],
@@ -192,7 +192,7 @@ def album_list(bot, update, groups, lang):
 
     text = ''
     if inline:
-        text = content_parser(data, info=True, inline=True, bot_name=bot.name)
+        text = content_parser(data, info=True, inline=True, bot_name=bot.username)
     text += '\n\n'
     text += album_tracks(data, inline=inline)
 
