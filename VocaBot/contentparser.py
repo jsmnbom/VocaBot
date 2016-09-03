@@ -189,8 +189,8 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 def album_tracks(album, inline):
     text = _('<b>Tracks')
     if not inline:
-        text += _(' on {album_name} by {album_artist}</b>\n').format(album_name=album['name'],
-                                                                     album_artist=album['artistString'])
+        text += ' ' + _('on {album_name} by {album_artist}</b>\n').format(album_name=album['name'],
+                                                                          album_artist=album['artistString'])
     else:
         text += ':</b>\n'
 
