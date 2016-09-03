@@ -153,16 +153,13 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                                 # i18n? .-.
                                 text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
 
-                    if inline and bot_name:
-                        text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
-                                  'Click for more features.</a>').format(bot_name=bot_name, link=link)
-
                 else:
                     if not inline:
                         text += _('\nInfo:') + ' ' + link
 
-                if inline:
-                    text += '<a href="q.qq{}">\u2060</a>'.format(link)
+                if inline and bot_name:
+                    text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
+                              'Click for more features.</a>').format(bot_name=bot_name, link=link)
 
             except OSError:
                 pass

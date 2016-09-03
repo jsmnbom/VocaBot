@@ -41,7 +41,8 @@ def error(bot, update, err):
 
 
 def forwarded_filter(message):
-    return any(entity.type == 'text_link' and entity.url.startswith('http://q.qq') for entity in message.entities)
+    return any(entity.type == 'text_link' and 'https://telegram.me/' in entity.url and '?start=cmd' in entity.url for
+               entity in message.entities)
 
 
 def link_filter(message):

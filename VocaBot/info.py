@@ -1,3 +1,5 @@
+from urllib.parse import unquote
+
 from telegram import ParseMode, InlineKeyboardButton, Emoji, InlineKeyboardMarkup
 from telegram.ext.dispatcher import run_async
 
@@ -218,9 +220,10 @@ def song_by_pv(bot, update, lang):
 
 
 def forwarded(bot, update, update_queue):
+    url = 'https://telegram.me/{}?start=cmd'.format(bot.username)
     for i, entity in enumerate(update.message.entities[:]):
         if entity.type == 'text_link':
-            if entity.url.startswith('http://q.qq'):
-                update.message.text = entity.url[11:]
+            if entity.url.startswith(url):
+                update.message.text = unquote(entity.url)[len(url)+1:]
                 del update.message.entities[i]
                 update_queue.put(update)
