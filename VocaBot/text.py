@@ -17,7 +17,7 @@ I use VocaDB.net to find all your favourite Vocaloid songs, artists and albums.
 START_TEXT = _("""Write /help to see a list of commands.""")
 
 ABOUT_TEXT = _("""<b>About vocaloid</b>
-For a detailed explanation of everything vocaloid please see <a href="http://vocadb.net/Help#Vocaloid">this article on VocaDB.net</a> (click on the vocaloid tab at the top).
+For a detailed explanation of everything vocaloid please see <a href="http://vocadb.net/Help#aboutvocaloid">this article on VocaDB.net</a>.
 
 <b>About this bot</b>
 <i>{bot_name} version {version}</i>
