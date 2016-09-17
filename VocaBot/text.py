@@ -16,7 +16,11 @@ I use VocaDB.net to find all your favourite Vocaloid songs, artists and albums.
 
 START_TEXT = _("""Write /help to see a list of commands.""")
 
-ABOUT_TEXT = _("""<b>{bot_name} version {version}</b>
+ABOUT_TEXT = _("""<b>About vocaloid</b>
+For a detailed explanation of everything vocaloid please see <a href="http://vocadb.net/Help#Vocaloid">this article on VocaDB.net</a> (click on the vocaloid tab at the top).
+
+<b>About this bot.</b>
+<i>{bot_name} version {version}</i>
 Created by @bomjacob.
 Dialogue and profile picture by @Awthornecay.
 I use data from VocaDB.net. Click <a href="http://wiki.vocadb.net/wiki/29/license">here</a> for licensing information.
@@ -37,7 +41,7 @@ HELP_TEXT = _("""/search - search for a vocaloid song, artist or album
 /new - browse the newest song additions
 /trending - browse trending songs
 /cancel - cancel current operation
-/about - display information about my creators and VocaDB
+/about - display info about my creators, vocaloid, and VocaDB
 /privacy - display privacy notices
 /settings - display or change language settings
 /inline - display information and help about inline mode
@@ -83,7 +87,7 @@ def start(bot, update, args, update_queue):
 @botan_track
 def about(bot, update):
     bot.send_message(chat_id=update.message.chat.id, text=ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
-                     parse_mode=ParseMode.HTML)
+                     parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
