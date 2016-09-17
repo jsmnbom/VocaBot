@@ -65,9 +65,10 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
         for i, entry in enumerate(entries):
             # Check if part of a disc listing
             track_number = None
-            if 'song' in entry:
+            if 'trackNumber' in entry:
                 track_number = entry['trackNumber']
-                entry = entry['song']
+                if 'song' in entry:
+                    entry = entry['song']
 
             song, album, artist = False, False, False
             if 'songType' in entry:
@@ -115,51 +116,58 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                                                          artist=entry['artistString'],
                                                          type=voca_db.trans(entry['discType'], album=True))
 
-                link = ''
-                if song:
-                    link = '/info_{}'.format(entry['id'])
-                elif artist:
-                    link = '/ar_{}'.format(entry['id'])
-                elif album:
-                    link = '/al_{}'.format(entry['id'])
-
-                if info:
-                    text += '\n\n'
-                    text += names_text(entry)
-                    text += '\n'
-                    if song:
-                        if not inline:
-                            text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(entry['id'])
-                            text += _('<b>Related songs:</b>') + ' /rel_{}\n'.format(entry['id'])
-                            text += _('<b>Featured on albums:</b>') + ' /albys_{}\n'.format(entry['id'])
-                            if 'originalVersionId' in entry:
-                                text += '\n'
-                                text += _('<b>Original song:</b>') + ' /info_{}\n'.format(entry['originalVersionId'])
-                            text += '\n'
-                            text += artists_text(entry, inline)
-
-                        if 'pvServices' in entry:
-                            if entry['pvServices'] == 'Nothing':
-                                text += _('\nNo promotional videos found')
-
-                    if artist:
-                        if not inline:
-                            if 'baseVoicebank' in entry:
-                                text += _('<b>Base voicebank:</b>') + ' /a_{}\n\n'.format(entry['baseVoicebank']['id'])
-
-                    if album:
-                        if 'releaseDate' in entry:
-                            if not entry['releaseDate']['isEmpty']:
-                                # i18n? .-.
-                                text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
-
+                if (not (song or artist or album)) and track_number:
+                    text += _('<code>{track_number})</code> <b>{name}</b>').format(
+                        track_number=track_number,
+                        name=entry['name'])
                 else:
-                    if not inline:
-                        text += _('\nInfo:') + ' ' + link
+                    link = ''
+                    if song:
+                        link = '/info_{}'.format(entry['id'])
+                    elif artist:
+                        link = '/ar_{}'.format(entry['id'])
+                    elif album:
+                        link = '/al_{}'.format(entry['id'])
 
-                if inline and bot_name:
-                    text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
-                              'Click for more features.</a>').format(bot_name=bot_name, link=link)
+                    if info:
+                        text += '\n\n'
+                        text += names_text(entry)
+                        text += '\n'
+                        if song:
+                            if not inline:
+                                text += _('<b>Derived songs:</b>') + ' /dev_{}\n'.format(entry['id'])
+                                text += _('<b>Related songs:</b>') + ' /rel_{}\n'.format(entry['id'])
+                                text += _('<b>Featured on albums:</b>') + ' /albys_{}\n'.format(entry['id'])
+                                if 'originalVersionId' in entry:
+                                    text += '\n'
+                                    text += _('<b>Original song:</b>') + ' /info_{}\n'.format(
+                                        entry['originalVersionId'])
+                                text += '\n'
+                                text += artists_text(entry, inline)
+
+                            if 'pvServices' in entry:
+                                if entry['pvServices'] == 'Nothing':
+                                    text += _('\nNo promotional videos found')
+
+                        if artist:
+                            if not inline:
+                                if 'baseVoicebank' in entry:
+                                    text += _('<b>Base voicebank:</b>') + ' /a_{}\n\n'.format(
+                                        entry['baseVoicebank']['id'])
+
+                        if album:
+                            if 'releaseDate' in entry:
+                                if not entry['releaseDate']['isEmpty']:
+                                    # i18n? .-.
+                                    text += _('Release date: {date}\n\n').format(date=entry['releaseDate']['formatted'])
+
+                    else:
+                        if not inline:
+                            text += _('\nInfo:') + ' ' + link
+
+                    if inline and bot_name:
+                        text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
+                                  'Click for more features.</a>').format(bot_name=bot_name, link=link)
 
             except OSError:
                 pass
@@ -200,14 +208,22 @@ def album_tracks(album, inline):
 
     for i, (disc_number, tracks) in enumerate(discs.items()):
         if len(discs) > 1:
+            name = ''
             if not i == 0:
                 text += '\n\n'
-            text += _('<i>Disc {disc_number}').format(disc_number=disc_number)
             if 'discs' in album and album['discs']:
-                disc = [disc for disc in album['discs'] if disc['discNumber'] == disc_number]
-                # Can't find an album to test this on:
-                # if 'name' in disc:
-                #     text += ' ' + disc['name']
+                try:
+                    disc = [disc for disc in album['discs'] if disc['discNumber'] == disc_number][0]
+                    # Can't find an album to test this on:
+                    if 'name' in disc:
+                        name = disc['name']
+                    if 'mediaType' in disc:
+                        text += (Emoji.OPTICAL_DISC if disc['mediaType'] == 'Audio' else '🎞') + ' '
+                except IndexError:
+                    pass
+            text += _('<i>Disc {disc_number}').format(disc_number=disc_number)
+            if name:
+                text += ' ({})'.format(name)
             text += ':</i>\n'
         text += content_parser(tracks, inline=inline)
     return text
