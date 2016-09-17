@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 # TODO: Better tracking than what botan can do (google analytics events?)
 # TODO: More album integrations 1/2
 # TODO: User login and ratings
+# TODO: Unify emoji (either use the emoji package or just have them in code)
 
 
 # noinspection SpellCheckingInspection
