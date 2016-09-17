@@ -19,7 +19,7 @@ START_TEXT = _("""Write /help to see a list of commands.""")
 ABOUT_TEXT = _("""<b>About vocaloid</b>
 For a detailed explanation of everything vocaloid please see <a href="http://vocadb.net/Help#Vocaloid">this article on VocaDB.net</a> (click on the vocaloid tab at the top).
 
-<b>About this bot.</b>
+<b>About this bot</b>
 <i>{bot_name} version {version}</i>
 Created by @bomjacob.
 Dialogue and profile picture by @Awthornecay.
@@ -48,7 +48,10 @@ HELP_TEXT = _("""/search - search for a vocaloid song, artist or album
 /help - display this message
 
 When searching you can use either English, Romaji or Japanese.
-You can also use my inline version by typing {bot_name} in a chat.""")
+You can also use my inline version by typing {bot_name} in a chat.
+
+You can also search for a song by sending me a link to a PV of it. This will require you to append my username to the message if in a group chat. Example:
+<code>http://youtu.be/ll0arX6EZaw {bot_name}</code>""")
 
 INLINE_HELP_TEXT = _("""You can use my inline version by typing {bot_name} followed by any vocaloid song query.
 By default I will search songs, artists, and albums. If you want to limit me to songs, artists, or albums, prepend your query by <code>!s</code>, <code>!ar</code>, or <code>!al</code> respectively.
@@ -100,7 +103,8 @@ def privacy(bot, update):
 @translate
 @botan_track
 def send_help(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text=HELP_TEXT.format(bot_name=bot.name))
+    bot.send_message(chat_id=update.message.chat.id, text=HELP_TEXT.format(bot_name=bot.name),
+                     parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
