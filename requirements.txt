@@ -6,5 +6,5 @@ requests==2.10.0
 tinydb==3.2.1
 ujson==1.35
 urllib3==1.16
-iso639==0.1.14
+iso639==0.1.4
 git+https://github.com/python-telegram-bot/python-telegram-bot.git@f2f62423bae07b2407c89813515ee630de188d58#egg=python-telegram-bot
