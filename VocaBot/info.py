@@ -7,7 +7,7 @@ from constants import PV_SERVICES
 from contentparser import content_parser, album_tracks, vocadb_url
 from i18n import _
 from settings import with_voca_lang, translate
-from util import edit_message_text, pv_parser
+from util import edit_message_text, pv_parser, get_lyric_lang
 from vocadb import voca_db
 
 
@@ -118,7 +118,7 @@ def lyrics(bot, update, groups, lang):
     data = voca_db.song(groups[0], lang=lang, fields='MainPicture, Names, Lyrics, Artists, PVs')
 
     reply_keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton(lyric['language'],
+        [InlineKeyboardButton(get_lyric_lang(lyric['translationType'], lyric['cultureCode']),
                               callback_data='ly|{}|{}'.format(data['id'],
                                                               lyric['id'])) for lyric in data['lyrics']]])
 
@@ -140,11 +140,13 @@ def lyrics(bot, update, groups, lang):
                     text = ''
                     if inline:
                         text = content_parser(data, info=True, inline=True, bot_name=bot.username)
-                    text += '\n\n' + Emoji.SCROLL + _('<b>{lang} lyrics for {song} by {artist}</b>\n'
-                                                      '{lyrics}').format(song=data['name'],
-                                                                         artist=data['artistString'],
-                                                                         lang=lyric['language'],
-                                                                         lyrics=lyric['value'])
+                    text += '\n\n' + Emoji.SCROLL
+                    text += _('<b>{lang} lyrics for {song} by {artist}</b>\n'
+                              '{lyrics}').format(song=data['name'],
+                                                 artist=data['artistString'],
+                                                 lang=get_lyric_lang(lyric['translationType'], lyric['cultureCode'],
+                                                                     long=True),
+                                                 lyrics=lyric['value'])
                     edit_message_text(bot, update,
                                       text=text,
                                       reply_markup=song_keyboard(data, inline=True) if inline else reply_keyboard,
@@ -224,6 +226,6 @@ def forwarded(bot, update, update_queue):
     for i, entity in enumerate(update.message.entities[:]):
         if entity.type == 'text_link':
             if entity.url.startswith(url):
-                update.message.text = unquote(entity.url)[len(url)+1:]
+                update.message.text = unquote(entity.url)[len(url) + 1:]
                 del update.message.entities[i]
                 update_queue.put(update)

@@ -2,6 +2,7 @@ import os
 import re
 from functools import wraps
 
+import iso639
 from telegram.constants import MAX_MESSAGE_LENGTH
 from telegram.contrib.botan import Botan
 
@@ -147,6 +148,17 @@ def pv_parser(url):
             match = pattern.search(url)
             if match:
                 return service, ''.join(match.groups(''))
+
+
+def get_lyric_lang(trans_type, code, long=False):
+    try:
+        if long:
+            return '{} ({})'.format(iso639.to_name(code), trans_type)
+
+        else:
+            return '[{}] {}'.format(trans_type[:1], iso639.to_name(code))
+    except ValueError:
+        return trans_type
 
 
 botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
