@@ -24,7 +24,8 @@ For a detailed explanation of everything vocaloid please see <a href="http://voc
 Created by @bomjacob.
 Dialogue and profile picture by @Awthornecay.
 I use data from VocaDB.net. Click <a href="http://wiki.vocadb.net/wiki/29/license">here</a> for licensing information.
-My code is open-source and available at <a href="https://github.com/bomjacob/VocaBot">github</a>.""")
+My code is open-source and available at <a href="https://github.com/bomjacob/VocaBot">github</a>.
+If you like this bot, please consider giving a 5 star rating on <a href="https://storebot.me/bot/vocadbbot">storebot</a>""")
 
 # noinspection SpellCheckingInspection
 PRIVACY_TEXT = _("""<b>Privacy information for {bot_name}</b>
