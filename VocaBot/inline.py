@@ -65,13 +65,12 @@ def answer(bot, update, entries, offset='', switch_pm=None):
                 reply_markup=album_keyboard(entry, inline=True)
             ))
 
-    bot.answerInlineQuery(update.inline_query.id,
-                          results=results,
-                          cache_time=INLINE_CACHE_TIME,
-                          is_personal=True,
-                          next_offset=offset,
-                          switch_pm_text=switch_pm[0],
-                          switch_pm_parameter=switch_pm[1])
+    update.inline_query.answer(results=results,
+                               cache_time=INLINE_CACHE_TIME,
+                               is_personal=True,
+                               next_offset=offset,
+                               switch_pm_text=switch_pm[0],
+                               switch_pm_parameter=switch_pm[1])
 
 
 def delegate_handler(f):

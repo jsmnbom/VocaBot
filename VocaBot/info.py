@@ -89,8 +89,8 @@ def album_keyboard(data, inline=False):
 @with_voca_lang
 def song(bot, update, groups, lang):
     data = voca_db.song(groups[0], 'MainPicture, Names, Lyrics, Artists, PVs', lang=lang)
-    bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
-                     reply_markup=song_keyboard(data), parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(content_parser(data, info=True), reply_markup=song_keyboard(data),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @run_async
@@ -98,8 +98,8 @@ def song(bot, update, groups, lang):
 @with_voca_lang
 def artist(bot, update, groups, lang):
     data = voca_db.artist(groups[0], 'MainPicture, Names', lang=lang)
-    bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
-                     reply_markup=artist_keyboard(data), parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(content_parser(data, info=True), reply_markup=artist_keyboard(data),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @run_async
@@ -107,8 +107,8 @@ def artist(bot, update, groups, lang):
 @with_voca_lang
 def album(bot, update, groups, lang):
     data = voca_db.album(groups[0], 'MainPicture, Names, Discs, Tracks', lang=lang)
-    bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
-                     reply_markup=album_keyboard(data), parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(content_parser(data, info=True), reply_markup=album_keyboard(data),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @run_async
@@ -133,7 +133,7 @@ def lyrics(bot, update, groups, lang):
                               text=text,
                               reply_markup=reply_keyboard,
                               parse_mode=ParseMode.HTML)
-            bot.answer_callback_query(callback_query_id=update.callback_query.id)
+            update.callback_query.answer()
         else:
             for lyric in data['lyrics']:
                 if lyric['id'] == int(groups[1]):
@@ -151,9 +151,9 @@ def lyrics(bot, update, groups, lang):
                                       text=text,
                                       reply_markup=song_keyboard(data, inline=True) if inline else reply_keyboard,
                                       parse_mode=ParseMode.HTML)
-                    bot.answer_callback_query(callback_query_id=update.callback_query.id)
+                    update.callback_query.answer()
     else:
-        bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('No lyrics found.'))
+        update.callback_query.answer(_('No lyrics found.'))
 
 
 @run_async
@@ -182,7 +182,7 @@ def pv(bot, update, groups, lang):
                               reply_markup=song_keyboard(data, inline=True) if inline else None,
                               parse_mode=ParseMode.HTML)
 
-            bot.answer_callback_query(callback_query_id=update.callback_query.id)
+            update.callback_query.answer()
             return
 
 
@@ -204,7 +204,7 @@ def album_list(bot, update, groups, lang):
                       text=text,
                       reply_markup=album_keyboard(data, inline=True) if inline else None,
                       parse_mode=ParseMode.HTML)
-    bot.answer_callback_query(callback_query_id=update.callback_query.id)
+    update.callback_query.answer()
 
 
 @run_async
@@ -216,9 +216,8 @@ def song_by_pv(bot, update, lang):
             pv = pv_parser(update.message.text)
             if pv:
                 data = voca_db.song_by_pv(pv[0], pv[1], 'MainPicture, Names, Lyrics, Artists, PVs', lang=lang)
-                bot.send_message(chat_id=update.message.chat.id, text=content_parser(data, info=True),
-                                 reply_markup=song_keyboard(data), parse_mode=ParseMode.HTML,
-                                 disable_web_page_preview=True)
+                update.message.reply_text(content_parser(data, info=True), reply_markup=song_keyboard(data),
+                                          parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 def forwarded(bot, update, update_queue):

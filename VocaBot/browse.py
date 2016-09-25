@@ -33,7 +33,7 @@ def next_page(bot, update, groups):
                           text=content_parser(page_data, context=context, counts=counts),
                           reply_markup=keyboard(key, counts),
                           parse_mode=ParseMode.HTML)
-    bot.answer_callback_query(callback_query_id=update.callback_query.id)
+    update.callback_query.answer()
 
     return BrowseState.page
 
@@ -45,7 +45,7 @@ def send_page_one(bot, update, key, page, state):
         entry = page_data[0]
         if 'songType' in entry or 'artistType' in entry or 'discType' in entry:
             if update.callback_query:
-                bot.answer_callback_query(callback_query_id=update.callback_query.id)
+                update.callback_query.answer()
             if 'songType' in entry:
                 info.song(bot, update, [entry['id']])
             elif 'artistType' in entry:
@@ -71,7 +71,7 @@ def send_page_one(bot, update, key, page, state):
     replies[message_id] = (state, sent_message.message_id)
 
     if update.callback_query:
-        bot.answer_callback_query(callback_query_id=update.callback_query.id)
+        update.callback_query.answer()
 
     return BrowseState.page
 
@@ -157,28 +157,28 @@ def search_input_album(bot, update):
 
 def search_all(bot, update, args):
     if not args:
-        bot.send_message(chat_id=update.message.chat.id, text="Enter search query.", reply_markup=ForceReply())
+        update.message.reply_text("Enter search query.", reply_markup=ForceReply())
         return BrowseState.input
     return search(bot, update, args, songs=True, artists=True, albums=True)
 
 
 def search_song(bot, update, args):
     if not args:
-        bot.send_message(chat_id=update.message.chat.id, text="Enter song search query.", reply_markup=ForceReply())
+        update.message.reply_text("Enter song search query.", reply_markup=ForceReply())
         return BrowseState.input_song
     return search(bot, update, args, songs=True)
 
 
 def search_artist(bot, update, args):
     if not args:
-        bot.send_message(chat_id=update.message.chat.id, text="Enter artist search query.", reply_markup=ForceReply())
+        update.message.reply_text("Enter artist search query.", reply_markup=ForceReply())
         return BrowseState.input_artist
     return search(bot, update, args, artists=True)
 
 
 def search_album(bot, update, args):
     if not args:
-        bot.send_message(chat_id=update.message.chat.id, text="Enter album search query.", reply_markup=ForceReply())
+        update.message.reply_text("Enter album search query.", reply_markup=ForceReply())
         return BrowseState.input_album
     return search(bot, update, args, albums=True)
 

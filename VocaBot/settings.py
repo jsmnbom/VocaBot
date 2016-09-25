@@ -109,10 +109,9 @@ def start(bot, update, edit=False, chat_id=None, message_id=None):
                               reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
                               parse_mode=ParseMode.HTML)
     else:
-        bot.send_message(chat_id=update.message.chat.id,
-                         text=text,
-                         reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
-                         parse_mode=ParseMode.HTML)
+        update.message.reply_text(text,
+                                  reply_markup=InlineKeyboardMarkup(list(chunks(buttons, 2))),
+                                  parse_mode=ParseMode.HTML)
 
 
 @translate
@@ -121,7 +120,7 @@ def change_setting(bot, update, setting, data, job_queue):
     iden = id_from_update(update)
 
     if data not in settings[setting]['trans']:
-        bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
+        update.callback_query.answer(_('Unknown setting, try again.'))
         return setting
 
     try:
@@ -163,7 +162,7 @@ def send_changer(bot, update, setting):
                               reply_markup=keyboard,
                               parse_mode=ParseMode.HTML)
     else:
-        bot.answer_callback_query(callback_query_id=update.callback_query.id, text=_('Unknown setting, try again.'))
+        update.callback_query.answer(_('Unknown setting, try again.'))
 
 
 def delegate(bot, update, groups, job_queue):

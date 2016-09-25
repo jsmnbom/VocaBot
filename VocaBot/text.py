@@ -66,52 +66,51 @@ Write /help to see a list of non-inline-commands.""")
 @translate
 @botan_track
 def start(bot, update, args, update_queue):
+    msg = update.message
     if len(args) == 1 and args[0] == 'help_inline':
-        bot.send_message(chat_id=update.message.chat.id,
-                         text=BASE_START_TEXT.format(user_name=update.message.from_user.first_name,
-                                                     bot_name=bot.name) + INLINE_HELP_TEXT.format(bot_name=bot.name),
-                         disable_web_page_preview=True,
-                         parse_mode=ParseMode.HTML)
+        msg.reply_text(BASE_START_TEXT.format(user_name=msg.from_user.first_name,
+                                              bot_name=bot.name) + INLINE_HELP_TEXT.format(bot_name=bot.name),
+                       disable_web_page_preview=True,
+                       parse_mode=ParseMode.HTML)
         return
     elif len(args) > 0:
         # Webogram doesn't urldecode/unquote
         args = unquote(' '.join(args)).split(' ')
         if len(args) == 2 and args[0] == 'cmd':
-            update.message.text = args[1]
+            msg.text = args[1]
             update_queue.put(update)
             return
-    bot.send_message(chat_id=update.message.chat.id,
-                     text=BASE_START_TEXT.format(user_name=update.message.from_user.first_name,
-                                                 bot_name=bot.name) + START_TEXT,
-                     disable_web_page_preview=True)
+    msg.reply_text(BASE_START_TEXT.format(user_name=msg.from_user.first_name,
+                                          bot_name=bot.name) + START_TEXT,
+                   disable_web_page_preview=True)
 
 
 @translate
 @botan_track
 def about(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text=ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
-                     parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
 @botan_track
 def privacy(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text=PRIVACY_TEXT.format(bot_name=bot.name, version=__version__),
-                     parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(PRIVACY_TEXT.format(bot_name=bot.name, version=__version__),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
 @botan_track
 def send_help(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text=HELP_TEXT.format(bot_name=bot.name),
-                     parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    update.message.reply_text(HELP_TEXT.format(bot_name=bot.name),
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
 @botan_track
 def inline(bot, update):
-    bot.send_message(chat_id=update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
-                     disable_web_page_preview=True, parse_mode=ParseMode.HTML)
+    update.message.reply_text(update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
+                              disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 
 
 @translate
@@ -125,25 +124,23 @@ def kill(bot, update):
         time.sleep(5)
         os.kill(os.getpid(), signal.SIGTERM)
     else:
-        bot.send_message(chat_id=update.message.chat.id, text=_("I can't let you do that, dave."))
+        update.message.reply_text(_("I can't let you do that, dave."))
 
 
 @translate
 def unknown(bot, update):
     if update.message.chat.type == 'private':
-        bot.send_message(chat_id=update.message.chat.id,
-                         text=_("Unknown command. Try again or type /help to see list of commands."))
+        update.message.reply_text(_("Unknown command. Try again or type /help to see list of commands."))
     else:
         match = re.match(r'^/(?:((?:\S*?){bot_name})|((?:\S*)@(?:\S*))|(\S*))'.format(bot_name=bot.name),
                          update.message.text)
         if match:
             if match.groups()[0] or match.groups()[2]:
-                bot.send_message(chat_id=update.message.chat.id,
-                                 text=_("Unknown command. Try again or type /help to see list of commands."))
+                update.message.reply_text(_("Unknown command. Try again or type /help to see list of commands."))
 
 
 @translate
 def cancel(bot, update):
     # We don't need (or rather we can't) to clear from browse.ongoing or inline.ongoing, since they both use unique keys
-    bot.send_message(chat_id=update.message.chat.id, text=_('Operation cancelled. Type /help to see list of commands.'))
+    update.message.reply_text(_('Operation cancelled. Type /help to see list of commands.'))
     return ConversationHandler.END
