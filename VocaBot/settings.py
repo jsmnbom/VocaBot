@@ -144,8 +144,7 @@ def change_setting(bot, update, setting, data, job_queue):
         update.message.chat, update.message.from_user = update.message.from_user, update.message.chat
         start(bot, update, edit=True, chat_id=message.chat_id, message_id=message.message_id)
 
-    job = Job(callback=callback, interval=5, repeat=False)
-    job_queue.put(job)
+    job_queue.run_once(callback, when=5)
 
 
 @translate
