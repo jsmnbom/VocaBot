@@ -121,11 +121,11 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                 else:
                     link = ''
                     if song:
-                        link = '/info_{}'.format(entry['id'])
+                        link = 'info_{}'.format(entry['id'])
                     elif artist:
-                        link = '/ar_{}'.format(entry['id'])
+                        link = 'ar_{}'.format(entry['id'])
                     elif album:
-                        link = '/al_{}'.format(entry['id'])
+                        link = 'al_{}'.format(entry['id'])
 
                     if info:
                         text += '\n\n'
@@ -164,7 +164,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                             text += _('\nInfo:') + ' ' + link
 
                     if inline and bot_name:
-                        text += _('<a href="https://telegram.me/{bot_name}?start=cmd%20{link}">'
+                        text += _('<a href="https://telegram.me/{bot_name}?start=cmd%3D{link}">'
                                   'Click for more features.</a>').format(bot_name=bot_name, link=link)
 
             except OSError:

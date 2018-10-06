@@ -73,9 +73,9 @@ def start(bot, update, args, update_queue):
         return
     elif len(args) > 0:
         # Webogram doesn't urldecode/unquote
-        args = unquote(' '.join(args)).split(' ')
+        args = unquote(' '.join(args)).split('=')
         if len(args) == 2 and args[0] == 'cmd':
-            msg.text = args[1]
+            msg.text = '/' + args[1]
             update_queue.put(update)
             return
     msg.reply_text(BASE_START_TEXT.format(user_name=msg.from_user.first_name,
