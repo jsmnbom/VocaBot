@@ -170,8 +170,17 @@ def main():
     # Also add our "log everything" error handler
     dp.add_error_handler(error)
 
-    # Start fetching updates, we might wanna use webhooks instead at some points.
-    updater.start_polling()
+    updater_type = os.getenv('VOCABOT_UPDATER_TYPE')
+    if updater_type == 'POLLING':
+        # Start fetching updates
+        updater.start_polling()
+    elif updater_type == 'WEBHOOK':
+        # Sample config:
+        listen = os.getenv('VOCABOT_LISTEN')
+        port = int(os.getenv('VOCABOT_PORT'))
+        url_base = os.getenv('VOCABOT_URL_BASE')
+        updater.start_webhook(listen=listen, port=int(port), url_path=token)
+        updater.bot.set_webhook(webhook_url=url_base + 'TOKEN')
 
     # Loop till we quit
     updater.idle()
