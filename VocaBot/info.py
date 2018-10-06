@@ -1,12 +1,11 @@
 from urllib.parse import unquote
 
-from telegram import ParseMode, InlineKeyboardButton, Emoji, InlineKeyboardMarkup
-from telegram.ext.dispatcher import run_async
-
 from constants import PV_SERVICES
 from contentparser import content_parser, album_tracks, vocadb_url
 from i18n import _
 from settings import with_voca_lang, translate
+from telegram import ParseMode, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext.dispatcher import run_async
 from util import edit_message_text, pv_parser, get_lyric_lang
 from vocadb import voca_db
 
@@ -16,7 +15,7 @@ def song_keyboard(data, inline=False):
     if not data:
         return
     keyboard = [[]]
-    keyboard[-1].append(InlineKeyboardButton(text=Emoji.SCROLL + _('Lyrics'),
+    keyboard[-1].append(InlineKeyboardButton(text='📜' + _('Lyrics'),
                                              callback_data='ly|{}'.format(data['id'])))
 
     # TODO: Add "Artist Info" button to inline
@@ -30,7 +29,7 @@ def song_keyboard(data, inline=False):
         for service in PV_SERVICES:
             if service in data['pvServices']:
                 callback_data = 'pv|{}|{}'.format(data['id'], service)
-                keyboard[-1].append(InlineKeyboardButton(text=Emoji.MOVIE_CAMERA + service,
+                keyboard[-1].append(InlineKeyboardButton(text='🎥' + service,
                                                          callback_data=callback_data))
 
     keyboard.append([
@@ -48,15 +47,15 @@ def artist_keyboard(data, inline=False):
     keyboard = []
     if not inline:
         keyboard.append([
-            InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular songs'),
+            InlineKeyboardButton(text='🔝' + _('Popular songs'),
                                  callback_data='arlist|ps|{}'.format(data['id'])),
-            InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest songs'),
+            InlineKeyboardButton(text='🕒' + _('Latest songs'),
                                  callback_data='arlist|ls|{}'.format(data['id']))
         ])
         keyboard.append([
-            InlineKeyboardButton(text=Emoji.TOP_WITH_UPWARDS_ARROW_ABOVE + _('Popular albums'),
+            InlineKeyboardButton(text='🔝' + _('Popular albums'),
                                  callback_data='arlist|pa|{}'.format(data['id'])),
-            InlineKeyboardButton(text=Emoji.CLOCK_FACE_THREE_OCLOCK + _('Latest albums'),
+            InlineKeyboardButton(text='🕒' + _('Latest albums'),
                                  callback_data='arlist|la|{}'.format(data['id']))
         ])
 
@@ -73,7 +72,7 @@ def album_keyboard(data, inline=False):
     if not data:
         return
     keyboard = [[]]
-    keyboard[-1].append(InlineKeyboardButton(text=Emoji.MUSICAL_SCORE + _('Tracks'),
+    keyboard[-1].append(InlineKeyboardButton(text='🎼' + _('Tracks'),
                                              callback_data='allist|{}'.format(data['id'])))
 
     keyboard.append([
@@ -140,7 +139,7 @@ def lyrics(bot, update, groups, lang):
                     text = ''
                     if inline:
                         text = content_parser(data, info=True, inline=True, bot_name=bot.username)
-                    text += '\n\n' + Emoji.SCROLL
+                    text += '\n\n' + '📜'
                     text += _('<b>{lang} lyrics for {song} by {artist}</b>\n'
                               '{lyrics}').format(song=data['name'],
                                                  artist=data['artistString'],
@@ -170,7 +169,7 @@ def pv(bot, update, groups, lang):
             text = ''
             if inline:
                 text = content_parser(data, info=True, inline=True, bot_name=bot.username)
-            text += '\n\n' + Emoji.MOVIE_CAMERA
+            text += '\n\n' + '🎥'
             text += _('<b>{service} PV for {song} by {artist}</b>\n'
                       'PV Title:\n{name}\n{url}').format(song=data['name'],
                                                          artist=data['artistString'],

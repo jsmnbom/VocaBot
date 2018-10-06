@@ -1,8 +1,6 @@
 import math
 from collections import defaultdict
 
-from telegram import Emoji
-
 from constants import Context, VOCADB_BASE_URL
 from i18n import _
 from util import non_phone
@@ -93,8 +91,8 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 
                 if song:
                     if track_number is None:
-                        text += _('{emoji} <b>{name}</b>\n'
-                                  '{artist}\n{type}').format(emoji=Emoji.MUSICAL_NOTE, name=entry['name'],
+                        text += _('🎵 <b>{name}</b>\n'
+                                  '{artist}\n{type}').format(name=entry['name'],
                                                              artist=entry['artistString'],
                                                              type=voca_db.trans(entry['songType'], song=True))
                         if 'favoritedTimes' in entry:
@@ -107,12 +105,12 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
                             artist=entry['artistString'])
 
                 if artist:
-                    text += _('{emoji} <b>{name}</b>\n'
-                              '{type}').format(emoji=Emoji.MICROPHONE, name=entry['name'],
+                    text += _('🎤 <b>{name}</b>\n'
+                              '{type}').format(name=entry['name'],
                                                type=voca_db.trans(entry['artistType'], artist=True))
                 if album:
-                    text += _('{emoji} <b>{name}</b>\n'
-                              '{artist}\n{type}').format(emoji=Emoji.OPTICAL_DISC, name=entry['name'],
+                    text += _('💿 <b>{name}</b>\n'
+                              '{artist}\n{type}').format(name=entry['name'],
                                                          artist=entry['artistString'],
                                                          type=voca_db.trans(entry['discType'], album=True))
 
@@ -218,7 +216,7 @@ def album_tracks(album, inline):
                     if 'name' in disc:
                         name = disc['name']
                     if 'mediaType' in disc:
-                        text += (Emoji.OPTICAL_DISC if disc['mediaType'] == 'Audio' else '🎞') + ' '
+                        text += ('💿' if disc['mediaType'] == 'Audio' else '🎞') + ' '
                 except IndexError:
                     pass
             text += _('<i>Disc {disc_number}').format(disc_number=disc_number)

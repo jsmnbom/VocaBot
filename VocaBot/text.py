@@ -8,7 +8,6 @@ from telegram.ext import ConversationHandler
 from constants import __version__, OWNER_IDS
 from i18n import _
 from settings import translate
-from util import botan_track
 
 BASE_START_TEXT = _("""Hello {user_name}! I'm {bot_name}.
 I use VocaDB.net to find all your favourite Vocaloid songs, artists and albums.
@@ -31,7 +30,6 @@ If you like this bot, please consider giving a 5 star rating on <a href="https:/
 PRIVACY_TEXT = _("""<b>Privacy information for {bot_name}</b>
 <i>Applies both to inline and non-inline.</i>
 Telegram bot privacy mode is enabled so, <i>in group chats</i>, I can only see commands and direct replies.
-All bot requests are tracked via <a href="http://botan.io">Botan</a> which is powered by Yandex AppMetrica.
 """)
 
 HELP_TEXT = _("""/search - search for a vocaloid song, artist or album
@@ -65,7 +63,6 @@ Write /help to see a list of non-inline-commands.""")
 
 
 @translate
-@botan_track
 def start(bot, update, args, update_queue):
     msg = update.message
     if len(args) == 1 and args[0] == 'help_inline':
@@ -87,28 +84,24 @@ def start(bot, update, args, update_queue):
 
 
 @translate
-@botan_track
 def about(bot, update):
     update.message.reply_text(ABOUT_TEXT.format(bot_name=bot.name, version=__version__),
                               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
-@botan_track
 def privacy(bot, update):
     update.message.reply_text(PRIVACY_TEXT.format(bot_name=bot.name, version=__version__),
                               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
-@botan_track
 def send_help(bot, update):
     update.message.reply_text(HELP_TEXT.format(bot_name=bot.name),
                               parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 
 @translate
-@botan_track
 def inline(bot, update):
     update.message.reply_text(update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
                               disable_web_page_preview=True, parse_mode=ParseMode.HTML)

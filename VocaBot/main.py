@@ -23,10 +23,9 @@ logger = logging.getLogger(__name__)
 # TODO: Use bot.send_chat_action?
 # TODO: Handle what stuff should run_async and what should not better
 # TODO: Maybe add a timeout to api and telegram requests too?
-# TODO: Better tracking than what botan can do (google analytics events?)
+# TODO: Tracking like what botan did
 # TODO: More album integrations 1/2
 # TODO: User login and ratings
-# TODO: Unify emoji (either use the emoji package or just have them in code)
 
 
 # noinspection SpellCheckingInspection
@@ -64,12 +63,12 @@ def add_update_handlers(dp):
         ],
         states={
             BrowseState.page: [
-                MessageHandler([Filters.text], browse.edited, allow_edited=True, pass_update_queue=True)
+                MessageHandler(Filters.text, browse.edited, allow_edited=True, pass_update_queue=True)
             ],
-            BrowseState.input: [MessageHandler([Filters.text], browse.search_input, allow_edited=True)],
-            BrowseState.input_song: [MessageHandler([Filters.text], browse.search_input_song, allow_edited=True)],
-            BrowseState.input_artist: [MessageHandler([Filters.text], browse.search_input_artist, allow_edited=True)],
-            BrowseState.input_album: [MessageHandler([Filters.text], browse.search_input_album, allow_edited=True)]
+            BrowseState.input: [MessageHandler(Filters.text, browse.search_input, allow_edited=True)],
+            BrowseState.input_song: [MessageHandler(Filters.text, browse.search_input_song, allow_edited=True)],
+            BrowseState.input_artist: [MessageHandler(Filters.text, browse.search_input_artist, allow_edited=True)],
+            BrowseState.input_album: [MessageHandler(Filters.text, browse.search_input_album, allow_edited=True)]
         },
         fallbacks=[CommandHandler('cancel', cancel)],
         allow_reentry=True
@@ -89,12 +88,12 @@ def add_update_handlers(dp):
     song_handler = RegexHandler(r'^/(?:info|s)_(\d+)(@.+)?$', info.song, pass_groups=True)
     artist_handler = RegexHandler(r'^/(?:ar)_(\d+)(@.+)?$', info.artist, pass_groups=True)
     album_handler = RegexHandler(r'^/(?:al)_(\d+)(@.+)?$', info.album, pass_groups=True)
-    song_by_pv_handler = MessageHandler([Filters.entity(MessageEntity.URL)], info.song_by_pv)
+    song_by_pv_handler = MessageHandler(Filters.entity(MessageEntity.URL), info.song_by_pv)
 
     lyrics_handler = CallbackQueryHandler(info.lyrics, pattern=r'^(?:ly)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     pv_handler = CallbackQueryHandler(info.pv, pattern=r'^(?:pv)\|([^\|]*)\|?([^\|]*)?$', pass_groups=True)
     album_list_handler = CallbackQueryHandler(info.album_list, pattern=r'^(?:allist)\|(.*)$', pass_groups=True)
-    forwarded_handler = MessageHandler([forwarded_filter], info.forwarded, pass_update_queue=True)
+    forwarded_handler = MessageHandler(forwarded_filter, info.forwarded, pass_update_queue=True)
     set_handler = CallbackQueryHandler(settings.delegate, pattern='^(?:set)\|([^\|]*)\|?([^\|]*)?$',
                                        pass_groups=True, pass_job_queue=True)
 
@@ -110,7 +109,7 @@ def add_update_handlers(dp):
     inline_leftover_handler = InlineQueryHandler(inline.delegate)  # All who didn't match above regex
 
     cancel_handler = CommandHandler('cancel', text.cancel)
-    unknown_command_handler = MessageHandler([Filters.command], text.unknown)
+    unknown_command_handler = MessageHandler(Filters.command, text.unknown)
 
     # Add handlers to dispatcher
     dp.add_handler(forwarded_handler)  # Has to be here otherwise BrowseState.page handler will eat it

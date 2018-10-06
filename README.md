@@ -15,7 +15,7 @@ Use from telegram via [@VocaDBBot](https://telegram.me/VocaDBBot) (temporary nam
 You can also run the bot yourself by following these steps:
 
 1. Install python 3, clone repository and install requirements via pip
-2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT_TOKEN` environment variable. If you want botan tracking (optional) put your token `VOCABOT_BOTAN_TOKEN`. You might also want to change `OWNER_IDS` inside [VocaBot/constants.py](VocaBot/constants.py) (if you don't want me to be able to kill your bot that is).
+2. Ask [@botfather](https://telegram.me/botfather) for a bot token and put it in `VOCABOT_TOKEN` environment variable. You might also want to change `OWNER_IDS` inside [VocaBot/constants.py](VocaBot/constants.py) (if you don't want me to be able to kill your bot that is).
 3. Run `$ python3 main.py`
 
 #Thanks to

@@ -3,7 +3,7 @@ import uuid
 from functools import wraps
 from uuid import uuid4
 
-from telegram import InlineQueryResultArticle, Emoji, InputTextMessageContent, ParseMode
+from telegram import InlineQueryResultArticle, InputTextMessageContent, ParseMode
 from telegram.ext.dispatcher import run_async
 
 from contentparser import content_parser
@@ -36,7 +36,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
                 description += ' ' + _('with {favorites} favourites').format(favorites=entry['favoritedTimes'])
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
-                title=Emoji.MUSICAL_NOTE + ' ' + entry['name'],
+                title='🎵' + ' ' + entry['name'],
                 description=description,
                 thumb_url=thumb,
                 input_message_content=InputTextMessageContent(content, parse_mode=ParseMode.HTML,
@@ -46,7 +46,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
         elif 'artistType' in entry:
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
-                title=Emoji.MICROPHONE + ' ' + entry['name'],
+                title='🎤' + ' ' + entry['name'],
                 description='{type}'.format(type=entry['artistType']),
                 thumb_url=thumb,
                 input_message_content=InputTextMessageContent(content, parse_mode=ParseMode.HTML,
@@ -57,7 +57,7 @@ def answer(bot, update, entries, offset='', switch_pm=None):
             description = '{artist}\n{type}'.format(artist=entry['artistString'], type=entry['discType'])
             results.append(InlineQueryResultArticle(
                 id=uuid4(),
-                title=Emoji.OPTICAL_DISC + ' ' + entry['name'],
+                title='💿' + ' ' + entry['name'],
                 description=description,
                 thumb_url=thumb,
                 input_message_content=InputTextMessageContent(content, parse_mode=ParseMode.HTML,

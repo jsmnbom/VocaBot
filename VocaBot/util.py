@@ -4,7 +4,6 @@ from functools import wraps
 
 import iso639
 from telegram.constants import MAX_MESSAGE_LENGTH
-from telegram.contrib.botan import Botan
 
 from i18n import _
 
@@ -159,18 +158,3 @@ def get_lyric_lang(trans_type, code, long=False):
             return '[{}] {}'.format(trans_type[:1], iso639.to_name(code))
     except ValueError:
         return trans_type
-
-
-botan = os.getenv('VOCABOT_BOTAN_TOKEN', False)
-if botan:
-    _botan_track = Botan(botan)
-
-
-def botan_track(f):
-    @wraps(f)
-    def wrapper(bot, update, *args, **kwargs):
-        if update.message and botan:
-            _botan_track.track(update.message)
-        return f(bot, update, *args, **kwargs)
-
-    return wrapper
