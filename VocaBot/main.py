@@ -180,7 +180,7 @@ def main():
         port = int(os.getenv('VOCABOT_PORT'))
         url_base = os.getenv('VOCABOT_URL_BASE')
         updater.start_webhook(listen=listen, port=int(port), url_path=token)
-        updater.bot.set_webhook(url=url_base + 'TOKEN')
+        updater.bot.set_webhook(url=url_base + token)
 
     # Loop till we quit
     updater.idle()
