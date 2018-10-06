@@ -103,7 +103,7 @@ def send_help(bot, update):
 
 @translate
 def inline(bot, update):
-    update.message.reply_text(update.message.chat.id, text=INLINE_HELP_TEXT.format(bot_name=bot.name),
+    update.message.reply_text(text=INLINE_HELP_TEXT.format(bot_name=bot.name),
                               disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 
 
