@@ -142,6 +142,7 @@ def change_setting(bot, update, setting, data, job_queue):
     def callback(b, j):
         update.message = update.callback_query.message
         update.message.chat, update.message.from_user = update.message.from_user, update.message.chat
+        update.message.chat.type = update.message.from_user.type
         start(bot, update, edit=True, chat_id=message.chat_id, message_id=message.message_id)
 
     job_queue.run_once(callback, when=5)
