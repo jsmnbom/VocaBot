@@ -161,7 +161,7 @@ def content_parser(entries, info=False, inline=False, context=None, bot_name='',
 
                     else:
                         if not inline:
-                            text += _('\nInfo:') + ' ' + link
+                            text += _('\nInfo:') + ' /' + link
 
                     if inline and bot_name:
                         text += _('<a href="https://telegram.me/{bot_name}?start=cmd%3D{link}">'
