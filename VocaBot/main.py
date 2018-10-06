@@ -170,7 +170,7 @@ def main():
     # Also add our "log everything" error handler
     dp.add_error_handler(error)
 
-    updater_type = os.getenv('VOCABOT_UPDATER_TYPE')
+    updater_type = os.getenv('VOCABOT_UPDATER_TYPE', 'POLLING')
     if updater_type == 'POLLING':
         # Start fetching updates
         updater.start_polling()
