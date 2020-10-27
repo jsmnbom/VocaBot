@@ -4,23 +4,22 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-asn1crypto==0.24.0        # via cryptography
 atpublic==1.0             # via flufl.i18n
-cachecontrol==0.12.5
+cachecontrol==0.12.5      # via -r requirements.in
 certifi==2018.8.24        # via python-telegram-bot, requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
-cryptography==2.3.1       # via python-telegram-bot
-flufl.i18n==2.0.1
+cryptography==3.2         # via python-telegram-bot
+flufl.i18n==2.0.1         # via -r requirements.in
 future==0.16.0            # via python-telegram-bot
-idna==2.7                 # via cryptography, requests
-iso639==0.1.4
+idna==2.7                 # via requests
+iso639==0.1.4             # via -r requirements.in
 msgpack==0.5.6            # via cachecontrol
 pycparser==2.19           # via cffi
-python-telegram-bot==11.1.0
-requests==2.19.1
+python-telegram-bot==11.1.0  # via -r requirements.in
+requests==2.19.1          # via -r requirements.in, cachecontrol
 six==1.11.0               # via cryptography
-tinydb==3.11.1
-tornado==5.1.1
-ujson==1.35
+tinydb==3.11.1            # via -r requirements.in
+tornado==5.1.1            # via -r requirements.in
+ujson==1.35               # via -r requirements.in
 urllib3==1.23             # via requests
